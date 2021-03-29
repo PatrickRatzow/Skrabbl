@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <Home msg=":) world!" />
-        <WebSocketItem/>
+        <WebSocketItem sendButtonText="Send Message"/>
     </div>
 </template>
 

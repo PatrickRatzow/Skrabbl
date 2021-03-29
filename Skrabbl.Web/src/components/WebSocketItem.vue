@@ -14,7 +14,7 @@
             <div class="row">&nbsp;</div>
             <div class="row">
                 <div class="col-6">
-                    <input type="button" @click.prevent="sendMessage" :disabled="!hasConnected" value="Send Message" />
+                    <input type="button" @click.prevent="sendMessage" :disabled="!hasConnected" :value="sendButtonText" />
                 </div>
             </div>
         </div>
@@ -28,6 +28,7 @@
                 <ul>
                     <li v-for ="msg in messages">
                         {{ msg.user }} says {{ msg.message }}
+                        <span v-if="msg.user == 'Nikolaj'">(Admin)</span>
                         <button @click="deleteMessage(msg)">[x]</button>
                     </li>
                 </ul>
@@ -46,6 +47,9 @@
                 connection: null,
                 messages: []
             }
+        },
+        props: {
+            sendButtonText: String
         },
         methods: {
             createConnection() {
