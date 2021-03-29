@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-6">
                 <ul>
-                    <li v-for ="msg in messages">
+                    <li v-for="msg in messages">
                         {{ msg.user }} says {{ msg.message }}
                         <span v-if="msg.user == 'Nikolaj'">(Admin)</span>
                         <button @click="deleteMessage(msg)">[x]</button>
