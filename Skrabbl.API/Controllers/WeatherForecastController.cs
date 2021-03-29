@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Skrabbl.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/weather")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
