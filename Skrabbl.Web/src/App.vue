@@ -1,22 +1,12 @@
 <template>
-    <div id="app">
-        <Home msg=":) world!" />
-        <WebSocketItem sendButtonText="Send Message"/>
+  <div id="app">
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
     </div>
+    <router-view/>
+  </div>
 </template>
-
-<script>
-    import Home from './components/Home.vue';
-    import WebSocketItem from './components/WebSocketItem.vue';
-
-    export default {
-        name: 'app',
-        components: {
-            Home,
-            WebSocketItem
-        }
-    };
-</script>
 
 <style lang="scss">
  
