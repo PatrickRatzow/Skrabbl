@@ -33,6 +33,9 @@
     <Content Include="public\index.html" />
     <Content Include="src\App.vue" />
     <Content Include="src\components\Home.vue" />
+    <Content Include="src\components\WebSocketItem.vue" />
+    <Content Include="src\views\About.vue" />
+    <Content Include="src\views\Home.vue" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="src\router.js">
@@ -45,6 +48,7 @@
     <Folder Include="src\" />
     <Folder Include="src\assets\" />
     <Folder Include="src\components\" />
+    <Folder Include="src\views\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="babel.config.js" />
