@@ -1,8 +1,14 @@
 <template>
-    <div class="home">
-        <h1>{{ msg }}</h1>
-        <p>Welcome to your new single-page application, built with <a href="https://vuejs.org" target="_blank">Vue.js</a>.</p>
-    </div>
+    <section class="hero is-primary">
+        <div class="hero-body">
+            <h1 class="title">
+                {{ msg }}
+            </h1>
+            <p class="subtitle">
+                Welcome to your new single-page application, built with <a href="https://vuejs.org" target="_blank">Vue.js</a>
+            </p>
+        </div>
+    </section>
 </template>
 
 <script>

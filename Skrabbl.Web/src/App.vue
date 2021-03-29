@@ -16,10 +16,6 @@
 </script>
 
 <style lang="scss">
-    $primary: rgba(0, 0, 255, 0.739);
-
-    body {
-        color: $primary;
-    }
+ 
 </style>
 
