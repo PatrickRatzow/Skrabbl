@@ -32,6 +32,8 @@
     <Content Include="public\favicon.ico" />
     <Content Include="public\index.html" />
     <Content Include="src\App.vue" />
+    <Content Include="src\components\WeatherItem.vue" />
+    <Content Include="src\components\WeatherList.vue" />
     <Content Include="src\views\Canvas.vue">
       <SubType>Code</SubType>
     </Content>
