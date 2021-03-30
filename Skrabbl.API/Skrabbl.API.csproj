@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentMigrator" Version="3.2.15" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.2.15" />
+    <PackageReference Include="FluentMigrator.Runner.SqlServer" Version="3.2.15" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.13" />
   </ItemGroup>
 
