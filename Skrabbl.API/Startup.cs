@@ -19,7 +19,7 @@ namespace Skrabbl.API
 {
     public class Startup
     {
-        private readonly string _connectionString = @"Server=localhost;Database=master;Trusted_Connection=True;";
+        private readonly string _connectionString = @"Server=hildur.ucn.dk;Database=dmaa0220_1083739;User Id=dmaa0220_1083739;Password=Password1!;Trusted_Connection=False;";
         
         public Startup(IConfiguration configuration)
         {

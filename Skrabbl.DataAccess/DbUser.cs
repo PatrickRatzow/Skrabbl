@@ -1,7 +1,6 @@
 ﻿using Skrabbl.Model;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using Dapper;
 using System.Linq;
@@ -11,6 +10,7 @@ namespace Skrabbl.DataAccess
 {
    public class DbUser : IUser
     {
+  
         private string connectionString;
 
         public DbUser() {
