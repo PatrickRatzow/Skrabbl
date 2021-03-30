@@ -8,7 +8,7 @@
         <div>
             <ul v-for="color in colors">
                 <li>
-                    <button :style ="buttonColor(color)">
+                    <button :style="buttonColor(color)">
                         {{color}}
                     </button>
                 </li>
@@ -29,12 +29,10 @@
         },
         mounted() {
         },
-        computed: {
-            buttonColor(color) {
-                return `color: ${color}`
-            }
-        },
         methods: {
+            buttonColor(color) {
+              return `color: ${color}`
+            },
             drawLine(x1, y1, x2, y2) {
                 let c = document.getElementById("myCanvas");
                 this.canvas = c.getContext('2d');
