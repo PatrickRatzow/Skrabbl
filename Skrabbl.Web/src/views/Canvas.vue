@@ -1,10 +1,24 @@
 <template>
-    <div>
+    <div id="canvas-wrapper">
         <div>
             <span>{{x}}, {{y}},</span>
             <h1>Drawing with mousemove event</h1>
             <canvas id="myCanvas" height="500" width="500" @mousemove="draw" @mousedown="beginDrawing" @mouseup="stopDrawing" @mouseout="stopDrawing"></canvas>
         </div>
+        <ul class="is-flex">
+            <li v-for="color in colors">
+                <button @click="changeStrokeColor(color)" :style="buttonColor(color)">
+                    {{color}}
+                </button>
+            </li>
+        </ul>
+        <ul class="is-flex mt-2">
+            <li v-for="thickness in thicknesses">
+                <button @click="changeStrokeThickness(thickness)">
+                    {{thickness}}
+                </button>
+            </li>
+        </ul>
         <div>
             <ul v-for="color in colors">
                 <li>
@@ -118,6 +132,9 @@
 </script>
 
 <style scoped>
+    #canvas-wrapper {
+      padding: 6px;
+    }
     canvas {
         border: 2px solid grey;
     }
