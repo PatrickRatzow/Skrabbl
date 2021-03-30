@@ -1,6 +1,7 @@
 <template>
   <div class="row" :style="playerColor">
     [{{ number + 1 }}] - {{ name }}
+    <span v-if="owner">(Owner)</span>
   </div>
 </template>
 
@@ -11,6 +12,7 @@ export default {
     name: String,
     color: String,
     number: Number,
+    owner: Boolean
   },
   computed: {
     playerColor() {

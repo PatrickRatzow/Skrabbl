@@ -5,6 +5,7 @@
                 :name="player.name"
                 :color="player.color"
                 :number="idx"
+                :owner="player.owner"
     />
   </div>
 </template>

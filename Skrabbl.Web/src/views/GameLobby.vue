@@ -32,7 +32,7 @@ export default {
     return {
       code: "aBc4fE",
       players: [
-        { id: 1, name: "Patrick", color: "#e74c3c" },
+        { id: 1, name: "Patrick", color: "#e74c3c", owner: true },
         { id: 2, name: "Nikolaj", color: "#9b59b6" }
       ]
     }
