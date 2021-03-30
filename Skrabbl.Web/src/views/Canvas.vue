@@ -20,6 +20,7 @@
                     </button>
                 </li>
             </ul>
+
         </div>
     </div>
 </template>
@@ -28,8 +29,8 @@
     export default {
         data() {
             return {
-                colors: ['blue', 'red', 'yellow', 'brown', 'purple', 'pink', 'black'],
-                thicknesses: [1, 2, 3, 4, 5],
+                colors: ['blue', 'red', 'yellow', 'brown', 'purple', 'pink', 'black', 'white'],
+                thicknesses: [1, 2, 3, 5, 8],
                 x: 0,
                 y: 0,
                 isDrawing: false,
