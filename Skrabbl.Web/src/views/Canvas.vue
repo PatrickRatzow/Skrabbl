@@ -2,7 +2,7 @@
     <div>
         <span>{{x}}, {{y}},</span>
         <h1>Drawing with mousemove event</h1>
-        <canvas id="myCanvas" height="500" width="500" @mousemove="draw"></canvas>
+        <canvas id="myCanvas" height="500" width="500" @mousemove="draw" @mousedown="beginDrawing" @mouseup="stopDrawing"></canvas>
     </div>
 </template>
 
@@ -11,12 +11,13 @@
         data() {
             return {
                 x: 0,
-                y: 0
+                y: 0,
+                isDrawing: false
             }
         },
         methods: {
             drawLine(x1, y1, x2, y2) {
-                var c = document.getElementById("myCanvas");
+                let c = document.getElementById("myCanvas");
                 this.canvas = c.getContext('2d');
 
                 let ctx = this.canvas;
@@ -29,10 +30,25 @@
                 ctx.closePath();
             },
             draw(e) {
-                this.drawLine(this.x, this.y, e.offsetX, e.offsetY);
+                if (this.isDrawing) {
+                    this.drawLine(this.x, this.y, e.offsetX, e.offsetY);
+                    this.x = e.offsetX;
+                    this.y = e.offsetY;
+                }
+            },
+            beginDrawing(e) {
                 this.x = e.offsetX;
                 this.y = e.offsetY;
+                this.isDrawing = true;
             },
+            stopDrawing(e) {
+                if (this.isDrawing) {
+                    this.drawLine(this.x, this.y, e.offsetX, e.offsetY);
+                    this.x = 0;
+                    this.y = 0;
+                    this.isDrawing = false;
+                }
+            }
         }
     }
 </script>
