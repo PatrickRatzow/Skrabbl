@@ -8,8 +8,15 @@
         <div>
             <ul v-for="color in colors">
                 <li>
-                    <button :style ="buttonColor(color)">
+                    <button v-on:click="changeStrokeColor(color)" :style="buttonColor(color)">
                         {{color}}
+                    </button>
+                </li>
+            </ul>
+            <ul v-for="thickness in thicknesses">
+                <li>
+                    <button v-on:click="changeStrokeThickness(thickness)">
+                        {{thickness}}
                     </button>
                 </li>
             </ul>
@@ -21,18 +28,16 @@
     export default {
         data() {
             return {
-                colors: ['#4CAF50', 'red', 'yellow', 'brown'],
+                colors: ['blue', 'red', 'yellow', 'brown', 'purple', 'pink', 'black'],
+                thicknesses: [1, 2, 3, 4, 5],
                 x: 0,
                 y: 0,
-                isDrawing: false
+                isDrawing: false,
+                strokeColor: 'black',
+                strokeThickness: 1
             }
         },
         mounted() {
-        },
-        computed: {
-            buttonColor(color) {
-                return `color: ${color}`
-            }
         },
         methods: {
             drawLine(x1, y1, x2, y2) {
@@ -41,8 +46,8 @@
 
                 let ctx = this.canvas;
                 ctx.beginPath();
-                ctx.strokeStyle = 'black';
-                ctx.lineWidth = 1;
+                ctx.strokeStyle = this.strokeColor;
+                ctx.lineWidth = this.strokeThickness;
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
                 ctx.stroke();
@@ -67,6 +72,15 @@
                     this.y = 0;
                     this.isDrawing = false;
                 }
+            },
+            buttonColor(color) {
+                return `background-color: ${color}`
+            },
+            changeStrokeColor(color) {
+                this.strokeColor = color;
+            },
+            changeStrokeThickness(thickness) {
+                this.strokeThickness = thickness;
             }
         }
     }
@@ -76,12 +90,16 @@
     canvas {
         border: 2px solid grey;
     }
+
     button {
+        color: white;
         height: 40px;
-        width: 50px;
+        width: 70px;
         margin-right: 10px;
-        
+        font-size: 16px;
+        -webkit-text-stroke: 0.5px black;
     }
+
     li {
         float: left;
     }
