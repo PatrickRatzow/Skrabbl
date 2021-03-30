@@ -19,27 +19,11 @@
                 </button>
             </li>
         </ul>
-        <div>
-            <ul v-for="color in colors">
-                <li>
-                    <button v-on:click="changeStrokeColor(color)" :style="buttonColor(color)">
-                        {{color}}
-                    </button>
-                </li>
-            </ul>
-            <ul v-for="thickness in thicknesses">
-                <li>
-                    <button v-on:click="changeStrokeThickness(thickness)">
-                        {{thickness}}
-                    </button>
-                </li>
-            </ul>
 
-        </div>
         <div>
-            <ul v-for="message in messages">
+            <ul>
 
-                <li>
+                <li v-for="message in messages">
                     {{message}}
                 </li>
 
@@ -48,8 +32,8 @@
                 <li>
                     <input type="text" v-model="currentMessage">
 
- </input>
-                    <button v-on:click="sendMessage">
+                    </input>
+                    <button @click="sendMessage">
                         send message
                     </button>
 
@@ -71,7 +55,7 @@
                 strokeColor: 'black',
                 strokeThickness: 1,
                 messages: ['hej', 'med'],
-                currentMessage:``
+                currentMessage: ``
             }
         },
         mounted() {
@@ -120,7 +104,7 @@
                 this.strokeThickness = thickness;
             },
             sendMessage() {
-             
+
 
                 if (this.currentMessage !== '') {
                     this.messages.push(this.currentMessage);
@@ -133,8 +117,9 @@
 
 <style scoped>
     #canvas-wrapper {
-      padding: 6px;
+        padding: 6px;
     }
+
     canvas {
         border: 2px solid grey;
     }
