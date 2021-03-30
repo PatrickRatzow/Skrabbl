@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Skrabbl.API.Hubs;
+using System.Net.WebSockets;
 
 namespace Skrabbl.API
 {
@@ -60,5 +61,7 @@ namespace Skrabbl.API
                 }
             });
         }
+
+
     }
 }
