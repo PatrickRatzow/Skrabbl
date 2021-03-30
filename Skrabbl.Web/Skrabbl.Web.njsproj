@@ -61,6 +61,8 @@
     <Folder Include="src\" />
     <Folder Include="src\assets\" />
     <Folder Include="src\components\" />
+    <Folder Include="src\components\player\" />
+    <Folder Include="src\components\setting\" />
     <Folder Include="src\views\" />
   </ItemGroup>
   <ItemGroup>

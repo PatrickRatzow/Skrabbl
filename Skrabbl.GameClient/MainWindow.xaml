@@ -28,7 +28,7 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1" HorizontalAlignment="Center" Margin="0,12,0,12" Width="104">
-                <ComboBox Width="100" Margin="2" SelectedIndex="4">
+                <ComboBox Name="comboPlayers" Width="100" Margin="2" SelectedIndex="4">
                     <ComboBoxItem>2 Players</ComboBoxItem>
                     <ComboBoxItem>3 Players</ComboBoxItem>
                     <ComboBoxItem>4 Players</ComboBoxItem>
@@ -39,7 +39,7 @@
                     <ComboBoxItem>9 Players</ComboBoxItem>
                     <ComboBoxItem>10 Players</ComboBoxItem>
                 </ComboBox>
-                <ComboBox Width="100" Margin="2" SelectedIndex="2">
+                <ComboBox Name="comboRounds" Width="100" Margin="2" SelectedIndex="2">
                     <ComboBoxItem>1 Rounds</ComboBoxItem>
                     <ComboBoxItem>2 Rounds</ComboBoxItem>
                     <ComboBoxItem>3 Rounds</ComboBoxItem>
@@ -51,28 +51,28 @@
                     <ComboBoxItem>9 Rounds</ComboBoxItem>
                     <ComboBoxItem>10 Rounds</ComboBoxItem>
                 </ComboBox>
-                <ComboBox Width="100" Margin="2" SelectedIndex="2">
+                <ComboBox Name="comboDrawingTime" Width="100" Margin="2" SelectedIndex="2">
                     <ComboBoxItem>30 Seconds</ComboBoxItem>
                     <ComboBoxItem>60 Seconds</ComboBoxItem>
                     <ComboBoxItem>90 Seconds</ComboBoxItem>
                     <ComboBoxItem>120 Seconds</ComboBoxItem>
                     <ComboBoxItem>150 Seconds</ComboBoxItem>
                 </ComboBox>
-                <CheckBox HorizontalAlignment="Center">
+                <CheckBox Name="checkCustomWords" HorizontalAlignment="Center">
                     <CheckBox.LayoutTransform>
                         <ScaleTransform ScaleX="2" ScaleY="2" />
                     </CheckBox.LayoutTransform>
                 </CheckBox>
             </StackPanel>
 
-            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <StackPanel Name="btnCustomWords" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <TextBlock FontSize="18" Margin="5">Custom Words:</TextBlock>
             </StackPanel>
 
             <StackPanel Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"  >
                 <Button FontSize="16" Content="Import Words" Margin="5"/>
             </StackPanel>
-            <TextBox Name="tbcustomwords" TextWrapping="Wrap" AcceptsReturn="True" 
+            <TextBox Name="tbCustomWords" TextWrapping="Wrap" AcceptsReturn="True" 
                      VerticalScrollBarVisibility="Visible" Grid.Column="0" 
                      Grid.Row="1" Grid.ColumnSpan="2" Margin="10">
 
@@ -80,7 +80,7 @@
         </Grid>
         <StackPanel Grid.Column="1" HorizontalAlignment="Center">
             <TextBlock FontSize="20">Players:</TextBlock>
-            <ListView Height="342" Width="234">
+            <ListView Name="lvPlayers" Height="342" Width="234">
 
             </ListView>
             <Button FontSize="25" HorizontalAlignment="Center" Margin="15">Start Game</Button>

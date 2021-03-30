@@ -1,0 +1,52 @@
+﻿<Window x:Class="Skrabbl.GameClient.TestSignalRWPF"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Skrabbl.GameClient"
+        mc:Ignorable="d"
+        Title="TestSignalRWPF" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="1" Grid.Row="1" FontSize="36"
+                   Text="Hello This is cool" Grid.ColumnSpan="3"
+                   Margin="0,0,0,10" />
+
+        <TextBlock x:Name="txtLabel" Grid.Column="1" Grid.Row="2" FontWeight="SemiBold"
+                   Text="Sender name" FontFamily="Segoe UI"/>
+        <TextBox x:Name="firstNameText" Grid.Column="2" Grid.Row="2" 
+                 Width="150"/>
+
+        <TextBlock x:Name="msgLabel" Grid.Column="1" Grid.Row="3" FontWeight="SemiBold"
+                   Text="Message" FontFamily="Segoe UI"/>
+        <TextBox x:Name="msgText" Grid.Column="2" Grid.Row="3" 
+                   Width="150"/>
+
+        <Button x:Name="connectButton" Content="Connect" Grid.Column="1"
+                Grid.Row="4" Margin="10" Click="connectButton_Click"/>
+
+        <Button x:Name="sendButton" Content="Send Message" Grid.Column="2"
+                Grid.Row="4" Margin="10" Click="sendButton_Click"/>
+        
+        <ListBox x:Name="listMsg" Grid.Column="3"
+                 Grid.Row="5" Margin="10"/>
+
+    </Grid>
+</Window>

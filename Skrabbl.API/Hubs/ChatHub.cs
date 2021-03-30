@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Skrabbl.API.Hubs
 {
@@ -9,7 +12,6 @@ namespace Skrabbl.API.Hubs
         {
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
-
         public async Task DeleteMessage(string user, string msg)
         {
             await Clients.All.SendAsync("DeletedMessage", user, msg);

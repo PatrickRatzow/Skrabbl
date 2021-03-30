@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using FluentMigrator.Runner;
 using Skrabbl.API.Hubs;
+using System.Net.WebSockets;
 
 namespace Skrabbl.API
 {
@@ -80,5 +81,7 @@ namespace Skrabbl.API
             var migrator = scope.ServiceProvider.GetService<IMigrationRunner>();
             migrator.MigrateUp();
         }
+
+
     }
 }
