@@ -19,6 +19,27 @@
                 </button>
             </li>
         </ul>
+
+        <div>
+            <ul>
+
+                <li v-for="message in messages">
+                    {{message}}
+                </li>
+
+            </ul>
+            <ul>
+                <li>
+                    <input type="text" v-model="currentMessage">
+
+                    </input>
+                    <button @click="sendMessage">
+                        send message
+                    </button>
+
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -32,7 +53,9 @@
                 y: 0,
                 isDrawing: false,
                 strokeColor: 'black',
-                strokeThickness: 1
+                strokeThickness: 1,
+                messages: ['hej', 'med'],
+                currentMessage: ``
             }
         },
         mounted() {
@@ -79,6 +102,14 @@
             },
             changeStrokeThickness(thickness) {
                 this.strokeThickness = thickness;
+            },
+            sendMessage() {
+
+
+                if (this.currentMessage !== '') {
+                    this.messages.push(this.currentMessage);
+                    this.currentMessage = '';
+                }
             }
         }
     }
@@ -86,8 +117,9 @@
 
 <style scoped>
     #canvas-wrapper {
-      padding: 6px;
+        padding: 6px;
     }
+
     canvas {
         border: 2px solid grey;
     }
@@ -102,6 +134,5 @@
     }
 
     li {
-        float: left;
     }
 </style>
