@@ -10,6 +10,5 @@ namespace Skrabbl.DataAccess
     {
         ValueTask<GameLobby> GetGameLobbyById(int id);
         Task AddGameLobby(GameLobby entity);
-
     }
 }
