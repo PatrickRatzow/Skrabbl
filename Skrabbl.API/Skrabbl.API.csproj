@@ -11,5 +11,9 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.13" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Skrabbl.DataAccess\Skrabbl.DataAccess.csproj" />
+  </ItemGroup>
+
 
 </Project>
