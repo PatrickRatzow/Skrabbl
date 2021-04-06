@@ -1,6 +1,6 @@
 namespace Skrabbl.DataAccess.Queries
 {
-    public class CommandText : ICommandText
+    public partial class CommandText : ICommandText
     {
         public string GetUserById => "SELECT * FROM Users WHERE Id = @Id";
         public string AddUser =>
@@ -9,6 +9,5 @@ namespace Skrabbl.DataAccess.Queries
             VALUES (@Username, @Email, @Password, @Salt); 
             SELECT CAST(SCOPE_IDENTITY() as int)";
         public string RemoveUserById => "DELETE FROM Users WHERE id = @Id";
-
     }
 }
