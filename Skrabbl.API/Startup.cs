@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 using FluentMigrator.Runner;
 using Skrabbl.API.Hubs;
 using System.Net.WebSockets;
+using Skrabbl.DataAccess;
+using Skrabbl.DataAccess.Queries;
 
 namespace Skrabbl.API
 {
     public class Startup
     {
-        private readonly string _connectionString = @"Server=hildur.ucn.dk;Database=dmaa0220_1083739;User Id=dmaa0220_1083739;Password=Password1!;Trusted_Connection=False;";
-        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,6 +31,9 @@ namespace Skrabbl.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ICommandText, CommandText>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddControllers();
             services.AddSignalR();
@@ -39,7 +42,7 @@ namespace Skrabbl.API
                     // Add SQLite support to FluentMigrator
                     .AddSqlServer()
                     // Set the connection string
-                    .WithGlobalConnectionString(_connectionString)
+                    .WithGlobalConnectionString(Configuration.GetConnectionString("DefaultConnection"))
                     // Define the assembly containing the migrations
                     .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations())
                 // Enable logging to console in the FluentMigrator way
