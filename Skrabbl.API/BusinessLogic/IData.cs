@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Skrabbl.API.BusinessLogicLayer
 {
-    interface IDatabaseAccess<T>
+    public interface IData<T>
     {
         T Get(int id);
         List<T> Get();
