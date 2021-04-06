@@ -40,7 +40,7 @@ namespace Skrabbl.DataAccess
             using (SqlConnection userConnection = new SqlConnection(connectionString)) {
                 users = userConnection.Query<User>(userSqlSelect).ToList();
                 foreach (var user in users) {
-                   Debug.WriteLine(user.username);
+                   Debug.WriteLine(user.Username);
                 }
                 
             

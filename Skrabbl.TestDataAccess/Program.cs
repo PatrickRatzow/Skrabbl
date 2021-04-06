@@ -13,10 +13,10 @@ namespace Skrabbl.TestDataAccess
             List<User> dbUserList = dbUser.GetAllUsers();
             Console.WriteLine(dbUser);
             foreach (User user in dbUserList) {
-                Console.WriteLine(user.username);
+                Console.WriteLine(user.Username);
             }
             User user22 = dbUser.GetUserById(3);
-            Console.WriteLine(user22.username);
+            Console.WriteLine(user22.Username);
           
         }
     }
