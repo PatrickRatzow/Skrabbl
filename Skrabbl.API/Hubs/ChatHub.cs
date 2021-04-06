@@ -3,11 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Skrabbl.DataAccess;
 
 namespace Skrabbl.API.Hubs
 {
     public class ChatHub : Hub
     {
+        private MessageRepository messageRepository;
+
         public async Task SendMessage(string user, string message)
         {
             await Clients.All.SendAsync("ReceiveMessage", user, message);
@@ -16,5 +19,13 @@ namespace Skrabbl.API.Hubs
         {
             await Clients.All.SendAsync("DeletedMessage", user, msg);
         }
+
+        public List<Message> GetGameMessagesForGameLobby(string gameLobbyId) {
+            messageRepository = new MessageRepository();
+            return messageRepository.GetAllMessages(gameLobbyId);
+
+            
+        }
+       
     }
 }

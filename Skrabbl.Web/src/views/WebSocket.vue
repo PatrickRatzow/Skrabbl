@@ -67,6 +67,7 @@
                 });
             },
             startConnection() {
+                
                 this.connection.start()
                     .then(() => {
                         this.hasConnected = true

@@ -9,6 +9,7 @@ namespace Skrabbl.DataAccess.Queries
             VALUES (@Username, @Email, @Password, @Salt); 
             SELECT CAST(SCOPE_IDENTITY() as int)";
         public string RemoveUserById => "DELETE FROM Users WHERE id = @Id";
-
+        public string GetAllMessages => "Select * from Message";
+        public string SaveMessage => "insert into ChatMessage(message, createdAt, gameId, userId) Values @messageTemp, @createdAtTemp, @gameIdTemp, @userIdTemp)";
     }
 }
