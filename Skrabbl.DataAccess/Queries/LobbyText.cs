@@ -11,7 +11,6 @@ namespace Skrabbl.DataAccess.Queries
         public string GetAllLobbies => "SELECT * FROM GameLobby";
 
         public string RemoveAllLobbies => "DELETE FROM GameLobby";
-        public string GetAllMessages => "Select * from Message";
-        public string SaveMessage => "insert into ChatMessage(message, createdAt, gameId, userId) Values @messageTemp, @createdAtTemp, @gameIdTemp, @userIdTemp)";
+        
     }
 }

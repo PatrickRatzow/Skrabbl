@@ -8,7 +8,7 @@ namespace Skrabbl.DataAccess
 {
     public interface IMessageRepository
     {
-        public async Task<IEnumerable<Message>> GetAllMessages(int gameLobbyId);
-        public bool SaveMessage(Message message, int gameLobbyId);
+        public Task<IEnumerable<ChatMessage>> GetAllMessages(int gameLobbyId);
+        public Task<int> SaveMessage(ChatMessage message, int gameLobbyId);
     }
 }

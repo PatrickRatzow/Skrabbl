@@ -20,23 +20,23 @@ namespace Skrabbl.DataAccess
         {
             _commandText = commandText;
         }
-        public async Task<IEnumerable<Message>> GetAllMessages(int gameLobbyId)
+        public async Task<IEnumerable<ChatMessage>> GetAllMessages(int gameLobbyId)
         {
             return await WithConnection(async conn =>
             {
-                return await conn.QueryAsync<Message>(_commandText.GetAllMessages);
+                return await conn.QueryAsync<ChatMessage>(_commandText.GetAllMessages);
             });
-            
+
         }
 
-        public async Task<SaveMessage>(Message message, int gameLobbyId)
+        public async Task<int> SaveMessage(ChatMessage message, int gameLobbyId)
         {
             return await WithConnection(async conn =>
             {
-                return await conn.QueryAsync<Message>(_commandText.GetAllMessages);
+                return await conn.QuerySingleAsync<int>(_commandText.SaveMessage, message);
             });
         }
-            return Convert.ToBoolean(insertedResult);
-        }
+
     }
 }
+
