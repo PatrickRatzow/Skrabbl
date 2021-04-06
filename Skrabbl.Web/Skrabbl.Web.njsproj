@@ -32,6 +32,12 @@
     <Content Include="public\favicon.ico" />
     <Content Include="public\index.html" />
     <Content Include="src\App.vue" />
+    <Content Include="src\components\chatbox\ChatboxItem.vue">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\components\chatbox\ChatboxList.vue">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\components\player\PlayerItem.vue" />
     <Content Include="src\components\player\PlayerList.vue" />
     <Content Include="src\components\setting\SettingItem.vue" />
@@ -61,6 +67,7 @@
     <Folder Include="src\" />
     <Folder Include="src\assets\" />
     <Folder Include="src\components\" />
+    <Folder Include="src\components\chatbox\" />
     <Folder Include="src\components\player\" />
     <Folder Include="src\components\setting\" />
     <Folder Include="src\views\" />
