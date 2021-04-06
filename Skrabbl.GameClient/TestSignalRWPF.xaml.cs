@@ -69,5 +69,10 @@ namespace Skrabbl.GameClient
                 listMsg.Items.Add(ex.Message);
             }
         }
+
+        private void startGame_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
