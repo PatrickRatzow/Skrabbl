@@ -48,7 +48,7 @@
         <ListBox x:Name="listMsg" Grid.Column="3"
                  Grid.Row="5" Margin="10"/>
         <Button x:Name="startGame" Content="Start Game" Grid.Column="1" 
-                Grid.Row="5" Margin="10"></Button>
+                Grid.Row="5" Margin="10" Click="startGame_Click"></Button>
 
     </Grid>
 </Window>
