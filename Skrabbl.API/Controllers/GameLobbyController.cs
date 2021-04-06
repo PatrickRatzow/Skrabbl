@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Skrabbl.API.Services;
+using Skrabbl.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,14 @@ namespace Skrabbl.API.Controllers
     [ApiController]
     public class GameLobbyController : ControllerBase
     {
+
+        private readonly IGameLobbyService _gameLobbyService;
+
+        public GameLobbyController(IGameLobbyService gameLobbyService)
+        {
+            _gameLobbyService = gameLobbyService;
+        }
+
         // GET: api/<GameLobbyController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -21,9 +31,16 @@ namespace Skrabbl.API.Controllers
 
         // GET api/<GameLobbyController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<GameLobby>> Get(string id)
         {
-            return "value";
+            try
+            {
+                var lobby = await _gameLobbyService.GetGameLobbyById(id);
+                return Ok(lobby);
+            } catch
+            {
+                return NotFound();
+            };
         }
 
         // POST api/<GameLobbyController>

@@ -16,6 +16,7 @@ using Skrabbl.API.Hubs;
 using System.Net.WebSockets;
 using Skrabbl.DataAccess;
 using Skrabbl.DataAccess.Queries;
+using Skrabbl.API.Services;
 
 namespace Skrabbl.API
 {
@@ -33,6 +34,9 @@ namespace Skrabbl.API
         {
             services.AddTransient<ICommandText, CommandText>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IGameLobbyRepository, GameLobbyRepository>();
+
+            services.AddScoped<IGameLobbyService, GameLobbyService>();
             
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddControllers();
