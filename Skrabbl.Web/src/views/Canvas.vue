@@ -19,32 +19,14 @@
                 </button>
             </li>
         </ul>
-
-        <div>
-            <ul>
-
-                <li v-for="message in messages">
-                    {{message}}
-                </li>
-
-            </ul>
-            <ul>
-                <li>
-                    <input type="text" v-model="currentMessage">
-
-                    </input>
-                    <button @click="sendMessage">
-                        send message
-                    </button>
-
-                </li>
-            </ul>
-        </div>
+        <ChatboxList></ChatboxList>
     </div>
 </template>
 
 <script>
+    import ChatboxList from "@/components/chatbox/ChatboxList.vue"
     export default {
+        components: {ChatboxList},
         data() {
             return {
                 colors: ['blue', 'red', 'yellow', 'brown', 'purple', 'pink', 'black', 'white'],
@@ -102,14 +84,6 @@
             },
             changeStrokeThickness(thickness) {
                 this.strokeThickness = thickness;
-            },
-            sendMessage() {
-
-
-                if (this.currentMessage !== '') {
-                    this.messages.push(this.currentMessage);
-                    this.currentMessage = '';
-                }
             }
         }
     }
