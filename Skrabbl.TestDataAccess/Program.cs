@@ -9,15 +9,7 @@ namespace Skrabbl.TestDataAccess
     {
         static void Main(string[] args)
         {
-            DbUser dbUser = new DbUser();
-            List<User> dbUserList = dbUser.GetAllUsers();
-            Console.WriteLine(dbUser);
-            foreach (User user in dbUserList) {
-                Console.WriteLine(user.Username);
-            }
-            User user22 = dbUser.GetUserById(3);
-            Console.WriteLine(user22.Username);
-          
+       
         }
     }
 }
