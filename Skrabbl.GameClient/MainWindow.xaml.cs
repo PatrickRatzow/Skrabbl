@@ -23,6 +23,32 @@ namespace Skrabbl.GameClient
         public MainWindow()
         {
             InitializeComponent();
+
+            int[] Players = { 2, 3, 5, 8, 13, 21 };
+            int[] DrawingTime = { 30, 45, 60, 75, 90, 105, 120 };
+
+            foreach(int i in Players)
+            {
+                comboPlayers.Items.Add(i + " Players");
+                comboPlayers.SelectedIndex = 3;
+            }
+
+            for(int i = 1; i<10; i++)
+            {
+                comboRounds.Items.Add(i + " Rounds");
+                comboRounds.SelectedIndex = 3;
+            }
+
+            foreach(int i in DrawingTime)
+            {
+                comboDrawingTime.Items.Add(i + " Seconds");
+                comboDrawingTime.SelectedIndex = 3;
+            }
+        }
+
+        public void StartGame(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }
