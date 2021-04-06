@@ -6,6 +6,7 @@ namespace Skrabbl.DataAccess
     public interface IUserRepository
     {
         ValueTask<User> GetUserById(int id);
-        Task AddUser(User entity);
+        Task<int> AddUser(User entity);
+        Task DeleteUserById(int id);
     }
 }

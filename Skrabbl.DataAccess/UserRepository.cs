@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Dapper;
 using Microsoft.Extensions.Configuration;
 using Skrabbl.DataAccess.Queries;
 using Skrabbl.Model;
@@ -19,9 +20,22 @@ namespace Skrabbl.DataAccess
             throw new System.NotImplementedException();
         }
 
-        public Task AddUser(User entity)
+        public async Task<int> AddUser(User entity)
         {
-            throw new System.NotImplementedException();
+            return await WithConnection(async conn =>
+            {
+                var id = await conn.QuerySingleAsync<int>(_commandText.AddUser, entity);
+
+                return id;
+            });
+        }
+
+        public async Task DeleteUserById(int id)
+        {
+            await WithConnection(async conn =>
+            {
+                await conn.ExecuteAsync(_commandText.RemoveUserById, new {Id = id});
+            });
         }
     }
 }

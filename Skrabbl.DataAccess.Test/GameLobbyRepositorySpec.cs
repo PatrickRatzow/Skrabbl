@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Moq;
 using NUnit.Framework;
 using Skrabbl.DataAccess.Queries;
 using System;

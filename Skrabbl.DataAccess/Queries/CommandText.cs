@@ -4,7 +4,11 @@ namespace Skrabbl.DataAccess.Queries
     {
         public string GetUserById => "SELECT * FROM Users WHERE Id = @Id";
         public string AddUser =>
-            "INSERT INTO Users (INSERT INTO Users(Username, Email, Password, Salt) VALUES (@Username, @Email, @Password, @Salt))";
+            @"
+            INSERT INTO Users(Username, Email, Password, Salt) 
+            VALUES (@Username, @Email, @Password, @Salt); 
+            SELECT CAST(SCOPE_IDENTITY() as int)";
+        public string RemoveUserById => "DELETE FROM Users WHERE id = @Id";
 
     }
 }
