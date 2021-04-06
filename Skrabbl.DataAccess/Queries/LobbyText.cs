@@ -1,15 +1,7 @@
 namespace Skrabbl.DataAccess.Queries
 {
-    public class CommandText : ICommandText
+    public partial class CommandText : ICommandText
     {
-        public string GetUserById => "SELECT * FROM Users WHERE Id = @Id";
-        public string AddUser =>
-            @"
-            INSERT INTO Users(Username, Email, Password, Salt) 
-            VALUES (@Username, @Email, @Password, @Salt); 
-            SELECT CAST(SCOPE_IDENTITY() as int)";
-        public string RemoveUserById => "DELETE FROM Users WHERE id = @Id";
-
         public string AddLobby => "INSERT INTO GameLobby(GameCode, LobbyOwnerId) VALUES(@GameCode, @LobbyOwnerId)";
 
         public string GetLobbyById => "SELECT * FROM GameLobby WHERE GameCode = @GameCode";
