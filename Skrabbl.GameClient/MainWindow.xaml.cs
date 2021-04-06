@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,14 +21,16 @@ namespace Skrabbl.GameClient
     /// </summary>
     public partial class MainWindow : Window
     {
+            int[] players = { 2, 3, 5, 8, 13, 21 };
+            int[] drawingTime = { 30, 45, 60, 75, 90, 105, 120 };
+
         public MainWindow()
         {
             InitializeComponent();
 
-            int[] Players = { 2, 3, 5, 8, 13, 21 };
-            int[] DrawingTime = { 30, 45, 60, 75, 90, 105, 120 };
+            
 
-            foreach(int i in Players)
+            foreach(int i in players)
             {
                 comboPlayers.Items.Add(i + " Players");
                 comboPlayers.SelectedIndex = 3;
@@ -39,7 +42,7 @@ namespace Skrabbl.GameClient
                 comboRounds.SelectedIndex = 3;
             }
 
-            foreach(int i in DrawingTime)
+            foreach(int i in drawingTime)
             {
                 comboDrawingTime.Items.Add(i + " Seconds");
                 comboDrawingTime.SelectedIndex = 3;
@@ -48,7 +51,7 @@ namespace Skrabbl.GameClient
 
         public void StartGame(object sender, RoutedEventArgs e)
         {
-            
+            Game newgame = new Game(players[comboPlayers.SelectedIndex], comboRounds.SelectedIndex + 1, drawingTime[comboDrawingTime.SelectedIndex]);
         }
     }
 }
