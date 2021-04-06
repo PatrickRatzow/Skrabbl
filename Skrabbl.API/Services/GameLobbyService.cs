@@ -25,9 +25,9 @@ namespace Skrabbl.API.Services
             await _gameLobbyRepository.AddGameLobby(toAdd);
         }
 
-        public Task<bool> RemoveGameLobby(string id)
+        public async Task RemoveGameLobby(string id)
         {
-            throw new NotImplementedException();
+           await _gameLobbyRepository.RemoveGameLobby(id);
         }
 
         public async Task<GameLobby> GetGameLobbyById(string id)
@@ -37,7 +37,7 @@ namespace Skrabbl.API.Services
 
         public async Task<IEnumerable<GameLobby>> GetAllGameLobbies()
         {
-            throw new NotImplementedException();
+            return await _gameLobbyRepository.GetAllLobbies();
         }
 
         public Task<bool> UpdateGameLobby(GameLobby toUpdate)
