@@ -37,6 +37,7 @@ namespace Skrabbl.API
             services.AddTransient<IGameLobbyRepository, GameLobbyRepository>();
 
             services.AddScoped<IGameLobbyService, GameLobbyService>();
+            services.AddScoped<IUserService, UserService>();
             
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddControllers();
