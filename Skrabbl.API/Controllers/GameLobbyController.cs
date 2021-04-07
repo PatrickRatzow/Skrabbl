@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Skrabbl.API.Services;
 using Skrabbl.Model;
+using Skrabbl.Model.Errors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace Skrabbl.API.Controllers
             }
             catch
             {
-                return NotFound();
+                return StatusCode(500);
             };
         }
 
@@ -41,43 +42,65 @@ namespace Skrabbl.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GameLobby>> Get(string id)
         {
-            try
+            var lobby = await _gameLobbyService.GetGameLobbyById(id);
+            
+            if(lobby != null)
             {
-                var lobby = await _gameLobbyService.GetGameLobbyById(id);
                 return Ok(lobby);
-            } catch
+            } else
             {
                 return NotFound();
-            };
+            }
+
+        }
+        // GET /api/gamelobby/user/25
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<GameLobby>> Get(int userId)
+        {
+            var lobby = await _gameLobbyService.GetLobbyByOwnerId(userId);
+            
+            if (lobby != null)
+            {
+                return Ok(lobby);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         // POST api/<GameLobbyController>/userId
         [HttpPost("{userId}")]
         public async Task<ActionResult<GameLobby>> Post(int userId)
         {
-            try
-            {
-                //Created($"api/resource/{object.ID}", object);
-                var gameLobby = await _gameLobbyService.AddGameLobby(userId);
-                return Created($"api/gamelobby/{gameLobby.GameCode}", gameLobby);
-            } catch
-            {
-                return BadRequest();
-            }
+                try
+                {
+                    var gameLobby = await _gameLobbyService.AddGameLobby(userId);
+                    return Created($"api/gamelobby/{gameLobby.GameCode}", gameLobby);
+                } 
+                catch(UserAlreadyHaveALobbyException e)
+                {
+                    return Conflict();    
+                }
+                catch
+                {
+                    return BadRequest();
+                }
         }
 
         // DELETE api/<GameLobbyController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(string id)
         {
-            try
+            var lobby = await _gameLobbyService.RemoveGameLobby(id);
+            if (lobby == true)
             {
-                await _gameLobbyService.RemoveGameLobby(id);
                 return Ok();
-            } catch
+            } else
             {
                 return NotFound();
             }
+
         }
     }
 }

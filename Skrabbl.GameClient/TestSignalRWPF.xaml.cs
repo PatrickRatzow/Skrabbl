@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,14 +20,18 @@ namespace Skrabbl.GameClient
     /// </summary>
     public partial class TestSignalRWPF : Window
     {
-
+        static readonly string gameLobbyUrl = "http://localhost:50916/api/gamelobby/";
         HubConnection connection;
+        readonly HttpClient _httpClient;
+
         public TestSignalRWPF()
         {
             InitializeComponent();
             connection = new HubConnectionBuilder()
             .WithUrl("http://localhost:50916/ChatHub")
             .Build();
+
+            _httpClient = new HttpClient();
 
             connection.Closed += async (error) =>
             {
@@ -70,9 +76,26 @@ namespace Skrabbl.GameClient
             }
         }
 
-        private void startGame_Click(object sender, RoutedEventArgs e)
+        private async void startGame_Click(object sender, RoutedEventArgs e)
         {
+            //User Id instead of 25.
+            await startGame(25);
+        }
 
+        //"/api/gamelobby/{userId}"
+        private async Task startGame(int userId)
+        {
+            //Create a new game
+            var uri = new Uri(gameLobbyUrl + userId.ToString());
+            try
+            {
+                HttpResponseMessage response = await _httpClient.PostAsync(uri, null);
+                string resultingIdString = await response.Content.ReadAsStringAsync();
+                resultLbl.Text = uri + " Lobby was created!";
+            } catch
+            {
+                resultLbl.Text = "Lobby was not created! - BOHO";
+            }
         }
     }
 }

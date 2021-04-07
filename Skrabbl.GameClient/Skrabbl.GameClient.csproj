@@ -14,4 +14,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Skrabbl.Model\Skrabbl.Model.csproj" />
+  </ItemGroup>
+
 </Project>

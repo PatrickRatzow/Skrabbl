@@ -11,5 +11,6 @@ namespace Skrabbl.DataAccess.Queries
         public string GetAllLobbies => "SELECT * FROM GameLobby";
 
         public string RemoveAllLobbies => "DELETE FROM GameLobby";
+        public string GetLobbyByOwnerId => "SELECT * FROM GameLobby WHERE LobbyOwnerId = @LobbyOwnerId";
     }
 }
