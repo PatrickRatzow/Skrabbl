@@ -146,9 +146,10 @@ export default {
       
       const ctx = canvas.getContext("2d")
       ctx.beginPath();
-      console.log({ node })
       ctx.strokeStyle = node.color;
       ctx.lineWidth = node.size;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
       ctx.moveTo(node.position[0], node.position[1]);
       ctx.lineTo(node.position[2], node.position[3]);
       ctx.stroke();
