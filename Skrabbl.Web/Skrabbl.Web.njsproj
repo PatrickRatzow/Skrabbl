@@ -57,6 +57,12 @@
     <Content Include="src\router.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\views\Login.vue">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\views\Register.vue">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\views\WebSocket.vue">
       <SubType>Code</SubType>
     </Content>
