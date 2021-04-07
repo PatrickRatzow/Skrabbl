@@ -44,13 +44,16 @@
                 });
             },
             startConnection() {
+                
                 this.connection.start()
                     .then(() => {
                         this.hasConnected = true
+                        this.connection.invoke("GetAllMessages", "123");
                     })
                     .catch(err => console.error(err.toString()))
             },
             sendMessage() {
+                this.connection.invoke("SaveMessage")
                 this.connection.invoke("SendMessage", "Jakob", this.messageInput)
                     .catch(err => console.error(err.toString()))
             }
