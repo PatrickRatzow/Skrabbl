@@ -24,12 +24,6 @@ namespace Skrabbl.DataAccess.Test
         }
 
         [Test]
-        public void Test1()
-        {
-            Assert.Pass();
-        }
-
-        [Test]
         public async Task AddGameLobbyToDbTest()
         {
             //Arrange
@@ -45,6 +39,19 @@ namespace Skrabbl.DataAccess.Test
 
             //Assert
             Assert.IsNotNull(lobby);
+        }
+
+        [Test]
+        public async Task FindGameLobbyByOwnerIdTest()
+        {
+            //Arrange
+            int userId = 26;
+
+            //Act
+            var gameLobby = await _gameLobbyRepository.GetLobbyByOwnerId(userId);
+
+            //Assert
+            Assert.IsNotNull(gameLobby);
         }
 
         [OneTimeTearDown]
