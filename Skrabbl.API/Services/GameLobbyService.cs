@@ -13,7 +13,7 @@ namespace Skrabbl.API.Services
     public class GameLobbyService : IGameLobbyService
     {
 
-        IGameLobbyRepository _gameLobbyRepository;
+        private IGameLobbyRepository _gameLobbyRepository;
 
         public GameLobbyService(IGameLobbyRepository gameLobbyRepo)
         {
@@ -32,6 +32,7 @@ namespace Skrabbl.API.Services
 
         public async Task<GameLobby> GetGameLobbyById(string id)
         {
+
             return await _gameLobbyRepository.GetGameLobbyById(id);
         }
 
