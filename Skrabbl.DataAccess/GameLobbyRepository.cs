@@ -17,11 +17,12 @@ namespace Skrabbl.DataAccess
             _commandText = commandText;
         }
 
-        public async ValueTask<GameLobby> GetGameLobbyById(string id)
+        public async ValueTask<GameLobby> GetGameLobbyById(string ownerId)
         {
             return await WithConnection(async conn =>
             {
-                return await conn.QuerySingleAsync<GameLobby>(_commandText.GetLobbyById, new { GameCode = id});
+                return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyById, 
+                    new { GameCode = ownerId});
             });
         }
 
@@ -33,11 +34,11 @@ namespace Skrabbl.DataAccess
             });
         }
 
-        public async Task RemoveGameLobby(string id)
+        public async Task RemoveGameLobby(string ownerId)
         {
             await WithConnection(async conn =>
             {
-                await conn.ExecuteAsync(_commandText.RemoveLobbyById, new { Id = id });
+                await conn.ExecuteAsync(_commandText.RemoveLobbyById, new { GameCode = ownerId });
             });
         }
 
@@ -53,6 +54,15 @@ namespace Skrabbl.DataAccess
             return await WithConnection<IEnumerable<GameLobby>>(async conn =>
             {
                 return await conn.QueryAsync<GameLobby>(_commandText.GetAllLobbies);
+            });
+        }
+
+        public async ValueTask<GameLobby> GetLobbyByOwnerId(int ownerId)
+        {
+            return await WithConnection(async conn =>
+            {
+                return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyByOwnerId, 
+                    new { LobbyOwnerId = ownerId });
             });
         }
     }

@@ -8,10 +8,11 @@ namespace Skrabbl.DataAccess
 {
     public interface IGameLobbyRepository
     {
-        ValueTask<GameLobby> GetGameLobbyById(string id);
+        ValueTask<GameLobby> GetGameLobbyById(string lobbyId);
         Task AddGameLobby(GameLobby entity);
-        Task RemoveGameLobby(string id);
+        Task RemoveGameLobby(string lobbyId);
         ValueTask<IEnumerable<GameLobby>> GetAllLobbies();
         Task RemoveAllGameLobbies();
+        ValueTask<GameLobby> GetLobbyByOwnerId(int ownerId);
     }
 }

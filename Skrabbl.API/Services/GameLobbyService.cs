@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Skrabbl.DataAccess;
 using Skrabbl.DataAccess.Queries;
 using Skrabbl.Model;
+using Skrabbl.Model.Errors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,43 +23,61 @@ namespace Skrabbl.API.Services
 
         public async Task<GameLobby> AddGameLobby(int userId)
         {
+            var existingLobby = await GetLobbyByOwnerId(userId);
+
+            if (existingLobby != null)
+            {
+                throw new UserAlreadyHaveALobbyException();
+            }
+
             string gameCode = null;
 
             while (true)
             {
-                try
-                {
-                    gameCode = GenerateGameLobbyCode();
-                    await GetGameLobbyById(gameCode);
-                } catch
+                gameCode = GenerateGameLobbyCode();
+                var gameLobby = await GetGameLobbyById(gameCode);
+                
+                if (gameLobby == null)
                 {
                     break;
                 }
             }
-            GameLobby gameLobby = new GameLobby { 
+            GameLobby lobby = new GameLobby { 
                 GameCode = gameCode,
                 LobbyOwnerId = userId
             };
 
-            await _gameLobbyRepository.AddGameLobby(gameLobby);
+            await _gameLobbyRepository.AddGameLobby(lobby);
 
-            return gameLobby;
+            return lobby;
         }
 
-        public async Task RemoveGameLobby(string id)
+        public async Task<bool> RemoveGameLobby(string id)
         {
-           await _gameLobbyRepository.RemoveGameLobby(id);
+            var exisitngLobby = await GetGameLobbyById(id);
+            if (exisitngLobby != null)
+            {
+                await _gameLobbyRepository.RemoveGameLobby(id);
+                return true;
+            } else
+            {
+                return false;
+            }
         }
 
-        public async Task<GameLobby> GetGameLobbyById(string id)
+        public async Task<GameLobby> GetGameLobbyById(string lobbyId)
         {
-
-            return await _gameLobbyRepository.GetGameLobbyById(id);
+            return await _gameLobbyRepository.GetGameLobbyById(lobbyId);
         }
 
         public async Task<IEnumerable<GameLobby>> GetAllGameLobbies()
         {
             return await _gameLobbyRepository.GetAllLobbies();
+        }
+
+        public async Task<GameLobby> GetLobbyByOwnerId(int ownerId)
+        {
+            return await _gameLobbyRepository.GetLobbyByOwnerId(ownerId);
         }
 
         private string GenerateGameLobbyCode()
