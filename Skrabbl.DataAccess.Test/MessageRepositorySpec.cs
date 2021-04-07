@@ -41,8 +41,8 @@ namespace Skrabbl.DataAccess.Test
             {
                 Message = "hej",
                 CreatedAt = date,
-                CurrentGame = new Game { Id = 3 },
-                Player = new User { Id = 25 },
+                Game = new Game { Id = 3 },
+                User = new User { Id = 25 }
             };
 
             //Act
