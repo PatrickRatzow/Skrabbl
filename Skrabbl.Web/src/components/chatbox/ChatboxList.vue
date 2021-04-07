@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div>Connected {{ hasConnected ? 'Yes' : 'False' }}</div>
         <ul>
             <ChatboxItem v-for="message in messages"
                          :user="message.user"
@@ -16,8 +17,11 @@
 
 <script>
     import ChatboxItem from "@/components/chatbox/ChatboxItem.vue"
+    
     export default {
-        components: { ChatboxItem },
+        components: { 
+          ChatboxItem
+        },
         data() {
             return {
                 userInput: "",
@@ -28,28 +32,24 @@
             }
         },
         methods: {
+            addMessage(user, message) {
+              this.messages.push({
+                user,
+                message
+              });
+            },
             createConnection() {
-                this.connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+                this.connection = new signalR.HubConnectionBuilder().withUrl("/ws/chat-hub").build();
             },
             setupHandlers() {
-                this.connection.on("ReceiveMessage", (user, message) => {
-                    this.messages.push({
-                        user,
-                        message
-                    })
-                });
+                this.connection.on("ReceiveMessage", this.addMessage)
                 this.connection.on("DeletedMessage", (user, message) => {
                     this.messages = this.messages.filter(msg => msg.user != user || msg.message != message);
                 });
             },
-            startConnection() {
-
-                this.connection.start()
-                    .then(() => {
-                        this.hasConnected = true
-                        this.connection.invoke("GetAllMessages", "123");
-                    })
-                    .catch(err => console.error(err.toString()))
+            async startConnection() {
+                await this.connection.start()
+                await this.connection.invoke("GetAllMessages", 3);
             },
             async sendMessage() {
                 this.connection.invoke("SendMessage", "Jakob", this.messageInput)

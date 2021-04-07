@@ -9,6 +9,7 @@
           <router-link to="/game">Game</router-link>    |
           <router-link to="/Login">Login</router-link>  |
           <router-link to="/Register">Register</router-link>  |
+          <router-link to="/chat-box">ChatBox</router-link>
       </div>
     <router-view/>
   </div>
