@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,7 +80,7 @@ namespace Skrabbl.GameClient
         private async void startGame_Click(object sender, RoutedEventArgs e)
         {
             //User Id instead of 25.
-            await startGame(25);
+            await startGame(31);
         }
 
         //"/api/gamelobby/{userId}"
@@ -87,15 +88,34 @@ namespace Skrabbl.GameClient
         {
             //Create a new game
             var uri = new Uri(gameLobbyUrl + userId.ToString());
-            try
+            var existingGameLobby = await GetGameLobby(userId);
+            //Also check if userId exists
+            if (existingGameLobby.StatusCode.Equals(HttpStatusCode.NotFound))
             {
-                HttpResponseMessage response = await _httpClient.PostAsync(uri, null);
-                string resultingIdString = await response.Content.ReadAsStringAsync();
-                resultLbl.Text = uri + " Lobby was created!";
-            } catch
-            {
-                resultLbl.Text = "Lobby was not created! - BOHO";
+                try
+                {
+                    HttpResponseMessage response = await _httpClient.PostAsync(uri, null);
+                    string resultingIdString = await response.Content.ReadAsStringAsync();
+                    resultLbl.Text = uri + " Lobby was created!";
+                } catch
+                {
+                    resultLbl.Text = "Lobby was not created! - BOHO";
+                }
             }
+            else
+            {
+                resultLbl.Text = $"User with id {userId} already have a lobby!";
+            }
+
+        }
+
+        // /api/gamelobby/user/{id}
+        private async Task<HttpResponseMessage> GetGameLobby(int userId)
+        {
+            var uri = new Uri(gameLobbyUrl + $"user/{userId}");
+
+            HttpResponseMessage response = await _httpClient.GetAsync(uri);
+            return response;
         }
     }
 }
