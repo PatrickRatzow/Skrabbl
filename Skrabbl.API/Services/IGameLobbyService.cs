@@ -8,10 +8,9 @@ namespace Skrabbl.API.Services
 {
     public interface IGameLobbyService
     {
-        Task AddGameLobby(GameLobby lobby);
+        Task<GameLobby> AddGameLobby(int userId);
         Task RemoveGameLobby(string id);
         Task<GameLobby> GetGameLobbyById(string id);
         Task<IEnumerable<GameLobby>> GetAllGameLobbies();
-        Task<bool> UpdateGameLobby(GameLobby lobby);
     }
 }

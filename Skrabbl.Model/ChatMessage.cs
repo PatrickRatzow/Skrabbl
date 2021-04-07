@@ -6,9 +6,11 @@ namespace Skrabbl.Model
 {
     public class ChatMessage
     {
+        public int Id { get; set; }
         public string Message { get; set; }
         public DateTime CreatedAt { get; set; }
-        public User user { get; }
-        public Game game { get; }
+        public User Player { get; set; }
+        public Game CurrentGame { get; set; }
+        
     }
 }
