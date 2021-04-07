@@ -3,6 +3,7 @@ namespace Skrabbl.DataAccess.Queries
     public partial class CommandText : ICommandText
     {
         public string GetUserById => "SELECT * FROM Users WHERE Id = @Id";
+        public string GetUserByUsername => "SELECT * FROM Users WHERE Username = @Username";
         public string AddUser =>
             @"
             INSERT INTO Users(Username, Email, Password, Salt) 

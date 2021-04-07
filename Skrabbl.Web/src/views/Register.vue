@@ -60,7 +60,7 @@
                     Password: this.password
                 }
 
-                const request = await fetch("/api/UserRegistration", {
+                const request = await fetch("/api/user", {
                     method: "POST",
                     body: JSON.stringify(data),
                     headers: {

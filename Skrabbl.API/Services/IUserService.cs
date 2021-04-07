@@ -9,6 +9,7 @@ namespace Skrabbl.API.Services
     public interface IUserService
     {
         Task<User> CreateUser(string _userName, string _password, string _email);
+        Task<User> GetUser(string _username, string _password);
 
        
     }

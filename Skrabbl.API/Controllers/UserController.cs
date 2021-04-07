@@ -13,11 +13,11 @@ namespace Skrabbl.API.Controllers
 {
       [ApiController]
       [Route("api/[controller]")]
-    public class UserRegistrationController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
 
-        public UserRegistrationController(IUserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -32,6 +32,21 @@ namespace Skrabbl.API.Controllers
                return Ok(user);
             }
             catch
+            {
+                return BadRequest();
+            }
+            
+        }
+
+      [HttpPost("login")]
+      public async Task<IActionResult> Login([FromBody] LoginDto login )
+        {
+            try
+            {
+                User user = await _userService.GetUser(login.Username, login.Password);
+                return Ok();
+            }
+            catch(Exception e)
             {
                 return BadRequest();
             }

@@ -20,6 +20,16 @@ namespace Skrabbl.DataAccess
             throw new System.NotImplementedException();
         }
 
+        public async ValueTask<User> GetUserByUsername(string username)
+        {
+            return await WithConnection(async conn =>
+            {
+                var User = await conn.QuerySingleAsync<User>(_commandText.GetUserByUsername, new { Username = username });
+
+                return User;
+            });
+        }
+
         public async Task<int> AddUser(User entity)
         {
             return await WithConnection(async conn =>

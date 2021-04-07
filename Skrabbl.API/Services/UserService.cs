@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
@@ -33,6 +34,20 @@ namespace Skrabbl.API.Services
 
             return current;
 
+        }
+
+        public async Task<User> GetUser(string _username, string _password)
+        {
+            User user = await _userRepository.GetUserByUsername(_username);
+            CryptographyService cryptographyService = new CryptographyService();
+
+            byte[] salt = Convert.FromBase64String(user.Salt);
+            bool equal = cryptographyService.AreEqual(_password, user.Password, salt);
+            if (equal)
+            {
+                return user;
+            }
+            return null;
         }
     }
 }
