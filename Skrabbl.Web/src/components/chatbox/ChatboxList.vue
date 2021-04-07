@@ -2,9 +2,8 @@
     <div>
         <ul>
             <ChatboxItem v-for="message in messages"
-                         :user = "message.user"
-                         :message = "message.message"
-                         />
+                         :user="message.user"
+                         :message="message.message" />
         </ul>
         <li>
             <input type="text" v-model="messageInput" />
@@ -44,7 +43,7 @@
                 });
             },
             startConnection() {
-                
+
                 this.connection.start()
                     .then(() => {
                         this.hasConnected = true
@@ -52,10 +51,26 @@
                     })
                     .catch(err => console.error(err.toString()))
             },
-            sendMessage() {
-                this.connection.invoke("SaveMessage")
+            async sendMessage() {
                 this.connection.invoke("SendMessage", "Jakob", this.messageInput)
                     .catch(err => console.error(err.toString()))
+
+                const data = {
+                    Message: this.messageInput,
+                    GameId: 3,
+                    UserId: 25
+                }
+                const request = await fetch("/api/Message", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+            },
+            getMessages() {
+
+
             }
         },
         mounted() {

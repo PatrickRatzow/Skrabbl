@@ -1,15 +1,18 @@
 <template>
-  <div>
-    <Canvas />
-  </div>
+    <div>
+        <Canvas />
+        <Chatbox/>
+    </div>
 </template>
 
 <script>
     import Canvas from "@/components/canvas/Canvas"
+    import Chatbox from "@/components/chatbox/ChatboxList"
     export default {
-      components: {
-        Canvas
-      }
+        components: {
+            Canvas,
+            Chatbox
+        }
     }
 </script>
 

@@ -34,10 +34,12 @@ namespace Skrabbl.API
         {
             services.AddTransient<ICommandText, CommandText>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
             services.AddTransient<IGameLobbyRepository, GameLobbyRepository>();
 
             services.AddScoped<IGameLobbyService, GameLobbyService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMessageService, MessageService>();
             
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddControllers();

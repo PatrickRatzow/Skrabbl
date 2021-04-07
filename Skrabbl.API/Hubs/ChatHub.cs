@@ -20,5 +20,10 @@ namespace Skrabbl.API.Hubs
         {
             await Clients.All.SendAsync("DeletedMessage", user, msg);
         }
+
+        public async Task GetMessages(string user, string msg)
+        {
+            await Clients.All.SendAsync("GetMessages", user, msg);
+        }
     }
 }
