@@ -24,9 +24,17 @@ namespace Skrabbl.API.Controllers
 
         // GET: api/<GameLobbyController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<IEnumerable<GameLobby>>> Get()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var lobbies = await _gameLobbyService.GetAllGameLobbies();
+                return Ok(lobbies);
+            }
+            catch
+            {
+                return NotFound();
+            };
         }
 
         // GET api/<GameLobbyController>/5
@@ -43,22 +51,33 @@ namespace Skrabbl.API.Controllers
             };
         }
 
-        // POST api/<GameLobbyController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        // POST api/<GameLobbyController>/userId
+        [HttpPost("{userId}")]
+        public async Task<ActionResult<GameLobby>> Post(int userId)
         {
-        }
-
-        // PUT api/<GameLobbyController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            try
+            {
+                //Created($"api/resource/{object.ID}", object);
+                var gameLobby = await _gameLobbyService.AddGameLobby(userId);
+                return Created($"api/gamelobby/{gameLobby.GameCode}", gameLobby);
+            } catch
+            {
+                return BadRequest();
+            }
         }
 
         // DELETE api/<GameLobbyController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
+            try
+            {
+                await _gameLobbyService.RemoveGameLobby(id);
+                return Ok();
+            } catch
+            {
+                return NotFound();
+            }
         }
     }
 }

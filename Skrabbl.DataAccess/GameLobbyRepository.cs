@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Skrabbl.DataAccess.Queries;
 using Skrabbl.Model;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Skrabbl.DataAccess
@@ -47,9 +48,12 @@ namespace Skrabbl.DataAccess
                 await conn.ExecuteAsync(_commandText.RemoveAllLobbies);
             });
         }
-        public ValueTask<IEnumerable<GameLobby>> GetAllLobbies()
+        public async ValueTask<IEnumerable<GameLobby>> GetAllLobbies()
         {
-            throw new System.NotImplementedException();
+            return await WithConnection<IEnumerable<GameLobby>>(async conn =>
+            {
+                return await conn.QueryAsync<GameLobby>(_commandText.GetAllLobbies);
+            });
         }
     }
 }
