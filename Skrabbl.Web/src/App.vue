@@ -5,8 +5,10 @@
           <router-link to="/about">About</router-link> |
           <router-link to="/websocket">WebSocket</router-link> |
           <router-Link to="/Canvas">Canvas</router-Link> |
-          <router-link to="/game-lobby">Game Lobby</router-link> | 
-          <router-link to="/game">Game</router-link>
+          <router-link to="/game-lobby">Game Lobby</router-link> |
+          <router-link to="/game">Game</router-link>    |
+          <router-link to="/Login">Login</router-link>  |
+          <router-link to="/Register">Register</router-link>  |
       </div>
     <router-view/>
   </div>

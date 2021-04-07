@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 using Skrabbl.Model;
 using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
+using Skrabbl.Model.Dto;
 
 namespace Skrabbl.API.Controllers
 {
       [ApiController]
-      [Route("Api/[Controller]")]
+      [Route("api/[controller]")]
     public class UserRegistrationController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -22,12 +23,12 @@ namespace Skrabbl.API.Controllers
         }
 
         [HttpPost]
-      public async Task<IActionResult> PostUser(string userName, string password, string email)
+      public async Task<IActionResult> PostUser([FromBody] UserRegistrationDto userDto)
         {
 
             try
             {
-               User user = await _userService.CreateUser(userName, password, email);
+               User user = await _userService.CreateUser(userDto.UserName, userDto.Password, userDto.Email);
                return Ok(user);
             }
             catch

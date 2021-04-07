@@ -27,7 +27,7 @@ namespace Skrabbl.API.Services
             byte[] salt = new CryptographyService().CreateSalt();
             current.Password = new CryptographyService().GenerateHash(_password, salt);
             current.Email = _email;
-            current.Salt = salt.ToString();
+            current.Salt = Convert.ToBase64String(salt); 
 
             current.Id = await _userRepository.AddUser(current);
 

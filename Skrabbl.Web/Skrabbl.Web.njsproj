@@ -32,6 +32,9 @@
     <Content Include="public\favicon.ico" />
     <Content Include="public\index.html" />
     <Content Include="src\App.vue" />
+    <Content Include="src\components\canvas\Canvas.vue" />
+    <Content Include="src\components\canvas\ColorButton.vue" />
+    <Content Include="src\components\canvas\SizeButton.vue" />
     <Content Include="src\components\chatbox\ChatboxItem.vue">
       <SubType>Code</SubType>
     </Content>
@@ -55,6 +58,12 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="src\router.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\views\Login.vue">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\views\Register.vue">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\views\WebSocket.vue">

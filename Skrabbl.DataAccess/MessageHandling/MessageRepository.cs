@@ -29,11 +29,24 @@ namespace Skrabbl.DataAccess
 
         }
 
-        public async Task<int> SaveMessage(ChatMessage message, int gameLobbyId)
+        public async Task SaveMessage(ChatMessage message)
         {
-            return await WithConnection(async conn =>
+            await WithConnection(async conn =>
             {
-                return await conn.QuerySingleAsync<int>(_commandText.SaveMessage, message);
+                return await conn.ExecuteAsync(_commandText.SaveMessage, new {
+                    Message = message.Message, 
+                    CreatedAt = message.CreatedAt,
+                    GameId = message.CurrentGame.Id,
+                    UserId = message.Player.Id
+                });
+
+            });
+        }
+        public async Task RemoveAllChatMessages()
+        {
+            await WithConnection(async conn =>
+            {
+                await conn.ExecuteAsync(_commandText.RemoveAllMessages);
             });
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+﻿using Microsoft.Azure.Amqp.Framing;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using NUnit.Framework;
 using Skrabbl.DataAccess.Queries;
 using Skrabbl.Model;
@@ -7,16 +8,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Skrabbl.DataAccess.Test
 {
     class MessageRepositorySpec
     {
         IMessageRepository _messageRepository;
-
-        public string Message { get; private set; }
-        public DateTime CreatedAt { get; private set; }
-        public User User { get; private set; }
-        public Game Game { get; private set; }
 
         [SetUp]
         public void Setup()
@@ -25,7 +22,7 @@ namespace Skrabbl.DataAccess.Test
             var cmd = new CommandText();
 
             _messageRepository = new MessageRepository(config, cmd);
-            
+
         }
 
         [Test]
@@ -38,29 +35,30 @@ namespace Skrabbl.DataAccess.Test
         public async Task AddChatMessageToDbTest()
         {
             //Arrange
-            ChatMessage chatMessage = new ChatMessage();
-            {
+            DateTime date = new DateTime(2012, 12, 25, 10, 30, 50);
 
-                Message = "hej";
-                CreatedAt = DateTime.Now;
-                User = new User { Id = 25 };
-                Game = new Game { Id = 1 };
-                
-                //1223
+            ChatMessage chatMessage = new ChatMessage
+            {
+                Message = "hej",
+                CreatedAt = date,
+                CurrentGame = new Game { Id = 3 },
+                Player = new User { Id = 25 },
             };
 
             //Act
-           // await _messageRepository.SaveMessage(chatMessage);
-            //GameLobby lobby = await _gameLobbyRepository.GetGameLobbyById(gameLobby.GameCode);
+            await _messageRepository.SaveMessage(chatMessage);
+            IEnumerable<ChatMessage> chatMsg = await _messageRepository.GetAllMessages(1223);
 
             //Assert
-           // Assert.IsNotNull(lobby);
+            IList<ChatMessage> list = new List<ChatMessage>(chatMsg);
+
+            Assert.AreNotEqual(list.Count, 0);
         }
 
         [OneTimeTearDown]
         public void TearDown()
         {
-          //  _gameLobbyRepository.RemoveAllGameLobbies();
+            _messageRepository.RemoveAllChatMessages();
         }
     }
 }
