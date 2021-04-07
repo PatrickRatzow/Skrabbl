@@ -1,4 +1,4 @@
-﻿using FluentMigrator;
+using FluentMigrator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,16 +6,9 @@ using System.Threading.Tasks;
 
 namespace Skrabbl.API.Migrations
 {
-    [Migration(4)]
-    public class CreateMessagesTable: Migration
+    [Migration(5)]
+    public class CreateMessagesTable : Migration
     {
-
-
-        public override void Down()
-        {
-            Delete.Table("Message");
-        }
-
         public override void Up()
         {
             Create.Table("ChatMessage")
@@ -25,14 +18,19 @@ namespace Skrabbl.API.Migrations
                 .WithColumn("GameId").AsInt32().NotNullable()
                 .WithColumn("UserId").AsInt32().NotNullable();
 
-            Create.ForeignKey("fk_ChatMessage_GameId_Game_GameLobbyId_")
+            Create.ForeignKey()
                 .FromTable("ChatMessage").ForeignColumn("GameId")
-                .ToTable("Game").PrimaryColumn("GameLobbyId");
+                .ToTable("Game").PrimaryColumn("Id");
 
-            Create.ForeignKey("fk_ChatMessage_UserId_User_Id")
+            Create.ForeignKey()
                 .FromTable("ChatMessage").ForeignColumn("UserId")
-                .ToTable("User").PrimaryColumn("Id");
+                .ToTable("Users").PrimaryColumn("Id");
         }
+        
+        public override void Down()
+        {
+            Delete.Table("ChatMessage");
+        }
+
     }
 }
-
