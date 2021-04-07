@@ -6,7 +6,9 @@ namespace Skrabbl.DataAccess.Queries
 {
     public partial class CommandText: ICommandText
     {
-        public string GetAllMessages => "select * from ChatMessage";
+        public string GetAllMessages => @"
+            SELECT * FROM ChatMessage m
+            INNER JOIN Users u ON u.Id = m.UserId";
         public string SaveMessage =>
             @"
             insert into ChatMessage(Message, CreatedAt, GameId, UserId) 

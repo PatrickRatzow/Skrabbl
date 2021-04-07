@@ -24,9 +24,13 @@ namespace Skrabbl.DataAccess
         {
             return await WithConnection(async conn =>
             {
-                return await conn.QueryAsync<ChatMessage>(_commandText.GetAllMessages);
+                return await conn.QueryAsync<ChatMessage, User, ChatMessage>(_commandText.GetAllMessages,
+                    (chatMessage, user) =>
+                    {
+                        chatMessage.User = user;
+                        return chatMessage;
+                    }, splitOn: "UserId");
             });
-
         }
 
         public async Task SaveMessage(ChatMessage message)

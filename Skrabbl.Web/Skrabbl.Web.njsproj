@@ -52,6 +52,7 @@
     </Content>
     <Content Include="src\components\Home.vue" />
     <Content Include="src\views\About.vue" />
+    <Content Include="src\views\ChatBox.vue" />
     <Content Include="src\views\Game.vue" />
     <Content Include="src\views\GameLobby.vue" />
     <Content Include="src\views\Home.vue" />

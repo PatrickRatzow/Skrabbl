@@ -30,9 +30,9 @@ namespace Skrabbl.API.Services
             return msg;
         }
 
-        public Task<IEnumerable<ChatMessage>> GetMessages(int lobbyId)
+        public async Task<IEnumerable<ChatMessage>> GetMessages(int lobbyId)
         {
-            throw new NotImplementedException();
+            return await _messageRepository.GetAllMessages(lobbyId);
         }
     }
 }
