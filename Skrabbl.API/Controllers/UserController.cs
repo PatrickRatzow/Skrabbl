@@ -23,19 +23,18 @@ namespace Skrabbl.API.Controllers
         }
 
         [HttpPost]
-      public async Task<IActionResult> PostUser([FromBody] UserRegistrationDto userDto)
+        public async Task<IActionResult> PostUser([FromBody] UserRegistrationDto userDto)
         {
-
             try
             {
-               User user = await _userService.CreateUser(userDto.UserName, userDto.Password, userDto.Email);
-               return Ok(user);
+                User user = await _userService.CreateUser(userDto.UserName, userDto.Password, userDto.Email);
+                return Ok(user);
             }
             catch
             {
                 return BadRequest();
             }
-            
+
         }
 
       [HttpPost("login")]

@@ -36,8 +36,8 @@ namespace Skrabbl.DataAccess
                 return await conn.ExecuteAsync(_commandText.SaveMessage, new {
                     Message = message.Message, 
                     CreatedAt = message.CreatedAt,
-                    GameId = message.CurrentGame.Id,
-                    UserId = message.Player.Id
+                    GameId = message.Game.Id,
+                    UserId = message.User.Id
                 });
 
             });

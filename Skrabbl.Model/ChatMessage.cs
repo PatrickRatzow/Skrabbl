@@ -9,8 +9,8 @@ namespace Skrabbl.Model
         public int Id { get; set; }
         public string Message { get; set; }
         public DateTime CreatedAt { get; set; }
-        public User Player { get; set; }
-        public Game CurrentGame { get; set; }
+        public User User { get; set; }
+        public Game Game { get; set; }
         
     }
 }
