@@ -6,10 +6,11 @@ namespace Skrabbl.DataAccess.Queries
 {
     public partial class CommandText: ICommandText
     {
-        public string GetAllMessages => "select * from Message";
-        public string SaveMessage => 
+        public string GetAllMessages => "select * from ChatMessage";
+        public string SaveMessage =>
             @"
-            insert into ChatMessage(message, createdAt, gameId, userId) 
-            Values(@messageTemp, @createdAtTemp, @gameIdTemp, @userIdTemp)";
+            insert into ChatMessage(Message, CreatedAt, GameId, UserId) 
+            Values(@Message, @CreatedAt, @GameId, @UserId)";
+        public string RemoveAllMessages => "Remove from ChatMessage";
     }
 }
