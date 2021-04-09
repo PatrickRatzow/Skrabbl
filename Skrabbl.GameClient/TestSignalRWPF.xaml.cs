@@ -29,7 +29,7 @@ namespace Skrabbl.GameClient
         {
             InitializeComponent();
             connection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:50916/ChatHub")
+            .WithUrl("http://localhost:50916/ws/Chat-Hub")
             .Build();
 
             _httpClient = new HttpClient();
