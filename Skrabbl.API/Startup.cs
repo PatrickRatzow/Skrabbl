@@ -43,6 +43,7 @@ namespace Skrabbl.API
             
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddControllers();
+            services.AddSignalR();
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     // Add SQLite support to FluentMigrator
