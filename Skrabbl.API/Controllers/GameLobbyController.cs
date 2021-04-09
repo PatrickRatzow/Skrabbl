@@ -93,7 +93,7 @@ namespace Skrabbl.API.Controllers
         public async Task<ActionResult> Delete(string id)
         {
             var lobby = await _gameLobbyService.RemoveGameLobby(id);
-            if (lobby == true)
+            if (lobby)
             {
                 return Ok();
             } else

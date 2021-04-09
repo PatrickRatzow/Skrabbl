@@ -3,7 +3,7 @@ using FluentMigrator;
 namespace Skrabbl.API.Migrations
 {
     [Migration(2)]
-    public class CreateLoginTable : Migration
+    public class AddPasswordToUser : Migration
     {
         public override void Up()
         {

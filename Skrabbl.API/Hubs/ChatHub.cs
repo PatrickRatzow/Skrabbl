@@ -11,7 +11,7 @@ namespace Skrabbl.API.Hubs
 {
     public class ChatHub : Hub
     {
-        private IMessageService _messageService;
+        private readonly IMessageService _messageService;
 
         public ChatHub(IMessageService messageService)
         {

@@ -9,11 +9,6 @@ namespace Skrabbl.API.Migrations
     [Migration(3)]
     public class CreateGameLobbyTable : Migration
     {
-        public override void Down()
-        {
-            Delete.Table("GameLobby");
-        }
-
         public override void Up()
         {
             Create.Table("GameLobby")
@@ -24,5 +19,11 @@ namespace Skrabbl.API.Migrations
                 .FromTable("GameLobby").ForeignColumn("LobbyOwnerId")
                 .ToTable("Users").PrimaryColumn("Id");
         }
+        
+        public override void Down()
+        {
+            Delete.Table("GameLobby");
+        }
+
     }
 }
