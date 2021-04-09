@@ -1,17 +1,26 @@
 <template>
     <div>
-        <div>Connected {{ hasConnected ? 'Yes' : 'False' }}</div>
-        <ul>
+        <div>Connected {{ hasConnected ? 'Yes' : 'No' }}</div>
+        <div class="chatbox">
+          <ul>
             <ChatboxItem v-for="message in messages"
                          :user="message.user"
                          :message="message.message" />
-        </ul>
-        <li>
-            <input type="text" v-model="messageInput" />
-            <button @click="sendMessage">
-                send message
-            </button>
-        </li>
+          </ul>
+        </div>
+        <form class="field mt-1">
+          <label class="label mt-1">User ID</label>
+          <div class="control">
+            <input class="input" type="number" v-model="userId" placeholder="Text input" />
+          </div>
+          <label class="label">Message</label>
+          <div class="control">
+            <input class="input" type="text" v-model="messageInput" placeholder="Text input" />
+          </div>
+          <button @click.prevent="sendMessage" class="button is-primary mt-2 is-pulled-right">
+            Submit
+          </button>
+        </form>
     </div>
 </template>
 
@@ -24,7 +33,7 @@
         },
         data() {
             return {
-                userInput: "",
+                userId: 25,
                 messageInput: "",
                 hasConnected: false,
                 connection: null,
@@ -43,34 +52,14 @@
             },
             setupHandlers() {
                 this.connection.on("ReceiveMessage", this.addMessage)
-                this.connection.on("DeletedMessage", (user, message) => {
-                    this.messages = this.messages.filter(msg => msg.user != user || msg.message != message);
-                });
             },
             async startConnection() {
                 await this.connection.start()
+                this.hasConnected = true
                 await this.connection.invoke("GetAllMessages", 3);
             },
             async sendMessage() {
-                this.connection.invoke("SendMessage", "Jakob", this.messageInput)
-                    .catch(err => console.error(err.toString()))
-
-                const data = {
-                    Message: this.messageInput,
-                    GameId: 3,
-                    UserId: 25
-                }
-                const request = await fetch("/api/Message", {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-            },
-            getMessages() {
-
-
+                await this.connection.invoke("SendMessage", 3, parseInt(this.userId), this.messageInput)
             }
         },
         mounted() {
@@ -82,9 +71,10 @@
 </script>
 
 <style scoped>
-    ul {
+    .chatbox {
+        overflow: hidden;
         border: 1px solid black;
-        height: 500px;
+        height: 427px;
         width: 350px;
     }
 </style>

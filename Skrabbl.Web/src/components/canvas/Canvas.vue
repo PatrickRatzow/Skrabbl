@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3">
+  <div>
     <div>X: {{ mouseInfo.x }}, Y: {{ mouseInfo.y }}</div>
     <div>Connected to SignalR: {{ connected ? 'Yes' : 'No' }}</div>
     <canvas id="draw-canvas" 

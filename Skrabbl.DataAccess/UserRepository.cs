@@ -14,10 +14,12 @@ namespace Skrabbl.DataAccess
         {
             _commandText = commandText;
         }
-        
-        public ValueTask<User> GetUserById(int id)
+
+        public async ValueTask<User> GetUserById(int id)
         {
-            throw new System.NotImplementedException();
+            return await WithConnection(async conn =>
+                await conn.QuerySingleAsync<User>(_commandText.GetUserById, new { Id = id })
+            );
         }
 
         public async ValueTask<User> GetUserByUsername(string username)

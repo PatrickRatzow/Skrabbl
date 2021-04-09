@@ -18,8 +18,6 @@ namespace Skrabbl.API.Services
         }
 
 
-
-
         public async Task<User> CreateUser(string _userName, string _password, string _email)
         {
             User current = new User();
@@ -48,6 +46,11 @@ namespace Skrabbl.API.Services
                 return user;
             }
             return null;
+        }
+
+        public async Task<User> GetUser(int id)
+        {
+            return await _userRepository.GetUserById(id);
         }
     }
 }

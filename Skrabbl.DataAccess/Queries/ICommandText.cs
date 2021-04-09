@@ -15,5 +15,6 @@ namespace Skrabbl.DataAccess.Queries
         string GetAllMessages { get; }
         string SaveMessage { get; }
         string RemoveAllMessages { get; }
+        string GetGameById { get; }
     }
 }

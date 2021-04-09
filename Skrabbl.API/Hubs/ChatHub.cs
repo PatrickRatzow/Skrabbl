@@ -12,15 +12,29 @@ namespace Skrabbl.API.Hubs
     public class ChatHub : Hub
     {
         private readonly IMessageService _messageService;
+        private readonly IUserService _userService;
+        private readonly IGameService _gameService;
 
-        public ChatHub(IMessageService messageService)
+        public ChatHub(IMessageService messageService, IUserService userService, IGameService gameService)
         {
             _messageService = messageService;
+            _userService = userService;
+            _gameService = gameService;
         }
         
-        public async Task SendMessage(string user, string message)
+        public async Task SendMessage(int gameId, int userId, string message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            var user = _userService.GetUser(userId);
+            var game = _gameService.GetGame(gameId);
+        
+            await Task.WhenAll(user, game);
+
+            if (user.Result == null || game.Result == null)
+                return;
+
+            await _messageService.CreateMessage(message, gameId, userId);
+
+            await Clients.All.SendAsync("ReceiveMessage", user.Result.Username, message);
         }
         public async Task DeleteMessage(string user, string msg)
         {
