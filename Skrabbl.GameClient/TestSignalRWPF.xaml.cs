@@ -61,7 +61,7 @@ namespace Skrabbl.GameClient
             }
             catch (Exception ex)
             {
-                listMsg.Items.Add(ex.Message);
+                listMsg.Items.Add("Connection could not start: " + ex.Message);
             }
         }
 
