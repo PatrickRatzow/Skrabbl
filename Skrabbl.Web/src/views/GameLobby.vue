@@ -1,5 +1,6 @@
 <template>
   <div class="main is-flex is-justify-content-center is-align-items-center">
+    <div>Is connected {{ connected ? 'Yes' : 'False' }}</div>
     <section class="box">
       <section class="title has-text-centered">
         <div class="content">
@@ -30,12 +31,43 @@ export default {
   name: "GameLobby",
   data() {
     return {
+      connection: null,
+      connected: false,
       code: "aBc4fE",
       players: [
         { id: 1, name: "Patrick", color: "#e74c3c", owner: true },
         { id: 2, name: "Nikolaj", color: "#9b59b6" }
       ]
     }
+  },
+  mounted() {
+    this.createConnection();
+    this.setupHandlers();
+    this.startConnection();
+  },
+  methods: {
+    createConnection() {
+      this.connection = new signalR.HubConnectionBuilder().withUrl("/ws/game-lobby-hub").build()
+    },
+    setupHandlers() {
+      this.connection.on("LobbyStarted", () => {
+        
+      })
+      this.connection.on("LobbyDisbanded", () => {
+        
+      })
+      this.connection.on("PlayerDisconnected", (userId) => {
+   
+      })
+      this.connection.on("PlayerJoined", (userId, name, color) => {
+        
+      })
+    },
+    async startConnection() {
+      await this.connection.start()
+
+      this.connected = true
+    },
   },
   components: {
     PlayerList,

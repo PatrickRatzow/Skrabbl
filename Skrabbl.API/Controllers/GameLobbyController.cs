@@ -15,7 +15,6 @@ namespace Skrabbl.API.Controllers
     [ApiController]
     public class GameLobbyController : ControllerBase
     {
-
         private readonly IGameLobbyService _gameLobbyService;
 
         public GameLobbyController(IGameLobbyService gameLobbyService)

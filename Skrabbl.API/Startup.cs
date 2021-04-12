@@ -79,6 +79,7 @@ namespace Skrabbl.API
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/ws/chat-hub");
                 endpoints.MapHub<DrawingHub>("/ws/drawing-hub");
+                endpoints.MapHub<GameLobbyHub>("ws/game-lobby-hub");
             });
 
             app.UseSpaStaticFiles();
