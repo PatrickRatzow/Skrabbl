@@ -10,5 +10,6 @@ namespace Skrabbl.DataAccess.Queries
             VALUES (@Username, @Email, @Password, @Salt); 
             SELECT CAST(SCOPE_IDENTITY() as int)";
         public string RemoveUserById => "DELETE FROM Users WHERE id = @Id";
+        public string AddUserToLobby => "UPDATE Users SET GameLobbyId = @GameLobbyId WHERE Id = @Id";
     }
 }

@@ -9,5 +9,6 @@ namespace Skrabbl.DataAccess
         ValueTask<User> GetUserByUsername(string username);
         Task<int> AddUser(User entity);
         Task DeleteUserById(int id);
+        Task AddUserToLobby(int userId, string gameCode);
     }
 }
