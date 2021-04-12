@@ -52,5 +52,10 @@ namespace Skrabbl.API.Services
         {
             return await _userRepository.GetUserById(id);
         }
+
+        public Task AddToLobby(int userId, string gameCode)
+        {
+            return _userRepository.AddUserToLobby(userId, gameCode);
+        }
     }
 }
