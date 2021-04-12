@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.AspNetCore.SignalR.Client;
+using Newtonsoft.Json;
+using Skrabbl.Model;
 
 namespace Skrabbl.GameClient
 {
@@ -88,15 +90,20 @@ namespace Skrabbl.GameClient
         {
             //Create a new game
             var uri = new Uri(gameLobbyUrl + userId.ToString());
-            var existingGameLobby = await GetGameLobby(userId);
+            HttpResponseMessage existingGameLobby = await GetGameLobby(userId);
             //Also check if userId exists
             if (existingGameLobby.StatusCode.Equals(HttpStatusCode.NotFound))
             {
                 try
                 {
                     HttpResponseMessage response = await _httpClient.PostAsync(uri, null);
-                    string resultingIdString = await response.Content.ReadAsStringAsync();
+                    string responseContent = await response.Content.ReadAsStringAsync();
+
+                    var gameLobby = JsonConvert.DeserializeObject<GameLobby>(responseContent);
+
                     resultLbl.Text = uri + " Lobby was created!";
+
+                    gameId.Text = $"newly created Id: {gameLobby.GameCode}";
                 } catch
                 {
                     resultLbl.Text = "Lobby was not created! - BOHO";
@@ -106,7 +113,6 @@ namespace Skrabbl.GameClient
             {
                 resultLbl.Text = $"User with id {userId} already have a lobby!";
             }
-
         }
 
         // /api/gamelobby/user/{id}
