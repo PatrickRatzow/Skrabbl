@@ -46,5 +46,13 @@ namespace Skrabbl.DataAccess
                 await conn.ExecuteAsync(_commandText.RemoveUserById, new {Id = id});
             });
         }
+
+        public async Task AddUserToLobby(int userId, string gameCode)
+        {
+            await WithConnection(async conn =>
+            {
+                await conn.ExecuteAsync(_commandText.AddUserToLobby, new { GameLobbyId = gameCode, Id = userId, });
+            });
+        }
     }
 }

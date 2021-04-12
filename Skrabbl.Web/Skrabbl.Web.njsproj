@@ -41,6 +41,9 @@
     <Content Include="src\components\chatbox\ChatboxList.vue">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\components\JoinLobby.vue">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\components\player\PlayerItem.vue" />
     <Content Include="src\components\player\PlayerList.vue" />
     <Content Include="src\components\setting\SettingItem.vue" />
@@ -59,6 +62,9 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="src\router.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\views\JoinLobby.vue">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\views\Login.vue">
