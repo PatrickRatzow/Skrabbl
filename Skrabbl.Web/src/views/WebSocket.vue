@@ -53,7 +53,7 @@
         },
         methods: {
             createConnection() {
-                this.connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+                this.connection = new signalR.HubConnectionBuilder().withUrl("/ws/chat-Hub").build();
             },
             setupHandlers() {
                 this.connection.on("ReceiveMessage", (user, message) => {

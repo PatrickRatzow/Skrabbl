@@ -34,7 +34,14 @@ namespace Skrabbl.API.Hubs
 
             await _messageService.CreateMessage(message, gameId, userId);
 
-            await Clients.All.SendAsync("ReceiveMessage", user.Result.Username, message);
+            if (message == "Cake")
+            {
+                await Clients.All.SendAsync("GuessedWord", user.Result.Username);
+            } else
+            {
+                await Clients.All.SendAsync("ReceiveMessage", user.Result.Username, message);
+            }
+
         }
         public async Task DeleteMessage(string user, string msg)
         {

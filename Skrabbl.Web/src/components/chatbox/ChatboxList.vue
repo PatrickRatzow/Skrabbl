@@ -4,8 +4,7 @@
         <div class="chatbox">
           <ul>
             <ChatboxItem v-for="message in messages"
-                         :user="message.user"
-                         :message="message.message" />
+                         :message="message" />
           </ul>
         </div>
         <form class="field mt-1">
@@ -17,7 +16,7 @@
           <div class="control">
             <input class="input" type="text" v-model="messageInput" placeholder="Text input" />
           </div>
-          <button @click.prevent="sendMessage" class="button is-primary mt-2 is-pulled-right">
+          <button :disabled="hasGuessed" @click.prevent="sendMessage" class="button is-primary mt-2 is-pulled-right">
             Submit
           </button>
         </form>
@@ -37,21 +36,33 @@
                 messageInput: "",
                 hasConnected: false,
                 connection: null,
+                hasGuessed: false,
                 messages: []
             }
         },
         methods: {
-            addMessage(user, message) {
+            addMessage(action, object) {
               this.messages.push({
-                user,
-                message
+                  action,
+                  ...object
               });
             },
             createConnection() {
                 this.connection = new signalR.HubConnectionBuilder().withUrl("/ws/chat-hub").build();
             },
             setupHandlers() {
-                this.connection.on("ReceiveMessage", this.addMessage)
+                this.connection.on("ReceiveMessage", (user, message) => {
+                    this.addMessage("chatMessage", {
+                        user, 
+                        message
+                    })
+                })
+                this.connection.on("GuessedWord", (user) => {
+                    this.addMessage("guessedWord", {
+                        user
+                    })
+                    this.hasGuessed = true
+                })
             },
             async startConnection() {
                 await this.connection.start()
@@ -60,7 +71,8 @@
             },
             async sendMessage() {
                 await this.connection.invoke("SendMessage", 3, parseInt(this.userId), this.messageInput)
-            }
+
+            },
         },
         mounted() {
             this.createConnection()
