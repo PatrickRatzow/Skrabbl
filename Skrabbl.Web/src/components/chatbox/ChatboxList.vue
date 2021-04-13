@@ -31,14 +31,20 @@ export default {
   components: {
     ChatboxItem
   },
+  data() {
+    return {
+      userId: 25,
+      messageInput: "",
+    }
+  },
   computed: mapState({
     messages: state => state.chatBox.messages,
     hasGuessed: state => state.chatBox.hasGuessed,
     isConnected: state => state.signalR.connected
   }),
   methods: {
-    sendMessage(message) {
-      this.$store.dispatch("chatBox/sendMessage", message)
+    sendMessage() {
+      this.$store.dispatch("chatBox/sendMessage", this.messageInput)
     },
   },
   mounted() {
