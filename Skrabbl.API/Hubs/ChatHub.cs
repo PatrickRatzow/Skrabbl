@@ -14,12 +14,15 @@ namespace Skrabbl.API.Hubs
         private readonly IMessageService _messageService;
         private readonly IUserService _userService;
         private readonly IGameService _gameService;
+        private readonly IWordService _wordService;
 
-        public ChatHub(IMessageService messageService, IUserService userService, IGameService gameService)
+
+        public ChatHub(IMessageService messageService, IUserService userService, IGameService gameService, IWordService wordService)
         {
             _messageService = messageService;
             _userService = userService;
             _gameService = gameService;
+            _wordService = wordService;
         }
         
         public async Task SendMessage(int gameId, int userId, string message)
@@ -34,7 +37,9 @@ namespace Skrabbl.API.Hubs
 
             await _messageService.CreateMessage(message, gameId, userId);
 
-            if (message == "Cake")
+            bool wordExist = await _wordService.DoesWordExist(message);
+
+            if (wordExist)
             {
                 await Clients.All.SendAsync("GuessedWord", user.Result.Username);
             } else
