@@ -84,7 +84,8 @@
 
 <style scoped>
     .chatbox {
-        overflow: auto;
+        overflow: hidden;
+        overflow-y:auto;
         border: 1px solid black;
         height: 427px;
         width: 350px;
