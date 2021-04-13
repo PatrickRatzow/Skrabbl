@@ -41,6 +41,7 @@
     export default {
         data() {
             return {
+                userId: 25,
                 userInput: "",
                 messageInput: "",
                 hasConnected: false,
@@ -74,8 +75,8 @@
                     })
                     .catch(err => console.error(err.toString()))
             },
-            sendMessage() {
-                this.connection.invoke("SendMessage", this.userInput, this.messageInput)
+            async sendMessage() {
+                await this.connection.invoke("SendMessage", 3, parseInt(this.userId), this.userInput)
                     .catch(err => console.error(err.toString()))
             },
             deleteMessage(msg) {
