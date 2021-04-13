@@ -16,7 +16,8 @@
       <div class="control">
         <input class="input" type="text" v-model="messageInput" placeholder="Text input"/>
       </div>
-      <button :disabled="hasGuessed" @click.prevent="sendMessage" class="button is-primary mt-2 is-pulled-right">
+      <button :disabled="hasGuessed" @click.prevent="sendMessage(messageInput)"
+              class="button is-primary mt-2 is-pulled-right">
         Submit
       </button>
     </form>
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex"
+import {mapActions, mapState} from "vuex"
 import ChatboxItem from "@/components/chatbox/ChatboxItem.vue"
 
 export default {
@@ -43,9 +44,9 @@ export default {
     isConnected: state => state.signalR.connected
   }),
   methods: {
-    sendMessage() {
-      this.$store.dispatch("chatBox/sendMessage", this.messageInput)
-    },
+    ...mapActions("chatBox", [
+      "sendMessage"
+    ]),
   },
   mounted() {
     this.$store.dispatch("chatBox/fetchMessages")
@@ -56,6 +57,7 @@ export default {
 <style scoped>
 .chatbox {
   overflow: hidden;
+  overflow-y: auto;
   border: 1px solid black;
   height: 427px;
   width: 350px;
