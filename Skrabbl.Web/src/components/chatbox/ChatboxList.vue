@@ -91,6 +91,6 @@
         width: 350px;
     }
 </style>
-
+    
 
 //Chatbox selv + Sendknap

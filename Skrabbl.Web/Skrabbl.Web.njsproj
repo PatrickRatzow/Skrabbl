@@ -50,6 +50,9 @@
     <Content Include="src\components\setting\SettingList.vue" />
     <Content Include="src\components\WeatherItem.vue" />
     <Content Include="src\components\WeatherList.vue" />
+    <Content Include="src\components\words\WordList.vue">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\views\Canvas.vue">
       <SubType>Code</SubType>
     </Content>
@@ -76,6 +79,9 @@
     <Content Include="src\views\WebSocket.vue">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\views\Words.vue">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dist\" />
@@ -85,6 +91,8 @@
     <Folder Include="src\components\" />
     <Folder Include="src\components\canvas\" />
     <Folder Include="src\components\chatbox\" />
+    <Folder Include="src\components\websocket\" />
+    <Folder Include="src\components\words\" />
     <Folder Include="src\components\player\" />
     <Folder Include="src\components\setting\" />
     <Folder Include="src\views\" />
