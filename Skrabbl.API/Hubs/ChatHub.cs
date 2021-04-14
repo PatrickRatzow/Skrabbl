@@ -1,35 +1,16 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Skrabbl.API.Services;
-using Skrabbl.DataAccess;
-using Skrabbl.Model;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Skrabbl.API.Hubs
 {
-    public class ChatHub : Hub
+    public partial class GameHub : Hub<IGameHub>, IGameClient
     {
-        private readonly IMessageService _messageService;
-        private readonly IUserService _userService;
-        private readonly IGameService _gameService;
-        private readonly IWordService _wordService;
-
-
-        public ChatHub(IMessageService messageService, IUserService userService, IGameService gameService, IWordService wordService)
-        {
-            _messageService = messageService;
-            _userService = userService;
-            _gameService = gameService;
-            _wordService = wordService;
-        }
-        
         public async Task SendMessage(int gameId, int userId, string message)
         {
             var user = _userService.GetUser(userId);
             var game = _gameService.GetGame(gameId);
-        
+
             await Task.WhenAll(user, game);
 
             if (user.Result == null || game.Result == null)
@@ -37,27 +18,26 @@ namespace Skrabbl.API.Hubs
 
             await _messageService.CreateMessage(message, gameId, userId);
 
-            bool wordExist = await _wordService.DoesWordExist(message);
-
-            if (wordExist)
+            if (message == "Cake")
             {
-                await Clients.All.SendAsync("GuessedWord", user.Result.Username);
-            } else
-            {
-                await Clients.All.SendAsync("ReceiveMessage", user.Result.Username, message);
+                await Clients.All.GuessedWord(user.Result.Username);
             }
-
+            else
+            {
+                await Clients.All.ReceiveMessage(user.Result.Username, message);
+            }
         }
+
         public async Task DeleteMessage(string user, string msg)
         {
-            await Clients.All.SendAsync("DeletedMessage", user, msg);
+            await Clients.All.DeletedMessage(user, msg);
         }
 
         public async Task GetAllMessages(int lobbyId)
         {
             var messages = await _messageService.GetMessages(lobbyId);
             var tasks = messages.Select(msg =>
-                Clients.Caller.SendAsync("ReceiveMessage", msg.User.Username, msg.Message)
+                Clients.Caller.ReceiveMessage(msg.User.Username, msg.Message)
             );
 
             await Task.WhenAll(tasks);

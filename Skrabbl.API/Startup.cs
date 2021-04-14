@@ -1,22 +1,14 @@
+using System.Reflection;
+using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using FluentMigrator.Runner;
 using Skrabbl.API.Hubs;
-using System.Net.WebSockets;
+using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
 using Skrabbl.DataAccess.Queries;
-using Skrabbl.API.Services;
 
 namespace Skrabbl.API
 {
@@ -37,14 +29,12 @@ namespace Skrabbl.API
             services.AddTransient<IMessageRepository, MessageRepository>();
             services.AddTransient<IGameLobbyRepository, GameLobbyRepository>();
             services.AddTransient<IGameRepository, GameRepository>();
-            services.AddTransient<IWordListRepository, WordListRepository>();
 
             services.AddScoped<IGameLobbyService, GameLobbyService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IGameService, GameService>();
-            services.AddScoped<IWordService, WordService>();
-            
+
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddControllers();
             services.AddSignalR();
@@ -79,10 +69,7 @@ namespace Skrabbl.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/ws/chat-hub");
-                endpoints.MapHub<DrawingHub>("/ws/drawing-hub");
-                endpoints.MapHub<GameLobbyHub>("ws/game-lobby-hub");
-                endpoints.MapHub<ConnectToLobbyHub>("/ws/connectToLobby-hub");
+                endpoints.MapHub<GameHub>("/ws/game");
             });
 
             app.UseSpaStaticFiles();

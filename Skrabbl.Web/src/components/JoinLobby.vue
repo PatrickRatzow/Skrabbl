@@ -11,24 +11,12 @@
             return {
                 userId: 25,
                 gameCode: "",
-                connection: null
             }
         },
-        mounted() {
-            this.createConnection()
-            this.startConnection()
-        },
         methods: {
-            createConnection() {
-                this.connection = new signalR.HubConnectionBuilder().withUrl("/ws/connectToLobby-hub").build();
-            },
-            async startConnection() {
-                await this.connection.start()
-
-                this.connected = true
-            },
             joinLobby() {
-                this.connection.invoke("JoinLobby", this.userId, this.gameCode);
+              // TODO: Implement this again
+              //this.connection.invoke("JoinLobby", this.userId, this.gameCode);
             }
         }
     }
