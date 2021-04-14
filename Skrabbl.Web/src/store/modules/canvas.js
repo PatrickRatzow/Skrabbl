@@ -1,14 +1,14 @@
 const state = () => ({
     sizes: [1, 2, 4, 8, 16, 32, 64],
     colors: [
-        {name: "Black", backgroundColor: "black"},
-        {name: "Red", backgroundColor: "#ff0000"},
-        {name: "Blue", backgroundColor: "#0000ff"},
-        {name: "Green", backgroundColor: "#00ff00"},
-        {name: "Light Grey", backgroundColor: "#d5d5d5", textColor: "black"}
+        { name: "Black", backgroundColor: "black" },
+        { name: "Red", backgroundColor: "#ff0000" },
+        { name: "Blue", backgroundColor: "#0000ff" },
+        { name: "Green", backgroundColor: "#00ff00" },
+        { name: "Light Grey", backgroundColor: "#d5d5d5", textColor: "black" }
     ],
     stroke: {
-        color: {name: "Black", backgroundColor: "black"},
+        color: { name: "Black", backgroundColor: "black" },
         size: 1
     }
 })
@@ -23,10 +23,10 @@ const getters = {
 }
 
 const actions = {
-    setColor({commit}, color) {
+    setColor({ commit }, color) {
         commit("setColor", color)
     },
-    setSize({commit}, size) {
+    setSize({ commit }, size) {
         commit("setSize", size)
     }
 }

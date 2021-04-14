@@ -6,13 +6,13 @@ const state = () => ({
 const getters = {}
 
 const actions = {
-    setConnection({commit}, connection) {
+    setConnection({ commit }, connection) {
         commit("setConnection", connection)
     },
-    connectionOpened({commit}) {
+    connectionOpened({ commit }) {
         commit("setConnected", true)
     },
-    connectionClosed({commit}) {
+    connectionClosed({ commit }) {
         commit("setConnected", false)
     }
 }

@@ -10,22 +10,22 @@ const state = () => ({
 const getters = {}
 
 const actions = {
-    sendMessage({commit}, message) {
+    sendMessage({ commit }, message) {
         commit("sendMessage", message)
     },
-    addMessage({commit}, object) {
+    addMessage({ commit }, object) {
         commit("addMessage", object)
     },
-    resetMessages({commit}) {
+    resetMessages({ commit }) {
         commit("removeMessages")
     },
-    connectionOpened({commit}) {
+    connectionOpened({ commit }) {
         commit("setConnected", true)
     },
-    connectionClosed({commit}) {
+    connectionClosed({ commit }) {
         commit("setConnected", false)
     },
-    fetchMessages({commit, state}) {
+    fetchMessages({ commit, state }) {
         if (state.hasFetchedMessages)
             return
 
