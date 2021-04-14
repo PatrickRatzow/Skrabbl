@@ -1,6 +1,12 @@
 <template>
-  <button :style="styling()" @click="$emit('click', backgroundColor)">
-    {{ name }}
+  <button class="button" :style="{ 
+      color: textColor, 
+      'background-color': color.backgroundColor, 
+      opacity: isActive ? '100%' : '60%' 
+  }"
+          @click="$store.dispatch('canvas/setColor', color)"
+  >
+    {{ color.name }}
   </button>
 </template>
 
@@ -8,16 +14,14 @@
 export default {
   name: "ColorButton",
   props: {
-    name: String,
-    backgroundColor: String,
-    textColor: String
+    color: Object,
   },
-  methods: {
-    styling() {
-      return `
-        background-color: ${this.backgroundColor};
-        color: ${this.textColor};
-      `
+  computed: {
+    textColor() {
+      return this.color.textColor || "white"
+    },
+    isActive() {
+      return this.$store.getters["canvas/color"].backgroundColor === this.color.backgroundColor
     }
   }
 }

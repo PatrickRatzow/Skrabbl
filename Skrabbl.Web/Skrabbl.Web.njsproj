@@ -48,11 +48,16 @@
     <Content Include="src\components\player\PlayerList.vue" />
     <Content Include="src\components\setting\SettingItem.vue" />
     <Content Include="src\components\setting\SettingList.vue" />
+    <Content Include="src\components\words\WordList.vue" />
     <Content Include="src\components\WeatherItem.vue" />
     <Content Include="src\components\WeatherList.vue" />
-    <Content Include="src\components\words\WordList.vue">
-      <SubType>Code</SubType>
-    </Content>
+    <Content Include="src\signal-r.js" />
+    <Content Include="src\store\index.js" />
+    <Content Include="src\store\modules\canvas.js" />
+    <Content Include="src\store\modules\chat.js" />
+    <Content Include="src\store\modules\game.js" />
+    <Content Include="src\store\modules\signal-r.js" />
+    <Content Include="src\store\plugins\signal-r.js" />
     <Content Include="src\views\Canvas.vue">
       <SubType>Code</SubType>
     </Content>
@@ -62,6 +67,7 @@
     <Content Include="src\views\Game.vue" />
     <Content Include="src\views\GameLobby.vue" />
     <Content Include="src\views\Home.vue" />
+    <Content Include="src\views\Words.vue" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="src\router.js">
@@ -76,12 +82,6 @@
     <Content Include="src\views\Register.vue">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\views\WebSocket.vue">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\views\Words.vue">
-      <SubType>Code</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dist\" />
@@ -91,10 +91,12 @@
     <Folder Include="src\components\" />
     <Folder Include="src\components\canvas\" />
     <Folder Include="src\components\chatbox\" />
-    <Folder Include="src\components\websocket\" />
-    <Folder Include="src\components\words\" />
     <Folder Include="src\components\player\" />
     <Folder Include="src\components\setting\" />
+    <Folder Include="src\components\words\" />
+    <Folder Include="src\store\" />
+    <Folder Include="src\store\modules\" />
+    <Folder Include="src\store\plugins\" />
     <Folder Include="src\views\" />
   </ItemGroup>
   <ItemGroup>

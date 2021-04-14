@@ -54,8 +54,8 @@ namespace Skrabbl.API.Services
 
         public async Task<bool> RemoveGameLobby(string id)
         {
-            var exisitngLobby = await GetGameLobbyById(id);
-            if (exisitngLobby != null)
+            var existingLobby = await GetGameLobbyById(id);
+            if (existingLobby != null)
             {
                 await _gameLobbyRepository.RemoveGameLobby(id);
                 return true;

@@ -1,23 +1,19 @@
+using System.Reflection;
+using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using FluentMigrator.Runner;
 using Skrabbl.API.Hubs;
-using System.Net.WebSockets;
+using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
 using Skrabbl.DataAccess.Queries;
+<<<<<<< HEAD
 using Skrabbl.API.Services;
 using Skrabbl.API.Middleware;
+=======
+>>>>>>> fc7f6156b0cb667be6ef2ef46790d82e556f1e7a
 
 namespace Skrabbl.API
 {
@@ -46,9 +42,12 @@ namespace Skrabbl.API
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IWordService, WordService>();
 
+<<<<<<< HEAD
             
             services.AddTokenAuthentication(Configuration);
 
+=======
+>>>>>>> fc7f6156b0cb667be6ef2ef46790d82e556f1e7a
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddControllers();
             services.AddSignalR();
@@ -84,10 +83,7 @@ namespace Skrabbl.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/ws/chat-hub");
-                endpoints.MapHub<DrawingHub>("/ws/drawing-hub");
-                endpoints.MapHub<GameLobbyHub>("ws/game-lobby-hub");
-                endpoints.MapHub<ConnectToLobbyHub>("/ws/connectToLobby-hub");
+                endpoints.MapHub<GameHub>("/ws/game");
             });
 
             app.UseSpaStaticFiles();
