@@ -1,7 +1,6 @@
 <template>
     <div class="container">
-        <button @click="isToggled = true;">hej</button>
-        <div class="modal" :class="{ 'is-active': isToggled }">
+        <div class="modal" :class="{ 'is-active': !isWordListEmpty }">
             <div class="modal-background"></div>
             <div class="modal-content">
                 <!-- Any other Bulma elements you want -->
@@ -10,30 +9,31 @@
                         Choose a word
                     </div>
                     <ul class="mt-2 is-flex-direction-row is-flex">
-                        <li v-for="word in words" class="ml-2">
+                        <li v-for="word in wordList" class="ml-2">
                             <button class="button is-primary" @click="setMessage(word)">{{word}}</button>
                         </li>
                     </ul>
                 </div>
             </div>
-            <button class="modal-close is-large" aria-label="close" @click="isToggled = false"></button>
         </div>
     </div>
 </template>
 
 <script>
+    import { mapState, mapGetters} from "vuex"
+
     export default {
-        data() {
-            return {
-                words: ["Cake", "hest", "spil"],
-                isToggled: false,
-                chosenWord: ""
-            }
+        computed: {
+            ...mapGetters("game", {
+                isWordListEmpty: "isWordListEmpty"
+            }),
+            ...mapState("game", {
+                wordList: "wordList"
+            })
         },
         methods: {
             setMessage(msg) {
-                this.chosenWord = msg;
-                this.isToggled = false;
+                this.$store.dispatch("game/chooseWord", msg)
             }
         },
         mounted() {
