@@ -9,11 +9,8 @@ using Skrabbl.API.Hubs;
 using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
 using Skrabbl.DataAccess.Queries;
-<<<<<<< HEAD
 using Skrabbl.API.Services;
 using Skrabbl.API.Middleware;
-=======
->>>>>>> fc7f6156b0cb667be6ef2ef46790d82e556f1e7a
 
 namespace Skrabbl.API
 {
@@ -42,12 +39,9 @@ namespace Skrabbl.API
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IWordService, WordService>();
 
-<<<<<<< HEAD
             
             services.AddTokenAuthentication(Configuration);
 
-=======
->>>>>>> fc7f6156b0cb667be6ef2ef46790d82e556f1e7a
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddControllers();
             services.AddSignalR();
