@@ -3,6 +3,8 @@ import {setupSignalR as chatSetupSignalR} from "../modules/chat"
 
 export default function createSignalRPlugin() {
     return async store => {
+        store.dispatch("signalR/setConnection", ws)
+
         chatSetupSignalR(ws, store)
 
         try {

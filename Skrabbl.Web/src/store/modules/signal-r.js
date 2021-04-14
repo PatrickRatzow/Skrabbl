@@ -1,10 +1,14 @@
 const state = () => ({
-    connected: false
+    connected: false,
+    connection: null
 })
 
 const getters = {}
 
 const actions = {
+    setConnection({commit}, connection) {
+        commit("setConnection", connection)
+    },
     connectionOpened({commit}) {
         commit("setConnected", true)
     },
@@ -16,6 +20,9 @@ const actions = {
 const mutations = {
     setConnected(state, status) {
         state.connected = status
+    },
+    setConnection(state, connection) {
+        state.connection = connection
     }
 }
 

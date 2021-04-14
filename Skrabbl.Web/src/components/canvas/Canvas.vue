@@ -50,12 +50,13 @@ export default {
     ...mapState({
       isConnected: state => state.signalR.connected,
       sizes: state => state.canvas.sizes,
-      colors: state => state.canvas.colors
+      colors: state => state.canvas.colors,
+      connection: state => state.signalR.connection
     }),
     ...mapGetters("canvas", {
       size: "size",
       color: "color"
-    })
+    }),
   },
   data() {
     return {
@@ -66,6 +67,9 @@ export default {
       },
       nodes: []
     }
+  },
+  mounted() {
+    this.setupHandlers()
   },
   methods: {
     setupHandlers() {
@@ -102,10 +106,17 @@ export default {
     draw(e) {
       if (!this.mouseInfo.isDown)
         return
-      
+
       const oX = e.offsetX
       const oY = e.offsetY
-      const node = this.addNode(this.stroke.color, this.stroke.thickness, this.mouseInfo.x, this.mouseInfo.y, oX, oY)
+      const node = this.addNode(
+          this.color.backgroundColor,
+          this.size,
+          this.mouseInfo.x,
+          this.mouseInfo.y,
+          oX,
+          oY
+      )
       this.sendNode(node)
       this.drawLine(node)
       this.mouseInfo.x = oX
