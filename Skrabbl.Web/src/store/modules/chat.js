@@ -66,14 +66,14 @@ export default store
 
 export function setupSignalR(ws, store) {
     ws.on("ReceiveMessage", (user, message) => {
-        store.dispatch("chatBox/addMessage", {
+        store.dispatch("chat/addMessage", {
             action: "chatMessage",
             user,
             message
         })
     });
     ws.on("GuessedWord", (user) => {
-        store.dispatch("chatBox/addMessage", {
+        store.dispatch("chat/addMessage", {
             action: "guessedWord",
             user
         })
