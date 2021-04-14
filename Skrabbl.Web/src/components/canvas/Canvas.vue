@@ -14,23 +14,19 @@
     />
     <div>
       <ul class="is-flex">
-        <li class="mr-2" v-for="(color, idx) of colors">
+        <li class="mr-2" v-for="color of colors">
           <ColorButton
               :key="color.backgroundColor"
-              :index="idx"
-              :name="color.name"
-              :background-color="color.backgroundColor"
-              :text-color="color.textColor || 'white'"
+              :color="color"
           />
         </li>
       </ul>
     </div>
     <div class="mt-2">
       <ul class="is-flex">
-        <li class="mr-2" v-for="(size, idx) of sizes">
+        <li class="mr-2" v-for="size of sizes">
           <SizeButton
               :key="size"
-              :index="idx"
               :size="size"
           />
         </li>

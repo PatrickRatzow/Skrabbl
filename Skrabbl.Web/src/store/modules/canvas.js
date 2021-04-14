@@ -8,17 +8,17 @@ const state = () => ({
         {name: "Light Grey", backgroundColor: "#d5d5d5", textColor: "black"}
     ],
     stroke: {
-        color: 0,
-        size: 0
+        color: {name: "Black", backgroundColor: "black"},
+        size: 1
     }
 })
 
 const getters = {
     color: state => {
-        return state.colors[state.stroke.color]
+        return state.stroke.color
     },
     size: state => {
-        return state.sizes[state.stroke.size]
+        return state.stroke.size
     }
 }
 

@@ -1,12 +1,12 @@
 <template>
   <button class="button" :style="{ 
       color: textColor, 
-      'background-color': backgroundColor, 
+      'background-color': color.backgroundColor, 
       opacity: isActive ? '100%' : '60%' 
   }"
-          @click="$store.dispatch('canvas/setColor', index)"
+          @click="$store.dispatch('canvas/setColor', color)"
   >
-    {{ name }}
+    {{ color.name }}
   </button>
 </template>
 
@@ -14,14 +14,14 @@
 export default {
   name: "ColorButton",
   props: {
-    index: Number,
-    name: String,
-    backgroundColor: String,
-    textColor: String
+    color: Object,
   },
   computed: {
+    textColor() {
+      return this.color.textColor || "white"
+    },
     isActive() {
-      return this.$store.state.canvas.stroke.color === this.index
+      return this.$store.getters["canvas/color"].backgroundColor === this.color.backgroundColor
     }
   }
 }

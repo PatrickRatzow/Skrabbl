@@ -1,7 +1,7 @@
 <template>
   <button class="button"
           :class="{ 'is-success': isActive }"
-          @click="$store.dispatch('canvas/setSize', index)"
+          @click="$store.dispatch('canvas/setSize', size)"
   >
     {{ size }}
   </button>
@@ -11,12 +11,11 @@
 export default {
   name: "SizeButton",
   props: {
-    index: Number,
     size: Number
   },
   computed: {
     isActive() {
-      return this.$store.state.canvas.stroke.size === this.index
+      return this.$store.getters["canvas/size"] === this.size
     }
   }
 }
