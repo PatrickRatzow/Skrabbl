@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div>X: {{ mouseInfo.x }}, Y: {{ mouseInfo.y }}</div>
     <div>Connected to SignalR: {{ isConnected ? 'Yes' : 'No' }}</div>
-    <div>Color: {{ color.name }}</div>
-    <div>Size: {{ size }}</div>
     <canvas id="draw-canvas"
             height="500"
             width="500"
