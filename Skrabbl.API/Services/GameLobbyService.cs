@@ -72,7 +72,7 @@ namespace Skrabbl.API.Services
 
         public async Task<IEnumerable<GameLobby>> GetAllGameLobbies()
         {
-            return await _gameLobbyRepository.GetAllLobbies();
+            return await _gameLobbyRepository.GetAllGameLobbies();
         }
 
         public async Task<GameLobby> GetLobbyByOwnerId(int ownerId)

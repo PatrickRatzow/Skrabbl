@@ -17,7 +17,7 @@ namespace Skrabbl.DataAccess
             _commandText = commandText;
         }
 
-        public async ValueTask<GameLobby> GetGameLobbyById(string ownerId)
+        public async Task<GameLobby> GetGameLobbyById(string ownerId)
         {
             return await WithConnection(async conn =>
             {
@@ -49,7 +49,7 @@ namespace Skrabbl.DataAccess
                 await conn.ExecuteAsync(_commandText.RemoveAllLobbies);
             });
         }
-        public async ValueTask<IEnumerable<GameLobby>> GetAllLobbies()
+        public async Task<IEnumerable<GameLobby>> GetAllGameLobbies()
         {
             return await WithConnection<IEnumerable<GameLobby>>(async conn =>
             {
@@ -57,7 +57,7 @@ namespace Skrabbl.DataAccess
             });
         }
 
-        public async ValueTask<GameLobby> GetLobbyByOwnerId(int ownerId)
+        public async Task<GameLobby> GetLobbyByOwnerId(int ownerId)
         {
             return await WithConnection(async conn =>
             {
