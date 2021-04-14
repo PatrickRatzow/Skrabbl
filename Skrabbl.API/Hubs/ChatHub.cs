@@ -10,6 +10,7 @@ namespace Skrabbl.API.Hubs
         {
             var user = _userService.GetUser(userId);
             var game = _gameService.GetGame(gameId);
+            
 
             await Task.WhenAll(user, game);
 
@@ -17,8 +18,11 @@ namespace Skrabbl.API.Hubs
                 return;
 
             await _messageService.CreateMessage(message, gameId, userId);
+            bool wordExist = await _wordService.DoesWordExist(message);
 
-            if (message == "Cake")
+
+
+            if (wordExist)
             {
                 await Clients.All.GuessedWord(user.Result.Username);
             }
