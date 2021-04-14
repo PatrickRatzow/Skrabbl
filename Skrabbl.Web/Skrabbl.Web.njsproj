@@ -52,6 +52,7 @@
       <Content Include="src\components\WeatherList.vue"/>
       <Content Include="src\signal-r.js"/>
       <Content Include="src\store\index.js"/>
+      <Content Include="src\store\modules\canvas.js"/>
       <Content Include="src\store\modules\chat.js"/>
       <Content Include="src\store\modules\signal-r.js"/>
       <Content Include="src\store\plugins\signal-r.js"/>

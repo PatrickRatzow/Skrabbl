@@ -1,8 +1,10 @@
 <template>
   <div>
     <div>X: {{ mouseInfo.x }}, Y: {{ mouseInfo.y }}</div>
-    <div>Connected to SignalR: {{ connected ? 'Yes' : 'No' }}</div>
-    <canvas id="draw-canvas" 
+    <div>Connected to SignalR: {{ isConnected ? 'Yes' : 'No' }}</div>
+    <div>Color: {{ color.name }}</div>
+    <div>Size: {{ size }}</div>
+    <canvas id="draw-canvas"
             height="500"
             width="500"
             @mousemove="draw"
@@ -12,24 +14,24 @@
     />
     <div>
       <ul class="is-flex">
-        <li v-for="color of colors">
-          <ColorButton 
+        <li class="mr-2" v-for="(color, idx) of colors">
+          <ColorButton
               :key="color.backgroundColor"
+              :index="idx"
               :name="color.name"
               :background-color="color.backgroundColor"
               :text-color="color.textColor || 'white'"
-              @click="setColor"
           />
         </li>
       </ul>
     </div>
     <div class="mt-2">
       <ul class="is-flex">
-        <li v-for="thickness of thicknesses">
+        <li class="mr-2" v-for="(size, idx) of sizes">
           <SizeButton
-              :key="thickness"
-              :size="thickness"
-              @click="setThickness"
+              :key="size"
+              :index="idx"
+              :size="size"
           />
         </li>
       </ul>
@@ -38,55 +40,38 @@
 </template>
 
 <script>
+import {mapGetters, mapState} from "vuex"
 import ColorButton from "@/components/canvas/ColorButton";
 import SizeButton from "@/components/canvas/SizeButton";
+
 export default {
   name: "Canvas",
   components: {
     ColorButton,
     SizeButton
   },
+  computed: {
+    ...mapState({
+      isConnected: state => state.signalR.connected,
+      sizes: state => state.canvas.sizes,
+      colors: state => state.canvas.colors
+    }),
+    ...mapGetters("canvas", {
+      size: "size",
+      color: "color"
+    })
+  },
   data() {
     return {
-      connection: null,
-      connected: false,
       mouseInfo: {
         isDown: false,
         x: 0,
         y: 0
       },
-      colors: [
-        { name: "Black", backgroundColor: "black" },
-        { name: "Red", backgroundColor: "#ff0000" },
-        { name: "Blue", backgroundColor: "#0000ff" },
-        { name: "Green", backgroundColor: "#00ff00" },
-        { name: "Light Grey", backgroundColor: "#d5d5d5", textColor: "black" }
-      ],
-      thicknesses: [
-          1,
-          2,
-          4,
-          8,
-          16,
-          32,
-          64
-      ],
-      stroke: {
-        color: "black",
-        thickness: 1
-      },
       nodes: []
     }
   },
-  mounted() {
-    this.createConnection()
-    this.setupHandlers()
-    this.startConnection()
-  },
   methods: {
-    createConnection() {
-      this.connection = new signalR.HubConnectionBuilder().withUrl("/ws/drawing-hub").build();
-    },
     setupHandlers() {
       this.connection.on("ReceiveNode", (color, size, x1, y1, x2, y2) => {
         this.addNode(color, size, x1, y1, x2, y2);
@@ -97,11 +82,6 @@ export default {
         });
       });
     },
-    async startConnection() {
-      await this.connection.start()
-      
-      this.connected = true
-    },
     sendNode(node) {
       this.connection.invoke(
           "SendNode",
@@ -109,12 +89,6 @@ export default {
           node.size,
           ...node.position
       )
-    },
-    setColor(color) {
-      this.stroke.color = color;
-    },
-    setThickness(thickness) {
-      this.stroke.thickness = thickness;
     },
     startDrawing(e) {
       this.mouseInfo.x = e.offsetX
@@ -172,13 +146,5 @@ export default {
 <style scoped>
   canvas {
     border: 2px solid grey;
-  }
-  
-  button {
-    color: white;
-    height: 40px;
-    min-width: 70px;
-    margin-right: 10px;
-    font-size: 16px;
   }
 </style>
