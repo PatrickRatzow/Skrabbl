@@ -4,7 +4,7 @@ const gameId = 3
 
 const state = () => ({
     messages: [],
-    status: ""
+    hasFetchedMessages: false
 })
 
 const getters = {}
@@ -25,11 +25,11 @@ const actions = {
     connectionClosed({commit}) {
         commit("setConnected", false)
     },
-    async fetchMessages({commit, state}) {
-        if (state.messages.length)
+    fetchMessages({commit, state}) {
+        if (state.hasFetchedMessages)
             return
 
-        ws.invoke("GetAllMessages", gameId)
+        commit("fetchMessages")
     }
 }
 
@@ -46,6 +46,11 @@ const mutations = {
     },
     setConnected(state, status) {
         state.connected = status
+    },
+    fetchMessages(state) {
+        state.hasFetchedMessages = true
+
+        ws.invoke("GetAllMessages", gameId)
     }
 }
 
