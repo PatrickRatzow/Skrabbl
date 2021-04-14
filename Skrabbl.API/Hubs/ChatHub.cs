@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Skrabbl.API.Hubs
 {
+    [Authorize]
     public class ChatHub : Hub
     {
         private readonly IMessageService _messageService;

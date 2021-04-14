@@ -18,7 +18,8 @@
             return {
                 username: "",
                 password: "",
-                stat: ""
+                stat: "",
+                token: ""
             }
         },
         methods: {
@@ -36,7 +37,7 @@
                     }
                 })
                 if (request.status === 200) {
-                    this.stat = "ok"
+                    this.stat = await request.text()
                 } else {
                     this.stat = "not ok"
                 }

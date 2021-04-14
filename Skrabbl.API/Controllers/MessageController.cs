@@ -7,10 +7,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Skrabbl.Model.Dto;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Skrabbl.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class MessageController : ControllerBase
     {

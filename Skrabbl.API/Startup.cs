@@ -17,6 +17,7 @@ using System.Net.WebSockets;
 using Skrabbl.DataAccess;
 using Skrabbl.DataAccess.Queries;
 using Skrabbl.API.Services;
+using Skrabbl.API.Middleware;
 
 namespace Skrabbl.API
 {
@@ -44,7 +45,10 @@ namespace Skrabbl.API
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IWordService, WordService>();
+
             
+            services.AddTokenAuthentication(Configuration);
+
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddControllers();
             services.AddSignalR();
@@ -74,7 +78,8 @@ namespace Skrabbl.API
 
             app.UseRouting();
 
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
