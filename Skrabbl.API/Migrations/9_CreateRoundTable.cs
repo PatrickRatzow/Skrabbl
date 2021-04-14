@@ -22,7 +22,6 @@ namespace Skrabbl.API.Migrations
             Create.ForeignKey()
                 .FromTable("Round").ForeignColumn("GameId")
                 .ToTable("Game").PrimaryColumn("Id");
-
         }
         public override void Down()
         {
