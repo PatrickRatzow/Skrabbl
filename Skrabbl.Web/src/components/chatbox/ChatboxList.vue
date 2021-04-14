@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex"
+import {mapActions, mapState} from "vuex"
 import ChatboxItem from "@/components/chatbox/ChatboxItem.vue"
 
 export default {
@@ -38,15 +38,11 @@ export default {
       messageInput: "",
     }
   },
-  computed: {
-    ...mapState({
-      messages: state => state.chat.messages,
-      hasGuessed: state => state.chat.hasGuessed,
-    }),
-    ...mapGetters({
-      isConnected: "signalR/isConnected"
-    })
-  },
+  computed: mapState({
+    messages: state => state.chat.messages,
+    hasGuessed: state => state.chat.hasGuessed,
+    isConnected: state => state.signalR.connected
+  }),
   methods: mapActions({
     sendMessage: "chat/sendMessage"
   }),

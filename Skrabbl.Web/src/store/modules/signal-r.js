@@ -2,9 +2,7 @@ const state = () => ({
     connected: false
 })
 
-const getters = {
-    isConnected: state => state.connected
-}
+const getters = {}
 
 const actions = {
     connectionOpened({commit}) {
