@@ -1,6 +1,7 @@
 import ws from "../../signal-r"
 import { setupSignalR as chatSetupSignalR } from "../modules/chat"
 import { setupSignalR as gameSetupSignalR } from "../modules/game"
+import { setupSignalR as authorizeSetupSignalR } from "../modules/authorize"
 
 export default function createSignalRPlugin() {
     return async store => {
@@ -8,6 +9,7 @@ export default function createSignalRPlugin() {
 
         chatSetupSignalR(ws, store)
         gameSetupSignalR(ws, store)
+        authorizeSetupSignalR(ws, store)
 
         try {
             await ws.start()

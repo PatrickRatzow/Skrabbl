@@ -13,6 +13,7 @@
 </template>
 
 <script>
+    import { mapActions, mapState } from "vuex"
     export default {
         data() {
             return {
@@ -37,11 +38,15 @@
                     }
                 })
                 if (request.status === 200) {
-                    this.stat = await request.text()
+                    this.$store.dispatch("authorize/login", {
+                        username: this.username,
+                        jwt: await request.text()
+                    })
                 } else {
                     this.stat = "not ok"
                 }
-            }
+            },
+            
         }
     }
 </script>

@@ -4,6 +4,7 @@ import chat from "./modules/chat"
 import signalR from "./modules/signal-r"
 import canvas from "./modules/canvas"
 import game from "./modules/game"
+import authorize from "./modules/authorize"
 import createSignalRPlugin from "./plugins/signal-r"
 
 Vue.use(Vuex)
@@ -13,7 +14,8 @@ export default new Vuex.Store({
         signalR,
         chat,
         canvas,
-        game
+        game,
+        authorize
     },
     plugins: [
         createSignalRPlugin()
