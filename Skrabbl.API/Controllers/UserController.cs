@@ -8,6 +8,7 @@ using Skrabbl.Model;
 using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
 using Skrabbl.Model.Dto;
+using Microsoft.Extensions.Configuration;
 
 namespace Skrabbl.API.Controllers
 {
@@ -16,10 +17,12 @@ namespace Skrabbl.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private IConfiguration _config;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IConfiguration config)
         {
             _userService = userService;
+            _config = config;
         }
 
         [HttpPost]
@@ -43,7 +46,9 @@ namespace Skrabbl.API.Controllers
             try
             {
                 User user = await _userService.GetUser(login.Username, login.Password);
-                return Ok();
+                var jwt = new JwtService(_config);
+                var token = jwt.GenerateSecurityToken(user);
+                return Ok(token);
             }
             catch(Exception e)
             {

@@ -1,6 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using Skrabbl.API.Services;
+using Skrabbl.DataAccess;
+using Skrabbl.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Skrabbl.API.Hubs
 {

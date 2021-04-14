@@ -12,6 +12,7 @@
           <router-link to="/chat-box">ChatBox</router-link> |
           <router-link to="/JoinLobby">Join Lobby</router-link> |
           <router-link to="/Words">Words</router-link> |
+          
       </div>
     <router-view/>
   </div>

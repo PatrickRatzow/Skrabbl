@@ -54,8 +54,8 @@ namespace Skrabbl.API.Services
 
         public async Task<bool> RemoveGameLobby(string id)
         {
-            var exisitngLobby = await GetGameLobbyById(id);
-            if (exisitngLobby != null)
+            var existingLobby = await GetGameLobbyById(id);
+            if (existingLobby != null)
             {
                 await _gameLobbyRepository.RemoveGameLobby(id);
                 return true;
@@ -72,7 +72,7 @@ namespace Skrabbl.API.Services
 
         public async Task<IEnumerable<GameLobby>> GetAllGameLobbies()
         {
-            return await _gameLobbyRepository.GetAllLobbies();
+            return await _gameLobbyRepository.GetAllGameLobbies();
         }
 
         public async Task<GameLobby> GetLobbyByOwnerId(int ownerId)
