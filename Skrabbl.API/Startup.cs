@@ -70,8 +70,6 @@ namespace Skrabbl.API
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<GameHub>("/ws/game");
-                endpoints.MapHub<GameLobbyHub>("ws/game-lobby-hub");
-                endpoints.MapHub<ConnectToLobbyHub>("/ws/connectToLobby-hub");
             });
 
             app.UseSpaStaticFiles();

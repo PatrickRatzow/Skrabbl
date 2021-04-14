@@ -8,5 +8,6 @@ namespace Skrabbl.API.Hubs
         Task ReceiveMessage(string userName, string message);
         Task DeletedMessage(string userName, string message);
         Task ReceiveDrawNode(string color, int size, int x1, int y1, int x2, int y2);
+        Task GameLobbyDisconnected(string lobbyId);
     }
 }
