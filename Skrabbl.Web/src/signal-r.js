@@ -3,7 +3,7 @@ import {HubConnectionBuilder, LogLevel} from "@microsoft/signalr";
 const SignalRConnection = (function () {
     function SignalRConnection() {
         this.conn = new HubConnectionBuilder()
-            .withUrl("/ws/chat-hub")
+            .withUrl("/ws/game")
             .configureLogging(LogLevel.Information)
             .build()
 

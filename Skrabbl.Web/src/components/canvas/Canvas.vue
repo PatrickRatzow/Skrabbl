@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     setupHandlers() {
-      this.connection.on("ReceiveNode", (color, size, x1, y1, x2, y2) => {
+      this.connection.on("ReceiveDrawNode", (color, size, x1, y1, x2, y2) => {
         this.addNode(color, size, x1, y1, x2, y2);
         this.drawLine({
           position: [x1, y1, x2, y2],
@@ -84,7 +84,7 @@ export default {
     },
     sendNode(node) {
       this.connection.invoke(
-          "SendNode",
+          "SendDrawNode",
           node.color,
           node.size,
           ...node.position
