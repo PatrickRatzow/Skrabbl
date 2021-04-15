@@ -19,12 +19,13 @@ namespace Skrabbl.API.Services
 
         public async Task<ChatMessage> CreateMessage(string message, int gameId, int userId)
         {
-            ChatMessage msg = new ChatMessage();
-            msg.Message = message;
-            msg.CreatedAt = DateTime.Now;
-            msg.Game = new Game { Id = gameId };
-            msg.User = new User { Id = userId };
-
+            ChatMessage msg = new ChatMessage
+            {
+                Message = message,
+                CreatedAt = DateTime.Now,
+                Game = new Game { Id = gameId },
+                User = new User { Id = userId }
+            };
             await _messageRepository.SaveMessage(msg);
 
             return msg;
