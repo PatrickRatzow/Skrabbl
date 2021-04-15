@@ -7,7 +7,7 @@ const state = () => ({
     ],
     lobbyCode: "a2C4",
     chosenWord: "",
-    wordList: ["Cake","Hest","Spil"]
+    wordList: []
 })
 
 const getters = {
@@ -16,11 +16,16 @@ const getters = {
     }
 }
 
+//To trigger in browser
+//document.getElementById("app").__vue__.$store.dispatch("game/setWords", ["Cake", "Hest", "XD"])
 const actions = {
     chooseWord({ commit }, msg) {
         commit("setChosenWord", msg);
-        commit("clearWordList");
+        commit("setWords", []);
         //ws.invoke("setChosenWord", msg)
+    }, 
+    setWords({ commit }, words) {
+        commit("setWords", words);
     }
 }
 
@@ -28,8 +33,8 @@ const mutations = {
     setChosenWord(state, msg) {
         state.chosenWord = msg
     },
-    clearWordList(state) {
-        state.wordList = []
+    setWords(state, words) {
+        state.wordList = words;
     }
 }
 
