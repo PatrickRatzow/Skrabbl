@@ -6,12 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Skrabbl.API.Hubs;
+using Skrabbl.API.Middleware;
 using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
 using Skrabbl.DataAccess.Queries;
-using Skrabbl.API.Services;
-using Skrabbl.API.Middleware;
-
 
 namespace Skrabbl.API
 {
@@ -34,12 +32,13 @@ namespace Skrabbl.API
             services.AddTransient<IGameRepository, GameRepository>();
             services.AddTransient<IWordListRepository, WordListRepository>();
 
+            services.AddScoped<ICryptographyService, CryptographyService>();
             services.AddScoped<IGameLobbyService, GameLobbyService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IWordService, WordService>();
-            
+
             services.AddTokenAuthentication(Configuration);
 
 

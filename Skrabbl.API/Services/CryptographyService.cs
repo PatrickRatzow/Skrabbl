@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Skrabbl.API.Services
 {
-    public class CryptographyService
+    public class CryptographyService : ICryptographyService
     {
         public byte[] CreateSalt()
         {
@@ -33,8 +33,8 @@ namespace Skrabbl.API.Services
         public bool AreEqual(string plainTextInput, string hashedInput, byte[] salt)
         {
             var newHashedPin = GenerateHash(plainTextInput, salt);
-            
-            return newHashedPin.Equals(hashedInput); 
+
+            return newHashedPin.Equals(hashedInput);
         }
     }
 }
