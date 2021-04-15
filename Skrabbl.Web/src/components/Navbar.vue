@@ -19,7 +19,6 @@
                     <router-link class="navbar-item" to="/game">Game</router-link>
                     <router-link class="navbar-item" to="/chat-box">ChatBox</router-link>
                     <router-link class="navbar-item" to="/JoinLobby">Join Lobby</router-link>
-                    <router-link class="navbar-item" to="/Words">Words</router-link>
                 </div>
 
                 <div class="navbar-end">
