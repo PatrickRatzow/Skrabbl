@@ -5,7 +5,7 @@ const state = () => ({
     ],
     lobbyCode: "a2C4",
     chosenWord: "",
-    wordList: ["Cake", "Hest", "Spil"],
+    wordList: [],
     roundOverview: null
 })
 
