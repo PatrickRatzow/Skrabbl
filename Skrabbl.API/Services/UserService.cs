@@ -35,6 +35,7 @@ namespace Skrabbl.API.Services
         public async Task<User> GetUser(string _username, string _password)
         {
             User user = await _userRepository.GetUserByUsername(_username);
+            if (user == null) return null;
 
             byte[] salt = Convert.FromBase64String(user.Salt);
             bool equal = _cryptographyService.AreEqual(_password, user.Password, salt);

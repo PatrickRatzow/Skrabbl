@@ -17,13 +17,14 @@ namespace Skrabbl.API.Test.Services
         public async Task GetGame_Succeeds()
         {
             //Arrange
-            int gameiD = 3;
-            var mock = new Mock<GameRepository>();
-            mock.Setup(m => m.GetGame(It.IsAny<int>())).Returns(Task.FromResult<Game>(null));
+            int gameId = 3;
+            Game game = new Game();
+            var mock = new Mock<IGameRepository>();
+            mock.Setup(m => m.GetGame(It.IsAny<int>())).Returns(Task.FromResult<Game>(game));
             var service = new GameService(mock.Object);
 
             //Act
-            await service.GetGame(gameiD);
+            await service.GetGame(gameId);
 
             //Assert
             mock.VerifyAll();
