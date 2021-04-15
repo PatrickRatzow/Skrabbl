@@ -17,5 +17,10 @@ namespace Skrabbl.API.Services
         {
             return await _gameRepository.GetGame(id);
         }
+
+        public void EndTurn() 
+        { 
+        
+        }
     }
 }

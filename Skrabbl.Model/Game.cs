@@ -7,8 +7,8 @@ namespace Skrabbl.Model
     public class Game
     {
         public int Id { get; set; }
-        public string ActiveRound { get; set; }
-        public string GameLobbyId { get; set; }
+        public int ActiveRoundId { get; set; }
+        public int GameLobbyId { get; set; }
         
     }
 }
