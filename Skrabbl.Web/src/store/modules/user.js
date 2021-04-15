@@ -7,21 +7,32 @@ const state = () => ({
 })
 
 const actions = {
-    login({ commit }, obj) {
-        commit("setUser", obj)
+    login({ commit }, { username, jwt, rememberMe }) {
+        const user = {
+            username,
+            jwt
+        }
+        commit("setUser", user)
         commit("setLoginModalVisible", false)
 
-        localStorage.setItem("user", JSON.stringify(obj))
+        const json = JSON.stringify(user);
+        if (rememberMe) {
+            localStorage.setItem("user", json);
+        } else {
+            sessionStorage.setItem("user", json);
+        }
     },
     logout({ commit }) {
         commit("removeUser")
         commit("setLogoutModalVisible", false)
 
+        sessionStorage.removeItem("user")
         localStorage.removeItem("user")
     },
     loadUser({ commit }) {
-        const user = localStorage.getItem("user")
-        if (user === null) return
+        let user = localStorage.getItem("user")
+        if (user === null) user = sessionStorage.getItem("user")
+        if (user == null) return;
 
         commit("setUser", JSON.parse(user))
     },
