@@ -44,6 +44,10 @@
     <Content Include="src\components\JoinLobby.vue">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\components\Modals.vue" />
+    <Content Include="src\components\modals\LoginModal.vue" />
+    <Content Include="src\components\modals\LogoutModal.vue" />
+    <Content Include="src\components\modals\RegisterModal.vue" />
     <Content Include="src\components\Navbar.vue" />
     <Content Include="src\components\player\PlayerItem.vue" />
     <Content Include="src\components\player\PlayerList.vue" />
@@ -83,12 +87,6 @@
     <Content Include="src\views\JoinLobby.vue">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\views\Login.vue">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\views\Register.vue">
-      <SubType>Code</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dist\" />
@@ -98,6 +96,7 @@
     <Folder Include="src\components\" />
     <Folder Include="src\components\canvas\" />
     <Folder Include="src\components\chatbox\" />
+    <Folder Include="src\components\modals\" />
     <Folder Include="src\components\player\" />
     <Folder Include="src\components\setting\" />
     <Folder Include="src\components\words\" />

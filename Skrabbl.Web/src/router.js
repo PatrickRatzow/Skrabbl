@@ -27,7 +27,7 @@ export default new Router({
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "about" */ './views/Canvas.vue')
+            component: () => import(/* webpackChunkName: "canvas" */ './views/Canvas.vue')
         },
         {
             path: '/game-lobby',
@@ -35,7 +35,7 @@ export default new Router({
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "about" */ './views/GameLobby.vue')
+            component: () => import(/* webpackChunkName: "game-lobby" */ './views/GameLobby.vue')
         },
         {
             path: '/game',
@@ -43,25 +43,7 @@ export default new Router({
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "about" */ './views/Game.vue')
-
-
-        },
-        {
-            path: '/login',
-            name: 'Login',
-            // route level code-splitting
-            // this generates a separate chunk (about.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "about" */ './views/Login.vue')
-        },
-        {
-            path: '/register',
-            name: 'Register',
-            // route level code-splitting
-            // this generates a separate chunk (about.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "about" */ './views/Register.vue')
+            component: () => import(/* webpackChunkName: "game" */ './views/Game.vue')
         },
         {
             path: '/chat-box',
@@ -69,7 +51,7 @@ export default new Router({
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "about" */ './views/ChatBox.vue')
+            component: () => import(/* webpackChunkName: "chatbox" */ './views/ChatBox.vue')
         },
         {
             path: '/JoinLobby',
@@ -77,7 +59,7 @@ export default new Router({
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "about" */ './views/JoinLobby')
+            component: () => import(/* webpackChunkName: "join-lobby" */ './views/JoinLobby')
         }, 
         {
             path: '/Words',
