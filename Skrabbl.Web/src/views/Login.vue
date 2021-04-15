@@ -7,14 +7,19 @@
         <button @click.prevent="runLogin">Login</button>
         <div>
             <h1>status</h1>
-            <h3>{{ stat }}</h3>
+            <h3>{{isLoggedIn ? 'is logged in' : 'Is not logged in'}}</h3>
         </div>
     </form>
 </template>
 
 <script>
-    import { mapActions, mapState } from "vuex"
+    import { mapActions, mapState, mapGetters } from "vuex"
     export default {
+        computed: {
+            ...mapGetters("user", {
+                isLoggedIn: "isLoggedIn"
+            })
+        },
         data() {
             return {
                 username: "",
@@ -38,12 +43,10 @@
                     }
                 })
                 if (request.status === 200) {
-                    this.$store.dispatch("authorize/login", {
+                    this.$store.dispatch("user/login", {
                         username: this.username,
                         jwt: await request.text()
                     })
-                } else {
-                    this.stat = "not ok"
                 }
             },
             

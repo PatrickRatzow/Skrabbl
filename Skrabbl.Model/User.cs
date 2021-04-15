@@ -10,5 +10,16 @@ namespace Skrabbl.Model
         public string Password { get; set; }
         public string Salt { get; set; }
         public string GameLobbyId { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is User user &&
+                   Id == user.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
     }
 }

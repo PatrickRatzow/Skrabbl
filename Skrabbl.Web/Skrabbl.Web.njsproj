@@ -44,6 +44,7 @@
     <Content Include="src\components\JoinLobby.vue">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\components\Navbar.vue"/>
     <Content Include="src\components\player\PlayerItem.vue" />
     <Content Include="src\components\player\PlayerList.vue" />
     <Content Include="src\components\setting\SettingItem.vue" />
@@ -53,7 +54,7 @@
     <Content Include="src\components\WeatherList.vue" />
     <Content Include="src\signal-r.js" />
     <Content Include="src\store\index.js" />
-    <Content Include="src\store\modules\authorize.js">
+    <Content Include="src\store\modules\user.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\store\modules\canvas.js" />
