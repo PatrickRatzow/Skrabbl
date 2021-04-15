@@ -15,14 +15,14 @@ namespace Skrabbl.DataAccess
             _commandText = commandText;
         }
 
-        public async ValueTask<User> GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
             return await WithConnection(async conn =>
                 await conn.QuerySingleAsync<User>(_commandText.GetUserById, new { Id = id })
             );
         }
 
-        public async ValueTask<User> GetUserByUsername(string username)
+        public async Task<User> GetUserByUsername(string username)
         {
             return await WithConnection(async conn =>
                 await conn.QuerySingleAsync<User>(_commandText.GetUserByUsername, new { Username = username })
