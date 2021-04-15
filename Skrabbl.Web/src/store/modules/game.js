@@ -20,11 +20,16 @@ const getters = {
     }
 }
 
+//To trigger in browser
+//document.getElementById("app").__vue__.$store.dispatch("game/setWords", ["Cake", "Hest", "XD"])
 const actions = {
     chooseWord({ commit }, msg) {
         commit("setChosenWord", msg);
-        commit("clearWordList");
+        commit("setWords", []);
         //ws.invoke("setChosenWord", msg)
+    }, 
+    setWords({ commit }, words) {
+        commit("setWords", words);
     },
     roundOver({ commit }, status) {
         commit("setRoundOverview", status);
@@ -35,6 +40,8 @@ const mutations = {
     setChosenWord(state, msg) {
         state.chosenWord = msg
     },
+    setWords(state, words) {
+        state.wordList = words;
     clearWordList(state) {
         state.wordList = []
     },
