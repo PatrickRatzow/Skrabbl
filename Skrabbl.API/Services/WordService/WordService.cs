@@ -38,7 +38,6 @@ namespace Skrabbl.API.Services
                 Random random = new Random();
                 var shuffledList = wordList.OrderBy(x => random.Next()).ToList();
                 return shuffledList.GetRange(0, 3);
-           
         }
 
         public Task<bool> UsedWords(string word)
@@ -61,11 +60,7 @@ namespace Skrabbl.API.Services
                 refreshTimeWords = DateTime.Now.AddMinutes(refreshInterval);
             }
             return words.ToList();
-
         }
-
-
-
     }
 
 }
