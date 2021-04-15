@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +38,7 @@ namespace Skrabbl.API.Test.Services
             //Arrange
             int gameId = 3;
             var mock = new Mock<IMessageRepository>();
-            mock.Setup(m => m.GetAllMessages(It.IsAny<int>())).Returns(Task.FromResult<IEnumerable<ChatMessage>>(null)); 
+            mock.Setup(m => m.GetAllMessages(It.IsAny<int>())).Returns(Task.FromResult<IEnumerable<ChatMessage>>(null));
             var service = new MessageService(mock.Object);
 
             //Act
