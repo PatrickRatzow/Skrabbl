@@ -44,6 +44,7 @@
     <Content Include="src\components\JoinLobby.vue">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\components\Navbar.vue"/>
     <Content Include="src\components\player\PlayerItem.vue" />
     <Content Include="src\components\player\PlayerList.vue" />
     <Content Include="src\components\setting\SettingItem.vue" />
