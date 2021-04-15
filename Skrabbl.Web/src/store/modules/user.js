@@ -8,10 +8,19 @@ const state = () => ({
 const actions = {
     login({ commit }, obj) {
         commit("setUser", obj)
+        localStorage.setItem("user", JSON.stringify(obj))
     },
     logout({ commit }) {
         commit("removeUser")
+        localStorage.removeItem("user")
+    },
+    loadUser({ commit }) {
+        const user = localStorage.getItem("user")
+        if (user === null) return
+
+        commit("setUser", JSON.parse(user))
     }
+
 }
 
 const mutations = {

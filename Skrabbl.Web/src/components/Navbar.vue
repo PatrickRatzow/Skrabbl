@@ -25,17 +25,24 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <router-link to="/register">
-                <button class="button is-info">
-                  Sign Up
-                </button>
-              </router-link>
+                <div v-if="isLoggedIn">
+                    <button class="button is-warning" @click="logout">
+                        Logout
+                    </button>
+                </div>
+                <div v-else>
+                    <router-link to="/register">
+                        <button class="button is-info">
+                            Sign Up
+                        </button>
+                    </router-link>
 
-              <router-link to="/login" class="ml-2">
-                <button class="button is-dark is-outlined">
-                  Log in
-                </button>
-              </router-link>
+                    <router-link to="/login" class="ml-2">
+                        <button class="button is-dark is-outlined">
+                            Log in
+                        </button>
+                    </router-link>
+                </div>
             </div>
           </div>
         </div>
@@ -45,25 +52,34 @@
 </template>
 
 <script>
-export default {
-  methods: {
-    setupNavbarBurger() {
-      const navbarBurger = document.querySelectorAll('.navbar-burger')[0]
-      if (navbarBurger === undefined)
-        return;
+    import { mapGetters, mapActions } from "vuex"
+    export default {
+        computed: {
+            ...mapGetters("user", {
+                isLoggedIn: "isLoggedIn"
+            })
+        },
+        methods: {
+            ...mapActions("user", {
+                logout: "logout"
+            }), 
+        setupNavbarBurger() {
+          const navbarBurger = document.querySelectorAll('.navbar-burger')[0]
+          if (navbarBurger === undefined)
+            return;
 
-      navbarBurger.addEventListener("click", () => {
-        const target = navbarBurger.dataset.target;
-        const targetNode = document.getElementById(target);
-        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-        navbarBurger.classList.toggle('is-active');
-        targetNode.classList.toggle('is-active');
-      })
-    }
-  },
-  mounted() {
-    this.setupNavbarBurger();
-  }
+          navbarBurger.addEventListener("click", () => {
+            const target = navbarBurger.dataset.target;
+            const targetNode = document.getElementById(target);
+            // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+            navbarBurger.classList.toggle('is-active');
+            targetNode.classList.toggle('is-active');
+          })
+        }
+      },
+      mounted() {
+        this.setupNavbarBurger();
+      }
 }
 </script>
 
