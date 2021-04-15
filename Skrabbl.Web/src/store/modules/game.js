@@ -7,12 +7,16 @@ const state = () => ({
     ],
     lobbyCode: "a2C4",
     chosenWord: "",
-    wordList: ["Cake","Hest","Spil"]
+    wordList: ["Cake", "Hest", "Spil"],
+    roundOverview: null
 })
 
 const getters = {
     isWordListEmpty: state => {
         return state.wordList.length === 0;
+    },
+    isRoundOverviewVisible: state => {
+        return state.roundOverview != null;
     }
 }
 
@@ -21,6 +25,9 @@ const actions = {
         commit("setChosenWord", msg);
         commit("clearWordList");
         //ws.invoke("setChosenWord", msg)
+    },
+    roundOver({ commit }, status) {
+        commit("setRoundOverview", status);
     }
 }
 
@@ -30,6 +37,9 @@ const mutations = {
     },
     clearWordList(state) {
         state.wordList = []
+    },
+    setRoundOverview(state, status) {
+        state.roundOverview = status
     }
 }
 
