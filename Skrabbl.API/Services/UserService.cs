@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
@@ -10,11 +7,13 @@ namespace Skrabbl.API.Services
 {
     public class UserService : IUserService
     {
-        IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ICryptographyService _cryptographyService;
 
-        public UserService(IUserRepository userRepo)
+        public UserService(IUserRepository userRepo, ICryptographyService cryptographyService)
         {
             _userRepository = userRepo;
+            _cryptographyService = cryptographyService;
         }
 
 
@@ -23,28 +22,27 @@ namespace Skrabbl.API.Services
             User current = new User();
             current.Username = _userName;
 
-            byte[] salt = new CryptographyService().CreateSalt();
-            current.Password = new CryptographyService().GenerateHash(_password, salt);
+            byte[] salt = _cryptographyService.CreateSalt();
+            current.Password = _cryptographyService.GenerateHash(_password, salt);
             current.Email = _email;
-            current.Salt = Convert.ToBase64String(salt); 
+            current.Salt = Convert.ToBase64String(salt);
 
             current.Id = await _userRepository.AddUser(current);
 
             return current;
-
         }
 
         public async Task<User> GetUser(string _username, string _password)
         {
             User user = await _userRepository.GetUserByUsername(_username);
-            CryptographyService cryptographyService = new CryptographyService();
 
             byte[] salt = Convert.FromBase64String(user.Salt);
-            bool equal = cryptographyService.AreEqual(_password, user.Password, salt);
+            bool equal = _cryptographyService.AreEqual(_password, user.Password, salt);
             if (equal)
             {
                 return user;
             }
+
             return null;
         }
 
