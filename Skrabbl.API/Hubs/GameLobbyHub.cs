@@ -30,15 +30,26 @@ namespace Skrabbl.API.Hubs
 
         public async Task CreateLobby(string lobbyId)
         {
+            // TODO: Replace later, hardcoded for now
+            var userId = 25;
+
             if (Lobbies.ContainsKey(lobbyId) || Owners.ContainsKey(Context.ConnectionId))
                 return;
 
-            var gameLobby = await _gameLobbyService.GetGameLobbyById(lobbyId);
-            if (gameLobby == null)
+            var gameLobby = _gameLobbyService.GetGameLobbyById(lobbyId);
+            var user = _userService.GetUser(userId);
+
+            await Task.WhenAll(gameLobby, user);
+
+            if (gameLobby.Result != null || user.Result.GameLobbyId != null)
                 return;
 
             Lobbies.TryAdd(lobbyId, Context.ConnectionId);
             Owners.TryAdd(Context.ConnectionId, lobbyId);
+            await Groups.AddToGroupAsync(Context.ConnectionId, lobbyId);
+
+            var newLobby = await _gameLobbyService.AddGameLobby(userId);
+            await _userService.AddToLobby(userId, newLobby.GameCode);
         }
 
         public async Task JoinLobby(int userId, string gameCode)
