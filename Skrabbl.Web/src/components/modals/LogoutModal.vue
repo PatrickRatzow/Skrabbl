@@ -9,7 +9,8 @@
                     </div>
                     <div class="field mt-3">
                         <button class="button is-danger" @click="logout">Logout</button>
-                        <button class="button ml-2" @click="setLogoutModalVisible(false)">Cancel</button>
+                        <button class="button ml-2 is-dark is-outlined" @click="setLogoutModalVisible(false)">Cancel
+                        </button>
                     </div>
                 </div>
             </div>
