@@ -30,15 +30,16 @@ namespace Skrabbl.API.Test.Services
         }
 
         //Has not been implemented yet :)
-        [Test]
-        public Task EndTurn_Succeeds()
-        {
-            //Arrange
-            
-
-            //Act
-
-            //Assert
-        }
+        //[Test]
+        //public Task EndTurn_Succeeds()
+        //{
+        //    //Arrange
+        //    var mock = new Mock<GameRepository>();
+        //    var service = new GameService(mock.Object);
+        //    //Act
+        //    service.EndTurn();
+        //    //Assert
+        //    mock.VerifyAll();
+        //}
     }
 }
