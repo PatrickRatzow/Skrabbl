@@ -7,18 +7,27 @@ const state = () => ({
 
 const actions = {
     login({ commit }, obj) {
-        commit("login", obj)
+        commit("setUser", obj)
+    },
+    logout({ commit }) {
+        commit("removeUser")
     }
 }
 
 const mutations = {
-    login(state, { username, jwt }) {
+    setUser(state, { username, jwt }) {
         state.username = username,
         state.jwt = jwt
+    },
+    removeUser(state) {
+        state.username = ""
+        state.jwt = ""
     }
 }
 
-const getters = {}
+const getters = {
+    isLoggedIn: state => state.jwt.length > 0
+}
 
 const store = {
     namespaced: true,

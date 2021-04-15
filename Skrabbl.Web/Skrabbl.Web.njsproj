@@ -53,7 +53,7 @@
     <Content Include="src\components\WeatherList.vue" />
     <Content Include="src\signal-r.js" />
     <Content Include="src\store\index.js" />
-    <Content Include="src\store\modules\authorize.js">
+    <Content Include="src\store\modules\user.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\store\modules\canvas.js" />
