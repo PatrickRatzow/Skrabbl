@@ -1,5 +1,3 @@
-import ws from "../../signal-r"
-
 const state = () => ({
     players: [
         { id: 1, name: "Patrick", color: "#e74c3c", owner: true },
@@ -42,8 +40,6 @@ const mutations = {
     },
     setWords(state, words) {
         state.wordList = words;
-    clearWordList(state) {
-        state.wordList = []
     },
     setRoundOverview(state, status) {
         state.roundOverview = status
