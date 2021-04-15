@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="modal" :class="{ 'is-active': !isWordListEmpty }">
+        <div class="modal is-active">
             <div class="modal-background"></div>
             <div class="modal-content">
                 <!-- Any other Bulma elements you want -->
@@ -10,7 +10,7 @@
                     </div>
                     <ul class="mt-2 is-flex-direction-row is-flex">
                         <li v-for="word in wordList" class="ml-2">
-                            <button class="button is-primary" @click="setMessage(word)">{{word}}</button>
+                            <button class="button is-primary" @click="chooseWord(word)">{{word}}</button>
                         </li>
                     </ul>
                 </div>
@@ -20,24 +20,20 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex"
+import { mapGetters, mapState, mapActions } from "vuex"
 
 export default {
         computed: {
-            ...mapGetters("game", {
-                isWordListEmpty: "isWordListEmpty"
-            }),
             ...mapState("game", {
                 wordList: "wordList"
             })
         },
         methods: {
-            setMessage(msg) {
-                this.$store.dispatch("game/chooseWord", msg)
-            }
+            ...mapActions("game", {
+                chooseWord: "chooseWord"
+            })
         },
         mounted() {
-
         }
     }
 </script>

@@ -1,5 +1,3 @@
-import ws from "../../signal-r"
-
 const state = () => ({
     players: [
         { id: 1, name: "Patrick", color: "#e74c3c", owner: true },
@@ -7,20 +5,32 @@ const state = () => ({
     ],
     lobbyCode: "a2C4",
     chosenWord: "",
-    wordList: ["Cake","Hest","Spil"]
+    wordList: ["Cake", "Hest", "Spil"],
+    roundOverview: null
 })
 
 const getters = {
     isWordListEmpty: state => {
         return state.wordList.length === 0;
+    },
+    isRoundOverviewVisible: state => {
+        return state.roundOverview != null;
     }
 }
 
+//To trigger in browser
+//document.getElementById("app").__vue__.$store.dispatch("game/setWords", ["Cake", "Hest", "XD"])
 const actions = {
     chooseWord({ commit }, msg) {
         commit("setChosenWord", msg);
-        commit("clearWordList");
+        commit("setWords", []);
         //ws.invoke("setChosenWord", msg)
+    }, 
+    setWords({ commit }, words) {
+        commit("setWords", words);
+    },
+    roundOver({ commit }, status) {
+        commit("setRoundOverview", status);
     }
 }
 
@@ -28,8 +38,11 @@ const mutations = {
     setChosenWord(state, msg) {
         state.chosenWord = msg
     },
-    clearWordList(state) {
-        state.wordList = []
+    setWords(state, words) {
+        state.wordList = words;
+    },
+    setRoundOverview(state, status) {
+        state.roundOverview = status
     }
 }
 

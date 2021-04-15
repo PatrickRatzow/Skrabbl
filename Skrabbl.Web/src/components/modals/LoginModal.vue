@@ -28,6 +28,12 @@
                         </div>
                     </div>
                     <div class="field">
+                        <label class="checkbox">
+                            <input type="checkbox" v-model="rememberMe">
+                            Remember Me
+                        </label>
+                    </div>
+                    <div class="field">
                         <button class="button is-success" :class="{ 'is-loading': isLoading }" @click.prevent="login">
                             Login
                         </button>
@@ -49,6 +55,7 @@ export default {
         return {
             username: "",
             password: "",
+            rememberMe: false,
             isLoading: false,
             error: ""
         }
@@ -77,7 +84,8 @@ export default {
             if (resp.status === 200) {
                 await this.$store.dispatch("user/login", {
                     username: this.username,
-                    jwt: await resp.text()
+                    jwt: await resp.text(),
+                    rememberMe: this.rememberMe
                 })
             } else {
                 this.error = await resp.text();

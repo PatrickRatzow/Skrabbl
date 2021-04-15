@@ -19,14 +19,15 @@
                     <router-link class="navbar-item" to="/game">Game</router-link>
                     <router-link class="navbar-item" to="/chat-box">ChatBox</router-link>
                     <router-link class="navbar-item" to="/JoinLobby">Join Lobby</router-link>
-                    <router-link class="navbar-item" to="/Words">Words</router-link>
                 </div>
 
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
                             <div v-if="isLoggedIn">
-                                <button class="button is-warning" @click="setLogoutModalVisible(true)">Logout</button>
+                                <button class="button is-danger is-outlined" @click="setLogoutModalVisible(true)">
+                                    Logout
+                                </button>
                             </div>
                             <div v-else>
                                 <button class="button is-info" @click="setRegisterModalVisible(true)">Sign Up</button>
