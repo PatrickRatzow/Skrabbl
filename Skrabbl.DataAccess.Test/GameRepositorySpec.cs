@@ -28,7 +28,7 @@ namespace Skrabbl.DataAccess.Test
             public async Task GetGameFromDbTestById()
             {
                 //Arrange
-                Game game = new Game();
+                Game game;
 
                 //Act
                 game = await _gameRepository.GetGame(4);
