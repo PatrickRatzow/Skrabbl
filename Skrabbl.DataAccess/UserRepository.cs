@@ -18,14 +18,14 @@ namespace Skrabbl.DataAccess
         public async Task<User> GetUserById(int id)
         {
             return await WithConnection(async conn =>
-                await conn.QuerySingleAsync<User>(_commandText.GetUserById, new { Id = id })
+                await conn.QuerySingleOrDefaultAsync<User>(_commandText.GetUserById, new { Id = id })
             );
         }
 
         public async Task<User> GetUserByUsername(string username)
         {
             return await WithConnection(async conn =>
-                await conn.QuerySingleAsync<User>(_commandText.GetUserByUsername, new { Username = username })
+                await conn.QuerySingleOrDefaultAsync<User>(_commandText.GetUserByUsername, new { Username = username })
             );
         }
 
@@ -33,7 +33,7 @@ namespace Skrabbl.DataAccess
         {
             return await WithConnection(async conn =>
             {
-                var id = await conn.QuerySingleAsync<int>(_commandText.AddUser, entity);
+                var id = await conn.QuerySingleOrDefaultAsync<int>(_commandText.AddUser, entity);
 
                 return id;
             });

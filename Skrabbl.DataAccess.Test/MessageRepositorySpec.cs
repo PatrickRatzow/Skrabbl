@@ -5,6 +5,7 @@ using Skrabbl.DataAccess.Queries;
 using Skrabbl.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,9 +27,17 @@ namespace Skrabbl.DataAccess.Test
         }
 
         [Test]
-        public void Test1()
+        public async Task GetAllMessagesFromDbTest()
         {
-            Assert.Pass();
+            //Arrange
+            IEnumerable<ChatMessage> msgList;
+            int gamelobbyId = 10;
+
+            //Act
+            msgList = await _messageRepository.GetAllMessages(gamelobbyId);
+
+            //Assert
+            Assert.IsNotNull(msgList);
         }
 
         [Test]

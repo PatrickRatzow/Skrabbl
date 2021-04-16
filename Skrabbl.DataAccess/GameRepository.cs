@@ -22,5 +22,10 @@ namespace Skrabbl.DataAccess
                 return await conn.QueryFirstOrDefaultAsync<Game>(_commandText.GetGameById, new { Id = id });
             });
         }
+
+        public async Task AddGame()
+        {
+            //Needs to be implemented
+        }
     }
 }
