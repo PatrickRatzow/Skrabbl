@@ -12,16 +12,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace Skrabbl.API.Controllers
 {
-      [ApiController]
-      [Route("api/[controller]")]
+    [ApiController]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IGameLobbyService _gameLobbyService;
         private IConfiguration _config;
 
-        public UserController(IUserService userService, IConfiguration config)
+        public UserController(IUserService userService, IGameLobbyService gameLobbyService, IConfiguration config)
         {
             _userService = userService;
+            _gameLobbyService = gameLobbyService;
             _config = config;
         }
 
@@ -37,11 +39,10 @@ namespace Skrabbl.API.Controllers
             {
                 return BadRequest();
             }
-
         }
 
-      [HttpPost("login")]
-      public async Task<IActionResult> Login([FromBody] LoginDto login )
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto login)
         {
             try
             {
@@ -50,12 +51,35 @@ namespace Skrabbl.API.Controllers
                 var token = jwt.GenerateSecurityToken(user);
                 return Ok(token);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest();
             }
-            
         }
 
+
+        [HttpPost("join")]
+        public async Task<IActionResult> Join([FromBody] JoinLobbyDto join)
+        {
+            try
+            {
+                User user = await _userService.GetUser(join.UserId);
+
+                GameLobby gameLobby = await _gameLobbyService.GetGameLobbyById(join.LobbyCode);
+
+                if (user == null || user.GameLobbyId != null || gameLobby == null)
+                    return BadRequest();
+
+                //Go to database and change the players connected to lobby + player connected lobby
+                await _userService.AddToLobby(user.Id, gameLobby.GameCode);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+
+        }
     }
 }
