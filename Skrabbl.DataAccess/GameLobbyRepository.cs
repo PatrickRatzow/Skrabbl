@@ -34,11 +34,11 @@ namespace Skrabbl.DataAccess
             });
         }
 
-        public async Task RemoveGameLobby(string ownerId)
+        public async Task<int> RemoveGameLobby(string ownerId)
         {
-            await WithConnection(async conn =>
+            return await WithConnection(async conn =>
             {
-                await conn.ExecuteAsync(_commandText.RemoveLobbyById, new { GameCode = ownerId });
+                return await conn.ExecuteAsync(_commandText.RemoveLobbyById, new { GameCode = ownerId });
             });
         }
 

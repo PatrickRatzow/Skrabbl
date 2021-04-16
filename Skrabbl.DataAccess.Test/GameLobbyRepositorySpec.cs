@@ -20,11 +20,11 @@ namespace Skrabbl.DataAccess.Test
             var cmd = new CommandText();
 
             _gameLobbyRepository = new GameLobbyRepository(config, cmd);
-            _gameLobbyRepository.RemoveAllGameLobbies();
+            //_gameLobbyRepository.RemoveGameLobby("1111");
         }
 
         [Test]
-        public async Task AddGameLobbyToDbTest()
+        public async Task AddGameLobbyToDb()
         {
             //Arrange
             GameLobby gameLobby = new GameLobby()
@@ -42,7 +42,7 @@ namespace Skrabbl.DataAccess.Test
         }
 
         [Test]
-        public async Task FindGameLobbyByOwnerIdTest()
+        public async Task FindGameLobbyByOwnerId()
         {
             //Arrange
             int userId = 26;
@@ -54,10 +54,49 @@ namespace Skrabbl.DataAccess.Test
             Assert.IsNotNull(gameLobby);
         }
 
+        [Test]
+        public async Task FindGameLobbyById()
+        {
+            //Arrange
+            string lobbyId = "1111";
+
+            //Act
+            var gameLobby = await _gameLobbyRepository.GetGameLobbyById(lobbyId);
+
+            //Assert
+            Assert.IsNotNull(gameLobby);
+        }
+
+        [Test]
+        public async Task RemoveGameLobby()
+        {
+            //Arrange
+            string lobbyId = "1223";
+
+            //Act
+            int rowsAffected = await _gameLobbyRepository.RemoveGameLobby(lobbyId);
+
+            //Assert
+            Assert.AreEqual(rowsAffected, 1);
+            
+        }
+
+        [Test]
+        public async Task GetAllLobbies()
+        {
+            //Arrange
+
+            //Act
+            var list =await _gameLobbyRepository.GetAllGameLobbies();
+
+            //Assert
+
+        }
+
         [OneTimeTearDown]
         public void TearDown()
         {
-            _gameLobbyRepository.RemoveAllGameLobbies();
+           // _gameLobbyRepository.RemoveGameLobby("1111");
         }
 
     }
