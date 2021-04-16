@@ -7,48 +7,52 @@
                     <p class="modal-card-title">Login</p>
                     <button @click="setLoginModalVisible(false)" class="delete" aria-label="close"/>
                 </header>
-                <section class="modal-card-body">
-                    <div class="field has-text-danger" v-if="errors.length">
-                        <b>Error!</b>
-                        <ul>
-                            <li v-for="error in errors">
-                                <span>{{ error }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="field">
-                        <label for="username" class="label">Username</label>
-                        <div class="control has-icons-left">
-                            <input type="text" id="username" class="input" placeholder="John Smith" v-model="username"
-                                   required>
-                            <span class="icon is-small is-left">
-                                <i class="fa fa-user"/>
-                            </span>
+                <form @submit.prevent="login()">
+                    <section class="modal-card-body">
+                        <div class="field has-text-danger" v-if="errors.length">
+                            <b>Error!</b>
+                            <ul>
+                                <li v-for="error in errors">
+                                    <span>{{ error }}</span>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="field">
-                        <label for="password" class="label">Password</label>
-                        <div class="control has-icons-left">
-                            <input type="password" id="password" class="input" placeholder="********" v-model="password"
-                                   required>
-                            <span class="icon is-small is-left">
-                                <i class="fa fa-lock"/>
-                            </span>
+                        <div class="field">
+                            <label for="username" class="label">Username</label>
+                            <div class="control has-icons-left">
+                                <input type="text" id="username" class="input" placeholder="John Smith"
+                                       v-model="username"
+                                       required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-user"/>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <label class="checkbox">
-                            <input type="checkbox" v-model="rememberMe">
-                            Remember Me
-                        </label>
-                    </div>
-                </section>
-                <footer class="modal-card-foot">
-                    <button class="button is-success" :class="{ 'is-loading': isLoading }" @click.prevent="login">
-                        Login
-                    </button>
-                    <button @click="setLoginModalVisible(false)" class="button">Cancel</button>
-                </footer>
+                        <div class="field">
+                            <label for="password" class="label">Password</label>
+                            <div class="control has-icons-left">
+                                <input type="password" id="password" class="input" placeholder="********"
+                                       v-model="password"
+                                       required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-lock"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="checkbox">
+                                <input type="checkbox" v-model="rememberMe">
+                                Remember Me
+                            </label>
+                        </div>
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-success" :class="{ 'is-loading': isLoading }" @click.prevent="login">
+                            Login
+                        </button>
+                        <button @click="setLoginModalVisible(false)" class="button">Cancel</button>
+                    </footer>
+                </form>
             </div>
         </div>
     </div>

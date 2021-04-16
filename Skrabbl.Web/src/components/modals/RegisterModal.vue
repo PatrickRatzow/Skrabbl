@@ -7,57 +7,62 @@
                     <p class="modal-card-title">Register</p>
                     <button @click="setRegisterModalVisible(false)" class="delete" aria-label="close"/>
                 </header>
-                <section class="modal-card-body">
-                    <div class="field has-text-danger" v-if="error">
-                        <b>Error!</b> {{ error }}
-                    </div>
-                    <div class="field">
-                        <label for="username" class="label">Username</label>
-                        <div class="control has-icons-left">
-                            <input type="text" id="username" class="input" placeholder="John Smith" v-model="username"
-                                   required>
-                            <span class="icon is-small is-left">
-                                <i class="fa fa-user"/>
-                            </span>
+                <form @submit.prevent="register()">
+                    <section class="modal-card-body">
+                        <div class="field has-text-danger" v-if="error">
+                            <b>Error!</b> {{ error }}
                         </div>
-                    </div>
-                    <div class="field">
-                        <label for="email" class="label">Email</label>
-                        <div class="control has-icons-left">
-                            <input type="email" id="email" class="input" placeholder="john@smith.com" v-model="email"
-                                   required>
-                            <span class="icon is-small is-left">
-                                <i class="fa fa-envelope"/>
-                            </span>
+                        <div class="field">
+                            <label for="username" class="label">Username</label>
+                            <div class="control has-icons-left">
+                                <input type="text" id="username" class="input" placeholder="John Smith"
+                                       v-model="username"
+                                       required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-user"/>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <label for="password" class="label">Password</label>
-                        <div class="control has-icons-left">
-                            <input type="password" id="password" class="input" placeholder="********" v-model="password"
-                                   required>
-                            <span class="icon is-small is-left">
-                                <i class="fa fa-lock"/>
-                            </span>
+                        <div class="field">
+                            <label for="email" class="label">Email</label>
+                            <div class="control has-icons-left">
+                                <input type="email" id="email" class="input" placeholder="john@smith.com"
+                                       v-model="email"
+                                       required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-envelope"/>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <label for="repeat-password" class="label">Re-Enter Password</label>
-                        <div class="control has-icons-left">
-                            <input type="password" id="repeat-password" class="input" placeholder="********"
-                                   v-model="repeatedPassword" required>
-                            <span class="icon is-small is-left">
-                                <i class="fa fa-lock"/>
-                            </span>
+                        <div class="field">
+                            <label for="password" class="label">Password</label>
+                            <div class="control has-icons-left">
+                                <input type="password" id="password" class="input" placeholder="********"
+                                       v-model="password"
+                                       required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-lock"/>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                </section>
-                <footer class="modal-card-foot">
-                    <button class="button is-success" :class="{ 'is-loading': isLoading }"
-                            @click.prevent="register">Register
-                    </button>
-                    <button @click="setRegisterModalVisible(false)" class="button">Cancel</button>
-                </footer>
+                        <div class="field">
+                            <label for="repeat-password" class="label">Re-Enter Password</label>
+                            <div class="control has-icons-left">
+                                <input type="password" id="repeat-password" class="input" placeholder="********"
+                                       v-model="repeatedPassword" required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-lock"/>
+                                </span>
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-success" :class="{ 'is-loading': isLoading }"
+                                @click.prevent="register">Register
+                        </button>
+                        <button @click="setRegisterModalVisible(false)" class="button">Cancel</button>
+                    </footer>
+                </form>
             </div>
         </div>
     </div>
