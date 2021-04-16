@@ -25,7 +25,7 @@ namespace Skrabbl.DataAccess.Test
             }
 
             [Test]
-            public async Task GetGameFromDbTestById()
+            public async Task GetGameFromDbTestByValidId()
             {
                 //Arrange
                 Game game;
@@ -35,6 +35,19 @@ namespace Skrabbl.DataAccess.Test
 
                 //Assert
                 Assert.IsNotNull(game);
+            }
+
+            [Test]
+            public async Task GetGameFromDbTestByInvalidId()
+            {
+                //Arrange
+                Game game = new Game();
+
+                //Act
+                game = await _gameRepository.GetGame(9999);
+
+                //Assert
+                Assert.IsNull(game);
             }
 
             [Test]

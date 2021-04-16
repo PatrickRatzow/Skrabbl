@@ -44,6 +44,108 @@ namespace Skrabbl.DataAccess.Test
             Assert.IsNotNull(id);
         }
 
+        [TestCase("patrickratzow", "patrickratzow@ucn.dk", "password1", "salt1")]
+        [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2")]
+        public async Task GetUserById(string username, string email, string password, string salt)
+        {
+
+            //Arrange
+            var user = new User
+            {
+                Username = username,
+                Email = email,
+                Password = password,
+                Salt = salt
+            };
+            var id = await _userRepository.AddUser(user);
+            _userIds.Add(id);
+
+            //Act
+            User gottenUser = await _userRepository.GetUserById(id);
+
+            //Assert
+            Assert.AreEqual(gottenUser.Username, username);
+            Assert.AreEqual(gottenUser.Password, password);
+            Assert.AreEqual(gottenUser.Email, email);
+            Assert.AreEqual(gottenUser.Salt, salt);
+        }
+
+        [TestCase("patrickratzow", "patrickratzow@ucn.dk", "password1", "salt1")]
+        [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2")]
+        public async Task GetUserByUsername(string username, string email, string password, string salt)
+        {
+
+            //Arrange
+            var user = new User
+            {
+                Username = username,
+                Email = email,
+                Password = password,
+                Salt = salt
+            };
+            var id = await _userRepository.AddUser(user);
+            _userIds.Add(id);
+
+            //Act
+            User gottenUser = await _userRepository.GetUserByUsername(username);
+
+            //Assert
+            Assert.AreEqual(gottenUser.Username, username);
+            Assert.AreEqual(gottenUser.Password, password);
+            Assert.AreEqual(gottenUser.Email, email);
+            Assert.AreEqual(gottenUser.Salt, salt);
+        }
+
+        [TestCase("patrickratzow", "patrickratzow@ucn.dk", "password1", "salt1")]
+        [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2")]
+        public async Task DeleteUserById(string username, string email, string password, string salt)
+        {
+
+            //Arrange
+            var user = new User
+            {
+                Username = username,
+                Email = email,
+                Password = password,
+                Salt = salt
+            };
+            var id = await _userRepository.AddUser(user);
+            _userIds.Add(id);
+            
+
+            //Act
+            await _userRepository.DeleteUserById(id);
+            User gottenUser = await _userRepository.GetUserById(id);
+            
+            //Assert
+            Assert.IsNull(gottenUser);
+        }
+
+        [TestCase("patrickratzow", "patrickratzow@ucn.dk", "password1", "salt1", "2234")]
+        [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2", "1111")]
+        public async Task AddUserToLobby(string username, string email, string password, string salt, string lobby)
+        {
+
+            //Arrange
+            var user = new User
+            {
+                Username = username,
+                Email = email,
+                Password = password,
+                Salt = salt
+            };
+            var id = await _userRepository.AddUser(user);
+            _userIds.Add(id);
+
+
+            //Act
+            await _userRepository.AddUserToLobby(id, lobby);
+            User gottenUser = await _userRepository.GetUserById(id);
+
+            //Assert
+            Assert.AreEqual(gottenUser.GameLobbyId, lobby);
+        }
+
         [TearDown]
         public void TearDown()
         {
