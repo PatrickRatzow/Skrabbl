@@ -14,6 +14,20 @@ const actions = {
     },
     connectionClosed({ commit }) {
         commit("setConnected", false)
+    },
+    async connect({ state, dispatch }, token) {
+        try {
+            await state.connection.start(token)
+
+            dispatch("connectionOpened")
+        } catch {
+            dispatch("connectionClosed")
+        }
+    },
+    async disconnect({ state, dispatch }) {
+        await state.connection.stop();
+
+        dispatch("connectionClosed")
     }
 }
 

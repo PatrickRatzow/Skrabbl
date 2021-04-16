@@ -10,13 +10,5 @@ export default function createSignalRPlugin() {
         chatSetupSignalR(ws, store)
         gameSetupSignalR(ws, store)
         userSetupSignalR(ws, store)
-
-        try {
-            await ws.start()
-
-            store.dispatch("signalR/connectionOpened")
-        } catch {
-            store.dispatch("signalR/connectionClosed")
-        }
     }
 }

@@ -1,38 +1,41 @@
 ﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
-using Skrabbl.API.Services;
-using Skrabbl.DataAccess;
-using Skrabbl.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Skrabbl.API.Hubs
 {
+    [Authorize]
     public partial class GameHub : Hub<IGameHub>, IGameClient
     {
-        public async Task SendMessage(int gameId, int userId, string message)
+        public async Task SendMessage(string message)
         {
-            var user = _userService.GetUser(userId);
-            var game = _gameService.GetGame(gameId);
-            
+            var userName = Context.User.Identity.Name;
+            var idClaim = Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (idClaim == null || userName == null) return;
+            var userId = int.Parse(idClaim.Value);
+
+            var gameId = 3;
+            /*
+            var user = await _userService.GetUser(userId);
+            var game = _gameService.GetGame(user.GameLobbyId);
 
             await Task.WhenAll(user, game);
 
             if (user.Result == null || game.Result == null)
                 return;
-
+            */
             await _messageService.CreateMessage(message, gameId, userId);
             bool wordExist = await _wordService.DoesWordExist(message);
 
-
-
             if (wordExist)
             {
-                await Clients.All.GuessedWord(user.Result.Username);
+                await Clients.All.GuessedWord(userName);
             }
             else
             {
-                await Clients.All.ReceiveMessage(user.Result.Username, message);
+                await Clients.All.ReceiveMessage(userName, message);
             }
         }
 
@@ -43,6 +46,7 @@ namespace Skrabbl.API.Hubs
 
         public async Task GetAllMessages(int lobbyId)
         {
+            var xd = Context.User.Identity;
             var messages = await _messageService.GetMessages(lobbyId);
             var tasks = messages.Select(msg =>
                 Clients.Caller.ReceiveMessage(msg.User.Username, msg.Message)

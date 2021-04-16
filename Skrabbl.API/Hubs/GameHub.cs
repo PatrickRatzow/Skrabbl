@@ -12,14 +12,13 @@ namespace Skrabbl.API.Hubs
         private readonly IWordService _wordService;
 
         public GameHub(IMessageService messageService, IUserService userService, IGameService gameService,
-            IGameLobbyService gameLobbyService,IWordService wordService )
+            IGameLobbyService gameLobbyService, IWordService wordService)
         {
             _messageService = messageService;
             _userService = userService;
             _gameService = gameService;
             _gameLobbyService = gameLobbyService;
             _wordService = wordService;
-            
         }
     }
 }

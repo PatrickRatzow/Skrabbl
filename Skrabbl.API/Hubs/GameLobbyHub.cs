@@ -13,6 +13,7 @@ namespace Skrabbl.API.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
+            /*
             var lobbyId = Owners[Context.ConnectionId];
             if (lobbyId != null)
             {
@@ -24,7 +25,7 @@ namespace Skrabbl.API.Hubs
                     Clients.All.GameLobbyDisconnected(lobbyId)
                 );
             }
-
+            */
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -32,6 +33,7 @@ namespace Skrabbl.API.Hubs
         {
             // TODO: Replace later, hardcoded for now
             var userId = 25;
+            var xd = Context.User.Identity;
 
             if (Lobbies.ContainsKey(lobbyId) || Owners.ContainsKey(Context.ConnectionId))
                 return;

@@ -1,6 +1,4 @@
-import ws from "../../utils/signal-r"
-
-const gameId = 3
+import chatService from "../../services/chat.service"
 
 const state = () => ({
     messages: [],
@@ -10,7 +8,9 @@ const state = () => ({
 const getters = {}
 
 const actions = {
-    sendMessage({ commit }, message) {
+    async sendMessage({ commit }, message) {
+        await chatService.sendMessage(message)
+
         commit("sendMessage", message)
     },
     addMessage({ commit }, object) {
@@ -25,19 +25,14 @@ const actions = {
     connectionClosed({ commit }) {
         commit("setConnected", false)
     },
-    fetchMessages({ commit, state }) {
-        if (state.hasFetchedMessages)
-            return
+    async fetchMessages({ commit }) {
+        const hasFetched = await chatService.fetchMessages()
 
-        commit("fetchMessages")
+        commit("setFetchedMessages", hasFetched)
     }
 }
 
 const mutations = {
-    sendMessage(state, message) {
-        const userId = 25 // TODO: Replace this later
-        ws.invoke("SendMessage", gameId, userId, message)
-    },
     addMessage(state, msg) {
         state.messages.push(msg)
     },
@@ -47,10 +42,8 @@ const mutations = {
     setConnected(state, status) {
         state.connected = status
     },
-    fetchMessages(state) {
-        state.hasFetchedMessages = true
-
-        ws.invoke("GetAllMessages", gameId)
+    setFetchedMessages(state, hasFetched) {
+        state.hasFetchedMessages = hasFetched
     }
 }
 

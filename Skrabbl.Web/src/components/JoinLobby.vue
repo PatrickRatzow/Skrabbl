@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="box">
+    <div class="main is-flex is-justify-content-center is-align-items-flex-start">
+        <div class="box mt-6">
             <div class="field has-text-danger" v-if="errors.length">
                 <b>Error!</b>
                 <ul>
@@ -9,67 +9,76 @@
                     </li>
                 </ul>
             </div>
-            <input maxlength="4" type="text" v-model="gameCode" />
-            <button @click="joinLobby">Join game</button>
+            <div>
+                <label for="lobby-code" class="label">Lobby Code</label>
+                <div class="control has-icons-left">
+                    <input
+                            type="text"
+                            id="lobby-code"
+                            class="input"
+                            maxlength="4"
+                            minlength="4"
+                            placeholder="0xXg"
+                            v-model="lobbyCode"
+                            required
+                    >
+                    <span class="icon is-small is-left">
+                        <i class="fa fa-code"/>
+                    </span>
+                </div>
+                <button class="mt-2 button is-primary" @click="joinLobby">Join Game Lobby</button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                userId: 31,
-                gameCode: "",
-                errors: []
-            }
-        },
-        methods: {
-            async joinLobby() {
-                this.errors = []
+import LobbyService from "@/services/lobby.service"
 
-                if (this.gameCode == "") {
-                    this.errors.push("Type in a gamecode")
-                } else if (this.gameCode.length < 4){
-                    this.errors.push("Valid gamecode is 4 characters")
-                }else {
-                    const data = {
-                        UserId: this.userId,
-                        LobbyCode: this.gameCode
-                    }
+export default {
+    data() {
+        return {
+            lobbyCode: "",
+            errors: []
+        }
+    },
+    methods: {
+        async joinLobby() {
+            this.errors = []
 
-                    const resp = await fetch("/api/user/join", {
-                        method: "POST",
-                        body: JSON.stringify(data),
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
-                    })
-                    if (resp.status == 404) {
-                        this.errors.push("Not a valid gamecode")
-                    }
-                    if (resp.status == 400) {
-                        this.errors.push("Bad request")
+            if (!this.lobbyCode) {
+                this.errors.push("You need to input a lobby code!")
+            } else if (this.lobbyCode.length !== 4) {
+                this.errors.push("Your lobby code must be 4 characters long!")
+            } else {
+                try {
+                    const resp = await LobbyService.joinLobby(this.lobbyCode);
+                    this.errors.push("Not an error! Found a lobby!")
+                    this.errors.push(resp.data)
+                } catch (err) {
+                    if (err.response.status === 404) {
+                        this.errors.push("Unable to find that lobby")
+                    } else if (err.response.status === 403) {
+                        this.errors.push("You're not allowed to do that! You're already in a lobby")
+                    } else if (err.response.status === 400) {
+                        this.errors.push("Malformed request!")
+                    } else {
+                        this.errors.push(`Unexpected error. Code: ${err.response.status}`)
                     }
                 }
             }
+        }
         }
     }
 </script>
 
 <style scoped>
-    button {
-        color: black;
-        height: 30px;
-        width: 100px;
-        margin-right: 10px;
-        font-size: 16px;
-    }
+.box {
+    min-width: clamp(0px, calc(100vw - 2rem), 500px);
+    max-width: 600px;
+}
 
-    input {
-        width: 75px;
-        height: 30px;
-        margin-right: 10px;
-        font-size: 16px;
-    }
+.main {
+    min-height: calc(100vh - 52px);
+}
 </style>

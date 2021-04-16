@@ -1,14 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
-using Skrabbl.Model;
-using Skrabbl.API.Services;
-using Skrabbl.DataAccess;
-using Skrabbl.Model.Dto;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Skrabbl.API.Services;
+using Skrabbl.Model;
+using Skrabbl.Model.Dto;
 
 namespace Skrabbl.API.Controllers
 {
@@ -55,31 +51,6 @@ namespace Skrabbl.API.Controllers
             {
                 return BadRequest();
             }
-        }
-
-
-        [HttpPost("join")]
-        public async Task<IActionResult> Join([FromBody] JoinLobbyDto join)
-        {
-            try
-            {
-                User user = await _userService.GetUser(join.UserId);
-
-                GameLobby gameLobby = await _gameLobbyService.GetGameLobbyById(join.LobbyCode);
-
-                if (user == null || user.GameLobbyId != null || gameLobby == null)
-                    return BadRequest();
-
-                //Go to database and change the players connected to lobby + player connected lobby
-                await _userService.AddToLobby(user.Id, gameLobby.GameCode);
-
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest();
-            }
-
         }
     }
 }

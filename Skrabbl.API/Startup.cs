@@ -41,7 +41,6 @@ namespace Skrabbl.API
 
             services.AddTokenAuthentication(Configuration);
 
-
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddControllers();
             services.AddSignalR();

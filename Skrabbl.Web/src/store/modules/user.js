@@ -4,10 +4,12 @@ const state = () => ({
     showLoginModal: false,
     showRegisterModal: false,
     showLogoutModal: false,
+    userId: 25,
+    gameId: 3
 })
 
 const actions = {
-    login({ commit }, { username, jwt, rememberMe }) {
+    login({ commit, dispatch }, { username, jwt, rememberMe }) {
         const user = {
             username,
             jwt
@@ -21,20 +23,26 @@ const actions = {
         } else {
             sessionStorage.setItem("user", json);
         }
+
+        dispatch("signalR/connect", jwt, { root: true })
     },
-    logout({ commit }) {
+    logout({ commit, dispatch }) {
         commit("removeUser")
         commit("setLogoutModalVisible", false)
 
         sessionStorage.removeItem("user")
         localStorage.removeItem("user")
+
+        dispatch("signalR/disconnect", {}, { root: true })
     },
-    loadUser({ commit }) {
+    loadUser({ commit, dispatch }) {
         let user = localStorage.getItem("user")
         if (user === null) user = sessionStorage.getItem("user")
         if (user == null) return;
 
-        commit("setUser", JSON.parse(user))
+        const json = JSON.parse(user)
+        commit("setUser", json)
+        dispatch("signalR/connect", json.jwt, { root: true })
     },
     setLoginModalVisible({ commit }, visible) {
         commit("setLoginModalVisible", visible)
