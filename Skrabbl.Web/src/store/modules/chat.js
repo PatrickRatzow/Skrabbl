@@ -1,4 +1,4 @@
-import ws from "../../signal-r"
+import ws from "../../utils/signal-r"
 
 const gameId = 3
 

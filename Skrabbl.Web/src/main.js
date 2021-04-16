@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import App from './App.vue';
 import store from "./store/index"
 import router from './router'
-import ws from "./signal-r"
+import ws from "./utils/signal-r"
 
 Vue.config.productionTip = true;
 

@@ -1,4 +1,4 @@
-import ws from "../../signal-r"
+import ws from "../../utils/signal-r"
 import { setupSignalR as chatSetupSignalR } from "../modules/chat"
 import { setupSignalR as gameSetupSignalR } from "../modules/game"
 import { setupSignalR as userSetupSignalR } from "../modules/user"

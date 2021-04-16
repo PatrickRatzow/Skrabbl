@@ -2,8 +2,12 @@
     <div class="container">
         <div class="modal is-active">
             <div class="modal-background"></div>
-            <div class="modal-content">
-                <form class="box">
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Register</p>
+                    <button @click="setRegisterModalVisible(false)" class="delete" aria-label="close"/>
+                </header>
+                <section class="modal-card-body">
                     <div class="field has-text-danger" v-if="error">
                         <b>Error!</b> {{ error }}
                     </div>
@@ -47,15 +51,14 @@
                             </span>
                         </div>
                     </div>
-                    <div class="field">
-                        <button class="button is-success" :class="{ 'is-loading': isLoading }"
-                                @click.prevent="register">Register
-                        </button>
-                    </div>
-                </form>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success" :class="{ 'is-loading': isLoading }"
+                            @click.prevent="register">Register
+                    </button>
+                    <button @click="setRegisterModalVisible(false)" class="button">Cancel</button>
+                </footer>
             </div>
-
-            <button @click="setRegisterModalVisible(false)" class="modal-close is-large" aria-label="close"></button>
         </div>
     </div>
 </template>
@@ -131,7 +134,7 @@ export default {
 </script>
 
 <style scoped>
-.modal-content {
+.modal-card {
     overflow-x: hidden;
     word-break: break-word;
     max-width: 380px;

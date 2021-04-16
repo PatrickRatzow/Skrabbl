@@ -1,7 +1,7 @@
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 
-const SignalRConnection = (function () {
-    function SignalRConnection() {
+class SignalRConnection {
+    constructor() {
         this.conn = new HubConnectionBuilder()
             .withUrl("/ws/game")
             .configureLogging(LogLevel.Information)
@@ -12,7 +12,7 @@ const SignalRConnection = (function () {
         this.observers = []
     }
 
-    SignalRConnection.prototype.invoke = function (id, ...args) {
+    invoke(id, ...args) {
         if (!this.connected) {
             this.queue.push({
                 id,
@@ -25,11 +25,11 @@ const SignalRConnection = (function () {
         this.conn.invoke(id, ...args)
     }
 
-    SignalRConnection.prototype.on = function (id, callback) {
+    on(id, callback) {
         this.conn.on(id, callback)
     }
 
-    SignalRConnection.prototype.start = function () {
+    start() {
         return this.conn.start()
             .then(() => {
                 this.connected = true
@@ -39,11 +39,9 @@ const SignalRConnection = (function () {
                     this.conn.invoke(entry.id, ...entry.args)
                 })
             })
-            .catch(console.error)
     }
+}
 
-    return SignalRConnection
-}())
 
 export default new SignalRConnection()
 

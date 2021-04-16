@@ -4,6 +4,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>Skrabbl.Web</Name>
     <RootNamespace>Skrabbl.Web</RootNamespace>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -19,7 +20,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
     <NodejsPort>1337</NodejsPort>
-    <StartWebBrowser>true</StartWebBrowser>
+    <StartWebBrowser>True</StartWebBrowser>
     <ScriptArguments>serve</ScriptArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -59,7 +60,6 @@
     <Content Include="src\components\modals\ChooseWordModal.vue" />
     <Content Include="src\components\WeatherItem.vue" />
     <Content Include="src\components\WeatherList.vue" />
-    <Content Include="src\signal-r.js" />
     <Content Include="src\store\index.js" />
     <Content Include="src\store\modules\user.js">
       <SubType>Code</SubType>
@@ -69,6 +69,8 @@
     <Content Include="src\store\modules\game.js" />
     <Content Include="src\store\modules\signal-r.js" />
     <Content Include="src\store\plugins\signal-r.js" />
+    <Content Include="src\utils\signal-r.js" />
+    <Content Include="src\utils\storage.js" />
     <Content Include="src\views\Canvas.vue">
       <SubType>Code</SubType>
     </Content>
@@ -101,6 +103,7 @@
     <Folder Include="src\store\" />
     <Folder Include="src\store\modules\" />
     <Folder Include="src\store\plugins\" />
+    <Folder Include="src\utils\" />
     <Folder Include="src\views\" />
   </ItemGroup>
   <ItemGroup>

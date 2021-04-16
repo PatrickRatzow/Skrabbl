@@ -10,42 +10,67 @@ namespace Skrabbl.API.Services
     {
         public Dictionary<User, int> CalculatePoints(Turn turn, List<ChatMessage> messages, List<User> users)
         {
-            // alle messageList er alle messages fra et game
+            List<ChatMessage> messageList = FilterMessagesByTime(turn, messages);
+            List<ChatMessage> allCorrectGuesses = CorrectGuesses(turn, messageList);
+            Dictionary<User, int> points1 = PointsToUsers(turn, allCorrectGuesses, users);
+            Dictionary<User, int> points2 = PointsForWrongAnswers(turn, messageList, users);
+            return MergeDictionaries(points1, points2);
+
+        }
+
+        public List<ChatMessage> FilterMessagesByTime(Turn turn, List<ChatMessage> messages)
+        {
             // filtrer alle beskeder fra der er udenfor tidsrummet hvor turn har eksisteret - beholder alle indenfore tidsrummet
             List<ChatMessage> messageList = messages.FindAll(m => m.CreatedAt >= turn.StartTime && m.CreatedAt <= turn.EndTime).ToList();
-            // Her sortere den dem i tid (ikke sikker på at den gør det rigtig - x og y skal måske byttes)
             messageList.Sort((x, y) => x.CreatedAt.CompareTo(y.CreatedAt));
-            // her bliver der fundet alle korrekte svar udfra turn."currentword" og message
-            List<ChatMessage> allCorrectGuesses = messageList.FindAll(m => m.Message.Equals(turn.Word.Word));
-            // Dict create til at holde data 
+            return messageList;
+
+        }
+
+        public List<ChatMessage> CorrectGuesses(Turn turn, List<ChatMessage> messages)
+        {
+            List<ChatMessage> allCorrectGuesses = messages.FindAll(m => m.Message.Equals(turn.Word.Word));
+            return allCorrectGuesses;
+        }
+
+        public Dictionary<User, int> PointsToUsers(Turn turn, List<ChatMessage> allCorrectGuesses, List<User> users)
+        {
             Dictionary<User, int> points = users.ToDictionary(u => u, u => 0);
-            // Løber igennem alle de sorteret korrekte svar. Tager useren udfra index og efter giver point til den user i forhold til indexet efter plusser vi
-            // penalty til ved differencen af beskedens start og turens start
+
             for (int i = 0; i < allCorrectGuesses.Count; i++)
             {
-                
                 points[allCorrectGuesses[i].User] = points[allCorrectGuesses[i].User] + indexToPoint(i) + Penalty(GetPenaltyTime(turn.StartTime, allCorrectGuesses[i].CreatedAt));
-                //points.Add(allCorrectGuesses[i].User, indexToPoint(i) + Penalty(GetPenaltyTime(turn.StartTime, allCorrectGuesses[i].CreatedAt)));
-            }
-            //en dictionary hvor vi gemmer User som key og list<ChatMessage> fra den person i en dictionary VHA grp by
-            Dictionary<User, List<ChatMessage>> dicOfUserMsg = messageList.GroupBy(m => m.User).ToDictionary(group => group.Key, group => group.ToList());
-            //for hver item i dic skal vi gette penalty for antallet af wrongguesses. Der bliver 
-            foreach (var item in dicOfUserMsg)
-            {
 
-               int penalty = GetPenaltyFromGuesses(NumberOfWrongGuesses(item.Value, turn.Word.Word));
-                //TODO: Need all the users who havent written at all
-                points[item.Key] = points[item.Key] + penalty;
             }
             return points;
-            // Point baseret på placering (1st place = 1000p 2nd place = 500 3rd place = 250p 4 > place X 100p
-            // Point baseret på hurtighed i tid... 20sekunder = -50
-            //
-            //
-            //
-            //
-            // 1000 +
-            //objListOrder.Sort((x, y) => x.OrderDate.CompareTo(y.OrderDate));
+
+        }
+        public Dictionary<User, int> PointsForWrongAnswers(Turn turn, List<ChatMessage> messages, List<User> users)
+        {
+            Dictionary<User, List<ChatMessage>> dicOfUserMsg = messages.GroupBy(m => m.User).ToDictionary(group => group.Key, group => group.ToList());
+            Dictionary<User, int> points = users.ToDictionary(u => u, u => 0);
+            foreach (var item in dicOfUserMsg)
+            {
+                //TODO: Need all the users who havent written at all
+                int penalty = GetPenaltyFromGuesses(NumberOfWrongGuesses(item.Value, turn.Word.Word));
+                points[item.Key] = penalty;
+
+            }
+            return points;
+        }
+        //all dictionaries sent into this method needs to have the same users as keys
+        public Dictionary<User, int> MergeDictionaries(Dictionary<User, int> dic1, Dictionary<User, int> dic2)
+        {
+            Dictionary<User, int> mergedPoints = new Dictionary<User, int>();
+            foreach (var item in dic1)
+            {
+                mergedPoints[item.Key] = item.Value;
+            }
+            foreach (var item in dic2)
+            {
+                mergedPoints[item.Key] = mergedPoints[item.Key] + item.Value;
+            }
+            return mergedPoints;
         }
 
         private int indexToPoint(int index)
@@ -54,11 +79,11 @@ namespace Skrabbl.API.Services
             {
                 return 1000;
             }
-            if (index == 2)
+            if (index == 1)
             {
                 return 500;
             }
-            if (index == 3)
+            if (index == 2)
             {
                 return 250;
             }
@@ -66,9 +91,10 @@ namespace Skrabbl.API.Services
             return 100;
         }
 
-        private int Penalty(int seconds) 
+        private int Penalty(int seconds)
         {
-            if (seconds <= 20) {
+            if (seconds <= 20)
+            {
                 return 0;
             }
             if (seconds > 20 && seconds <= 40)
@@ -81,21 +107,22 @@ namespace Skrabbl.API.Services
             }
             return -60;
         }
-        private int GetPenaltyTime(DateTime time1, DateTime time2) 
+        private int GetPenaltyTime(DateTime time1, DateTime time2)
         {
             TimeSpan ts = time2 - time1;
             return (int)(ts.TotalSeconds);
-                
-            
+
+
         }
 
-        private int GetPenaltyFromGuesses(int wrongGuesses) 
+        private int GetPenaltyFromGuesses(int wrongGuesses)
         {
             if (wrongGuesses == 0)
             {
                 return 50;
             }
-            if (wrongGuesses > 0 && wrongGuesses <= 5) {
+            if (wrongGuesses > 0 && wrongGuesses <= 5)
+            {
                 return -10;
             }
             if (wrongGuesses > 5 && wrongGuesses <= 10)
@@ -105,7 +132,7 @@ namespace Skrabbl.API.Services
             return -30;
         }
 
-        private int NumberOfWrongGuesses(List<ChatMessage> messages, string word) 
+        private int NumberOfWrongGuesses(List<ChatMessage> messages, string word)
         {
             return messages.FindAll(m => m.Message != word).Count();
         }

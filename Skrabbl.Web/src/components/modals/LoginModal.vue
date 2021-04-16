@@ -2,10 +2,19 @@
     <div class="container">
         <div class="modal is-active">
             <div class="modal-background"></div>
-            <div class="modal-content">
-                <form class="box">
-                    <div class="field has-text-danger" v-if="error">
-                        <b>Error!</b> {{ error }}
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Login</p>
+                    <button @click="setLoginModalVisible(false)" class="delete" aria-label="close"/>
+                </header>
+                <section class="modal-card-body">
+                    <div class="field has-text-danger" v-if="errors.length">
+                        <b>Error!</b>
+                        <ul>
+                            <li v-for="error in errors">
+                                <span>{{ error }}</span>
+                            </li>
+                        </ul>
                     </div>
                     <div class="field">
                         <label for="username" class="label">Username</label>
@@ -28,14 +37,19 @@
                         </div>
                     </div>
                     <div class="field">
-                        <button class="button is-success" :class="{ 'is-loading': isLoading }" @click.prevent="login">
-                            Login
-                        </button>
+                        <label class="checkbox">
+                            <input type="checkbox" v-model="rememberMe">
+                            Remember Me
+                        </label>
                     </div>
-                </form>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success" :class="{ 'is-loading': isLoading }" @click.prevent="login">
+                        Login
+                    </button>
+                    <button @click="setLoginModalVisible(false)" class="button">Cancel</button>
+                </footer>
             </div>
-
-            <button @click="setLoginModalVisible(false)" class="modal-close is-large" aria-label="close"></button>
         </div>
     </div>
 </template>
@@ -49,8 +63,9 @@ export default {
         return {
             username: "",
             password: "",
+            rememberMe: false,
             isLoading: false,
-            error: ""
+            errors: []
         }
     },
     methods: {
@@ -58,7 +73,7 @@ export default {
             setLoginModalVisible: "setLoginModalVisible"
         }),
         async login() {
-            this.error = ""
+            this.errors = []
             this.isLoading = true;
 
             const data = {
@@ -77,10 +92,30 @@ export default {
             if (resp.status === 200) {
                 await this.$store.dispatch("user/login", {
                     username: this.username,
-                    jwt: await resp.text()
+                    jwt: await resp.text(),
+                    rememberMe: this.rememberMe
                 })
+            } else if (resp.status === 400) {
+                const json = await resp.json();
+
+                if (json.errors) {
+                    const errors = []
+                    if (json.errors.Username) errors.push(json.errors.Username[0])
+                    if (json.errors.Password) errors.push(json.errors.Password[0])
+
+                    this.errors = errors
+                } else {
+                    this.errors = [
+                        "Incorrect username/password combination for the username"
+                    ]
+                }
             } else {
-                this.error = await resp.text();
+                const error = await resp.text();
+
+                this.errors = [
+                    "Something bad went wrong!",
+                    error
+                ]
             }
 
             this.isLoading = false
@@ -90,7 +125,7 @@ export default {
 </script>
 
 <style scoped>
-.modal-content {
+.modal-card {
     overflow-x: hidden;
     word-break: break-word;
     max-width: 380px;
