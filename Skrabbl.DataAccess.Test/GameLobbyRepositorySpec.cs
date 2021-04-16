@@ -4,6 +4,7 @@ using Skrabbl.DataAccess.Queries;
 using Skrabbl.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -87,10 +88,11 @@ namespace Skrabbl.DataAccess.Test
             //Arrange
 
             //Act
-            var list =await _gameLobbyRepository.GetAllGameLobbies();
+            var list = await _gameLobbyRepository.GetAllGameLobbies();
+            bool lobbiesWereRead = (list.ToList<GameLobby>().Count > 0);
 
             //Assert
-
+            Assert.True(lobbiesWereRead);
         }
 
         [OneTimeTearDown]
