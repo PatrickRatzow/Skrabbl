@@ -1,7 +1,15 @@
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import store from "../store/index"
 
 class SignalRConnection {
     constructor() {
+        this.conn = new HubConnectionBuilder()
+            .withUrl("/ws/game", {
+                accessTokenFactory: () => store.state.user?.auth?.jwtToken?.token
+            })
+            .configureLogging(LogLevel.Information)
+            .build()
+
         this.connected = false
         this.queues = {
             invoke: [],
@@ -17,7 +25,7 @@ class SignalRConnection {
                 args: [...args]
             })
 
-            return
+            return Promise.resolve()
         }
 
         this.conn.invoke(id, ...args)
@@ -30,20 +38,13 @@ class SignalRConnection {
                 callback
             })
 
-            return
+            return Promise.resolve()
         }
 
         this.conn.on(id, callback)
     }
 
-    async start(token) {
-        if (!this.conn) {
-            this.conn = new HubConnectionBuilder()
-                .withUrl("/ws/game", { accessTokenFactory: () => token })
-                .configureLogging(LogLevel.Information)
-                .build()
-        }
-
+    async start() {
         await this.conn.start()
 
         this.connected = true

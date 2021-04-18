@@ -1,8 +1,5 @@
-﻿using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Skrabbl.Model;
 
 namespace Skrabbl.API.Services
 {
@@ -11,6 +8,7 @@ namespace Skrabbl.API.Services
         Task<User> CreateUser(string _userName, string _password, string _email);
         Task<User> GetUser(int id);
         Task<User> GetUser(string _username, string _password);
+        Task<User> GetUserByRefreshToken(string token);
         Task AddToLobby(int userId, string gameCode);
     }
 }

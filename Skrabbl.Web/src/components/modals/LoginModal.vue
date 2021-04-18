@@ -77,49 +77,40 @@ export default {
             setLoginModalVisible: "setLoginModalVisible"
         }),
         async login() {
-            this.errors = []
-            this.isLoading = true;
+            this.isLoading = true
 
-            const data = {
-                Username: this.username,
-                Password: this.password
-            }
-
-            const resp = await fetch("/api/user/login", {
-                method: "POST",
-                body: JSON.stringify(data),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-
-            if (resp.status === 200) {
+            try {
                 await this.$store.dispatch("user/login", {
                     username: this.username,
-                    jwt: await resp.text(),
+                    password: this.password,
                     rememberMe: this.rememberMe
                 })
-            } else if (resp.status === 400) {
-                const json = await resp.json();
+            } catch (error) {
+                const resp = error.response
 
-                if (json.errors) {
-                    const errors = []
-                    if (json.errors.Username) errors.push(json.errors.Username[0])
-                    if (json.errors.Password) errors.push(json.errors.Password[0])
+                if (resp.status === 400) {
+                    if (resp.data.errors) {
+                        const errors = []
+                        if (resp.data.errors.Username) errors.push(resp.data.errors.Username[0])
+                        if (resp.data.errors.Password) errors.push(resp.data.errors.Password[0])
 
-                    this.errors = errors
-                } else {
+                        this.errors = errors
+                    } else {
+                        this.errors = [
+                            "Malformed request!",
+                            resp.data
+                        ]
+                    }
+                } else if (resp.status === 401) {
                     this.errors = [
                         "Incorrect username/password combination for the username"
                     ]
+                } else {
+                    this.errors = [
+                        "Something bad went wrong!",
+                        resp.data
+                    ]
                 }
-            } else {
-                const error = await resp.text();
-
-                this.errors = [
-                    "Something bad went wrong!",
-                    error
-                ]
             }
 
             this.isLoading = false

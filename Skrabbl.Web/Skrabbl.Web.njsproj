@@ -30,12 +30,12 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="public\favicon.ico" />
-    <Content Include="public\index.html" />
-    <Content Include="src\App.vue" />
-    <Content Include="src\components\canvas\Canvas.vue" />
-    <Content Include="src\components\canvas\ColorButton.vue" />
-    <Content Include="src\components\canvas\SizeButton.vue" />
+    <Content Include="public\favicon.ico"/>
+    <Content Include="public\index.html"/>
+    <Content Include="src\App.vue"/>
+    <Content Include="src\components\canvas\Canvas.vue"/>
+    <Content Include="src\components\canvas\ColorButton.vue"/>
+    <Content Include="src\components\canvas\SizeButton.vue"/>
     <Content Include="src\components\chatbox\ChatboxItem.vue">
       <SubType>Code</SubType>
     </Content>
@@ -62,6 +62,7 @@
     <Content Include="src\components\WeatherList.vue"/>
     <Content Include="src\services\chat.service.js"/>
     <Content Include="src\services\lobby.service.js"/>
+    <Content Include="src\services\user.service.js"/>
     <Content Include="src\store\index.js"/>
     <Content Include="src\store\modules\user.js">
       <SubType>Code</SubType>
@@ -82,8 +83,8 @@
     <Content Include="src\views\Game.vue"/>
     <Content Include="src\views\GameLobby.vue"/>
     <Content Include="src\views\Home.vue"/>
-    <Content Include="package.json" />
-    <Content Include="README.md" />
+    <Content Include="package.json"/>
+    <Content Include="README.md"/>
     <Content Include="src\router.js">
       <SubType>Code</SubType>
     </Content>
