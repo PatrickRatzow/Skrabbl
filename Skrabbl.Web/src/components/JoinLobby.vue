@@ -46,30 +46,30 @@ export default {
         async joinLobby() {
             this.errors = []
 
-            if (!this.lobbyCode) {
-                this.errors.push("You need to input a lobby code!")
-            } else if (this.lobbyCode.length !== 4) {
+            if (this.lobbyCode.length !== 4) {
                 this.errors.push("Your lobby code must be 4 characters long!")
-            } else {
-                try {
-                    const resp = await LobbyService.joinLobby(this.lobbyCode);
-                    this.errors.push("Not an error! Found a lobby!")
-                    this.errors.push(resp.data)
-                } catch (err) {
-                    if (err.response.status === 404) {
-                        this.errors.push("Unable to find that lobby")
-                    } else if (err.response.status === 403) {
-                        this.errors.push("You're not allowed to do that! You're already in a lobby")
-                    } else if (err.response.status === 400) {
-                        this.errors.push("Malformed request!")
-                    } else {
-                        this.errors.push(`Unexpected error. Code: ${err.response.status}`)
-                    }
+
+                return
+            }
+
+            try {
+                const resp = await LobbyService.joinLobby(this.lobbyCode);
+                this.errors.push("Not an error! Found a lobby!")
+                this.errors.push(resp.data)
+            } catch (err) {
+                if (err.response.status === 404) {
+                    this.errors.push("Unable to find that lobby")
+                } else if (err.response.status === 403) {
+                    this.errors.push("You're not allowed to do that! You're already in a lobby")
+                } else if (err.response.status === 400) {
+                    this.errors.push("Malformed request!")
+                } else {
+                    this.errors.push(`Unexpected error. Code: ${err.response.status}`)
                 }
             }
         }
-        }
     }
+}
 </script>
 
 <style scoped>

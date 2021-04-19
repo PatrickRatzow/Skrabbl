@@ -31,7 +31,9 @@ namespace Skrabbl.API
             services.AddTransient<IGameLobbyRepository, GameLobbyRepository>();
             services.AddTransient<IGameRepository, GameRepository>();
             services.AddTransient<IWordListRepository, WordListRepository>();
+            services.AddTransient<ITokenRepository, TokenRepository>();
 
+            services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<ICryptographyService, CryptographyService>();
             services.AddScoped<IGameLobbyService, GameLobbyService>();
             services.AddScoped<IUserService, UserService>();

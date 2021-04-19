@@ -30,66 +30,68 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="public\favicon.ico" />
-    <Content Include="public\index.html" />
-    <Content Include="src\App.vue" />
-    <Content Include="src\components\canvas\Canvas.vue" />
-    <Content Include="src\components\canvas\ColorButton.vue" />
-    <Content Include="src\components\canvas\SizeButton.vue" />
-    <Content Include="src\components\chatbox\ChatboxItem.vue">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\components\chatbox\ChatboxList.vue">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\components\JoinLobby.vue">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\components\Modals.vue"/>
-    <Content Include="src\components\modals\LoginModal.vue"/>
-    <Content Include="src\components\modals\LogoutModal.vue"/>
-    <Content Include="src\components\modals\RegisterModal.vue"/>
-    <Content Include="src\components\Navbar.vue"/>
-    <Content Include="src\components\player\PlayerItem.vue"/>
-    <Content Include="src\components\player\PlayerList.vue"/>
-    <Content Include="src\components\modals\RoundStatusModal.vue">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\components\setting\SettingItem.vue"/>
-    <Content Include="src\components\setting\SettingList.vue"/>
-    <Content Include="src\components\modals\ChooseWordModal.vue"/>
-    <Content Include="src\components\WeatherItem.vue"/>
-    <Content Include="src\components\WeatherList.vue"/>
-    <Content Include="src\services\chat.service.js"/>
-    <Content Include="src\services\lobby.service.js"/>
-    <Content Include="src\store\index.js"/>
-    <Content Include="src\store\modules\user.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\store\modules\canvas.js"/>
-    <Content Include="src\store\modules\chat.js"/>
-    <Content Include="src\store\modules\game.js"/>
-    <Content Include="src\store\modules\signal-r.js"/>
-    <Content Include="src\store\plugins\signal-r.js"/>
-    <Content Include="src\utils\axios.js"/>
-    <Content Include="src\utils\signal-r.js"/>
-    <Content Include="src\views\Canvas.vue">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\components\Home.vue"/>
-    <Content Include="src\views\About.vue"/>
-    <Content Include="src\views\ChatBox.vue"/>
-    <Content Include="src\views\Game.vue"/>
-    <Content Include="src\views\GameLobby.vue"/>
-    <Content Include="src\views\Home.vue"/>
-    <Content Include="package.json" />
-    <Content Include="README.md" />
-    <Content Include="src\router.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\views\JoinLobby.vue">
-      <SubType>Code</SubType>
-    </Content>
+      <Content Include="public\favicon.ico"/>
+      <Content Include="public\index.html"/>
+      <Content Include="src\App.vue"/>
+      <Content Include="src\components\canvas\Canvas.vue"/>
+      <Content Include="src\components\canvas\ColorButton.vue"/>
+      <Content Include="src\components\canvas\SizeButton.vue"/>
+      <Content Include="src\components\chatbox\ChatboxItem.vue">
+          <SubType>Code</SubType>
+      </Content>
+      <Content Include="src\components\chatbox\ChatboxList.vue">
+          <SubType>Code</SubType>
+      </Content>
+      <Content Include="src\components\JoinLobby.vue">
+          <SubType>Code</SubType>
+      </Content>
+      <Content Include="src\components\LoadingCircle.vue"/>
+      <Content Include="src\components\Modals.vue"/>
+      <Content Include="src\components\modals\LoginModal.vue"/>
+      <Content Include="src\components\modals\LogoutModal.vue"/>
+      <Content Include="src\components\modals\RegisterModal.vue"/>
+      <Content Include="src\components\Navbar.vue"/>
+      <Content Include="src\components\player\PlayerItem.vue"/>
+      <Content Include="src\components\player\PlayerList.vue"/>
+      <Content Include="src\components\modals\RoundStatusModal.vue">
+          <SubType>Code</SubType>
+      </Content>
+      <Content Include="src\components\setting\SettingItem.vue"/>
+      <Content Include="src\components\setting\SettingList.vue"/>
+      <Content Include="src\components\modals\ChooseWordModal.vue"/>
+      <Content Include="src\components\WeatherItem.vue"/>
+      <Content Include="src\components\WeatherList.vue"/>
+      <Content Include="src\services\chat.service.js"/>
+      <Content Include="src\services\lobby.service.js"/>
+      <Content Include="src\services\user.service.js"/>
+      <Content Include="src\store\index.js"/>
+      <Content Include="src\store\modules\user.js">
+          <SubType>Code</SubType>
+      </Content>
+      <Content Include="src\store\modules\canvas.js"/>
+      <Content Include="src\store\modules\chat.js"/>
+      <Content Include="src\store\modules\game.js"/>
+      <Content Include="src\store\modules\signal-r.js"/>
+      <Content Include="src\store\plugins\signal-r.js"/>
+      <Content Include="src\utils\axios.js"/>
+      <Content Include="src\utils\signal-r.js"/>
+      <Content Include="src\views\Canvas.vue">
+          <SubType>Code</SubType>
+      </Content>
+      <Content Include="src\components\Home.vue"/>
+      <Content Include="src\views\About.vue"/>
+      <Content Include="src\views\ChatBox.vue"/>
+      <Content Include="src\views\Game.vue"/>
+      <Content Include="src\views\GameLobby.vue"/>
+      <Content Include="src\views\Home.vue"/>
+      <Content Include="package.json"/>
+      <Content Include="README.md"/>
+      <Content Include="src\router.js">
+          <SubType>Code</SubType>
+      </Content>
+      <Content Include="src\views\JoinLobby.vue">
+          <SubType>Code</SubType>
+      </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dist\" />
@@ -102,6 +104,7 @@
     <Folder Include="src\components\modals\" />
     <Folder Include="src\components\player\" />
     <Folder Include="src\components\setting\" />
+    <Folder Include="src\services\" />
     <Folder Include="src\store\" />
     <Folder Include="src\store\modules\" />
     <Folder Include="src\store\plugins\" />

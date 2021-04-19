@@ -4,6 +4,7 @@ namespace Skrabbl.DataAccess.Queries
     {
         string GetUserById { get; }
         string GetUserByUsername { get; }
+        string GetUserByRefreshToken { get; }
         string AddUser { get; }
         string RemoveUserById { get; }
         string AddLobby { get; }
@@ -18,5 +19,9 @@ namespace Skrabbl.DataAccess.Queries
         string GetGameById { get; }
         string AddUserToLobby { get; }
         string GetAllWords { get; }
+        string AddRefreshToken { get; }
+        string RemoveRefreshToken { get; }
+        string RemoveAllRefreshTokensForUser { get; }
+        string RemoveAllExpiredRefreshTokens { get; }
     }
 }
