@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>9</zoom_level>
+  <zoom_level>16</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>900</x>
-      <y>396</y>
-      <w>72</w>
-      <h>27</h>
+      <x>752</x>
+      <y>272</y>
+      <w>128</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>View</panel_attributes>
     <additional_attributes/>
@@ -15,10 +15,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>873</x>
-      <y>495</y>
-      <w>117</w>
-      <h>27</h>
+      <x>704</x>
+      <y>448</y>
+      <w>208</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>Vue Component</panel_attributes>
     <additional_attributes/>
@@ -26,10 +26,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>927</x>
-      <y>414</y>
-      <w>45</w>
-      <h>99</h>
+      <x>800</x>
+      <y>304</y>
+      <w>80</w>
+      <h>176</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=1
@@ -39,10 +39,10 @@ m2=0..*</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>900</x>
-      <y>324</y>
-      <w>72</w>
-      <h>27</h>
+      <x>752</x>
+      <y>144</y>
+      <w>128</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>Vue App</panel_attributes>
     <additional_attributes/>
@@ -50,10 +50,10 @@ m2=0..*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>927</x>
-      <y>342</y>
-      <w>27</w>
-      <h>72</h>
+      <x>800</x>
+      <y>176</y>
+      <w>48</w>
+      <h>128</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
@@ -61,10 +61,10 @@ m2=0..*</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>891</x>
-      <y>585</y>
-      <w>90</w>
-      <h>27</h>
+      <x>736</x>
+      <y>608</y>
+      <w>160</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>Vuex</panel_attributes>
     <additional_attributes/>
@@ -72,10 +72,10 @@ m2=0..*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>963</x>
-      <y>324</y>
-      <w>81</w>
-      <h>306</h>
+      <x>864</x>
+      <y>144</y>
+      <w>144</w>
+      <h>544</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
@@ -85,10 +85,10 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>963</x>
-      <y>396</y>
-      <w>72</w>
-      <h>207</h>
+      <x>864</x>
+      <y>272</y>
+      <w>128</w>
+      <h>368</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>20.0;210.0;60.0;210.0;60.0;10.0;10.0;10.0</additional_attributes>
@@ -96,10 +96,10 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>927</x>
-      <y>513</y>
-      <w>27</w>
-      <h>90</h>
+      <x>800</x>
+      <y>480</y>
+      <w>48</w>
+      <h>160</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
@@ -107,10 +107,10 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>891</x>
-      <y>666</y>
-      <w>90</w>
-      <h>27</h>
+      <x>736</x>
+      <y>752</y>
+      <w>160</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>Service</panel_attributes>
     <additional_attributes/>
@@ -118,10 +118,10 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>927</x>
-      <y>603</y>
-      <w>27</w>
-      <h>81</h>
+      <x>800</x>
+      <y>640</y>
+      <w>48</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
@@ -129,10 +129,10 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>891</x>
-      <y>756</y>
-      <w>90</w>
-      <h>27</h>
+      <x>736</x>
+      <y>912</y>
+      <w>160</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>Skrabbl.API</panel_attributes>
     <additional_attributes/>
@@ -140,10 +140,10 @@ m2=1</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>810</x>
-      <y>279</y>
-      <w>261</w>
-      <h>441</h>
+      <x>592</x>
+      <y>64</y>
+      <w>464</w>
+      <h>784</h>
     </coordinates>
     <panel_attributes>Skrabbl.Web</panel_attributes>
     <additional_attributes/>
@@ -151,10 +151,10 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>927</x>
-      <y>684</y>
-      <w>27</w>
-      <h>90</h>
+      <x>800</x>
+      <y>784</y>
+      <w>48</w>
+      <h>160</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
