@@ -9,7 +9,7 @@ function addToRequestQueue(cfg) {
     })
 }
 
-function refreshJWTTokenIfNeeded(cfg) {
+function refreshJWTIfNeeded(cfg) {
     // Hack so our refresh request goes through
     if (cfg.url === "user/refresh") {
         return Promise.resolve()
@@ -55,7 +55,7 @@ const conn = new axios.create({
 })
 
 conn.interceptors.request.use(async config => {
-    await refreshJWTTokenIfNeeded(config)
+    await refreshJWTIfNeeded(config)
 
     config.headers = {
         ...config.headers,

@@ -28,10 +28,17 @@ const actions = {
         await dispatch("signalR/disconnect", {}, { root: true })
     },
     async refreshLogin({ commit }, token) {
-        await UserService.refreshToken(token)
+        try {
+            await UserService.refreshToken(token)
 
-        const auth = UserService.getAuthInfoFromCache()
-        commit("setAuth", auth)
+            const auth = UserService.getAuthInfoFromCache()
+            commit("setAuth", auth)
+        } catch (e) {
+            UserService.clearAuthCache()
+            commit("setAuth", null)
+
+            throw e;
+        }
     },
     loadUser({ commit, dispatch }) {
         const auth = UserService.getAuthInfoFromCache()

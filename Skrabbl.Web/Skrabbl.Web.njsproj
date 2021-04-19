@@ -92,6 +92,7 @@
       <Content Include="src\views\JoinLobby.vue">
           <SubType>Code</SubType>
       </Content>
+      <Content Include="src\views\PageNotFound.vue"/>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dist\" />
