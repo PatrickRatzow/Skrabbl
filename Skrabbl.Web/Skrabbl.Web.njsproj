@@ -42,6 +42,7 @@
       <Content Include="src\components\chatbox\ChatboxList.vue">
           <SubType>Code</SubType>
       </Content>
+      <Content Include="src\components\Footer.vue"/>
       <Content Include="src\components\JoinLobby.vue">
           <SubType>Code</SubType>
       </Content>

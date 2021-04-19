@@ -6,7 +6,7 @@ const state = () => ({
     showRegisterModal: false,
     showLogoutModal: false,
     userId: 25,
-    gameId: 3
+    gameId: 5
 })
 
 const actions = {

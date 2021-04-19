@@ -1,4 +1,4 @@
-import chatService from "../../services/chat.service"
+import ChatService from "../../services/chat.service"
 
 const state = () => ({
     messages: [],
@@ -9,9 +9,7 @@ const getters = {}
 
 const actions = {
     async sendMessage({ commit }, message) {
-        await chatService.sendMessage(message)
-
-        commit("sendMessage", message)
+        await ChatService.sendMessage(message)
     },
     addMessage({ commit }, object) {
         commit("addMessage", object)
@@ -26,9 +24,9 @@ const actions = {
         commit("setConnected", false)
     },
     async fetchMessages({ commit }) {
-        const hasFetched = await chatService.fetchMessages()
-
-        commit("setFetchedMessages", hasFetched)
+        if (await ChatService.fetchMessages()) {
+            commit("setFetchedMessages", true)
+        }
     }
 }
 

@@ -14,6 +14,7 @@ namespace Skrabbl.DataAccess.Queries
         string RemoveAllLobbies { get; }
         string GetLobbyByOwnerId { get; }
         string GetAllMessages { get; }
+        string GetAllMessagesByUserId { get; }
         string SaveMessage { get; }
         string RemoveAllMessages { get; }
         string GetGameById { get; }

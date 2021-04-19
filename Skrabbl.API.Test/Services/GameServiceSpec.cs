@@ -1,13 +1,9 @@
-﻿using System;
+﻿using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
+using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
-using System.Threading.Tasks;
-using Moq;
-using Skrabbl.API.Services;
-using Skrabbl.Model.Errors;
-using NUnit.Framework.Constraints;
-
 
 namespace Skrabbl.API.Test.Services
 {
@@ -17,7 +13,7 @@ namespace Skrabbl.API.Test.Services
         public async Task GetGame_Succeeds()
         {
             //Arrange
-            int gameId = 3;
+            int gameId = 5;
             Game game = new Game();
             var mock = new Mock<IGameRepository>();
             mock.Setup(m => m.GetGame(It.IsAny<int>())).Returns(Task.FromResult<Game>(game));

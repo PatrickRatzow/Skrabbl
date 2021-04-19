@@ -17,8 +17,7 @@
                     <router-link class="navbar-item" to="/">Home</router-link>
                     <router-link class="navbar-item" to="/game-lobby">Game Lobby</router-link>
                     <router-link class="navbar-item" to="/game">Game</router-link>
-                    <router-link class="navbar-item" to="/chat-box">ChatBox</router-link>
-                    <router-link class="navbar-item" to="/JoinLobby">Join Lobby</router-link>
+                    <router-link class="navbar-item" to="/join-lobby">Join Lobby</router-link>
                 </div>
 
                 <div class="navbar-end">
@@ -78,4 +77,8 @@ export default {
 </script>
 
 <style scoped>
+.router-link-exact-active {
+    background-color: #fafafa;
+    color: #3273dc;
+}
 </style>

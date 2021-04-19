@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>Connected to SignalR: {{ isConnected ? 'Yes' : 'No' }}</div>
+    <div v-if="!isConnected">Is not connected to SignalR!</div>
     <canvas id="draw-canvas"
             height="500"
             width="500"
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex"
+import { mapGetters, mapState } from "vuex"
 import ColorButton from "@/components/canvas/ColorButton";
 import SizeButton from "@/components/canvas/SizeButton";
 

@@ -1,15 +1,13 @@
-﻿using Skrabbl.DataAccess;
-using Skrabbl.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Skrabbl.DataAccess;
+using Skrabbl.Model;
 
 namespace Skrabbl.API.Services
 {
     public class MessageService : IMessageService
     {
-
         IMessageRepository _messageRepository;
 
         public MessageService(IMessageRepository messageRepo)
@@ -23,8 +21,8 @@ namespace Skrabbl.API.Services
             {
                 Message = message,
                 CreatedAt = DateTime.Now,
-                Game = new Game { Id = gameId },
-                User = new User { Id = userId }
+                Game = new Game {Id = gameId},
+                User = new User {Id = userId}
             };
             await _messageRepository.SaveMessage(msg);
 
@@ -34,6 +32,11 @@ namespace Skrabbl.API.Services
         public async Task<IEnumerable<ChatMessage>> GetMessages(int lobbyId)
         {
             return await _messageRepository.GetAllMessages(lobbyId);
+        }
+
+        public Task<IEnumerable<ChatMessage>> GetMessagesByUserId(int userId)
+        {
+            return _messageRepository.GetAllMessagesByUserId(userId);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Skrabbl.API.Hubs
             if (idClaim == null || userName == null) return;
             var userId = int.Parse(idClaim.Value);
 
-            var gameId = 3;
+            var gameId = 5;
             /*
             var user = await _userService.GetUser(userId);
             var game = _gameService.GetGame(user.GameLobbyId);
@@ -44,10 +44,13 @@ namespace Skrabbl.API.Hubs
             await Clients.All.DeletedMessage(user, msg);
         }
 
-        public async Task GetAllMessages(int lobbyId)
+        public async Task GetAllMessages()
         {
-            var xd = Context.User.Identity;
-            var messages = await _messageService.GetMessages(lobbyId);
+            var idClaim = Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (idClaim == null) return;
+            var userId = int.Parse(idClaim.Value);
+
+            var messages = await _messageService.GetMessagesByUserId(userId);
             var tasks = messages.Select(msg =>
                 Clients.Caller.ReceiveMessage(msg.User.Username, msg.Message)
             );

@@ -1,15 +1,21 @@
 <template>
     <div id="app">
-        <Navbar/>
-        <div v-if="$root.loading" class="loading-circle is-flex is-justify-content-center is-align-items-flex-center">
-            <LoadingCircle/>
+        <div id="wrapper">
+            <Navbar/>
+            <div v-if="$root.loading"
+                 class="loading-circle is-flex is-justify-content-center is-align-items-flex-center">
+                <LoadingCircle/>
+            </div>
+            <RouterView v-else/>
         </div>
-        <RouterView v-else/>
+
+        <Footer/>
         <Modals/>
     </div>
 </template>
 
 <script>
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Modals from "@/components/Modals";
 import LoadingCircle from "@/components/LoadingCircle";
@@ -18,7 +24,8 @@ export default {
     components: {
         Modals,
         Navbar,
-        LoadingCircle
+        LoadingCircle,
+        Footer
     },
     mounted() {
         this.$store.dispatch("user/loadUser")
@@ -30,6 +37,17 @@ export default {
 .loading-circle {
     width: 100vw;
     height: calc(100vh - 56px);
+}
+
+#app, html, body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background: #fafafa;
+}
+
+#wrapper {
+    flex: 1;
 }
 </style>
 
