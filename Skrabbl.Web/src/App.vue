@@ -29,7 +29,7 @@ export default {
 <style scoped>
 .loading-circle {
     width: 100vw;
-    height: calc(100vh - 52px);
+    height: calc(100vh - 56px);
 }
 </style>
 
