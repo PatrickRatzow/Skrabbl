@@ -23,10 +23,11 @@ const actions = {
     connectionClosed({ commit }) {
         commit("setConnected", false)
     },
-    async fetchMessages({ commit }) {
-        if (await ChatService.fetchMessages()) {
-            commit("setFetchedMessages", true)
-        }
+    async fetchMessages({ commit, state }) {
+        if (state.hasFetchedMessages) return
+
+        commit("setFetchedMessages", true)
+        await ChatService.fetchMessages()
     }
 }
 
