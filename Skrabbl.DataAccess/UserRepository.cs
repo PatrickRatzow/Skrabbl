@@ -9,7 +9,7 @@ namespace Skrabbl.DataAccess
     public class UserRepository : BaseRepository, IUserRepository
     {
         private readonly ICommandText _commandText;
-        
+
         public UserRepository(IConfiguration configuration, ICommandText commandText) : base(configuration)
         {
             _commandText = commandText;
@@ -18,14 +18,22 @@ namespace Skrabbl.DataAccess
         public async Task<User> GetUserById(int id)
         {
             return await WithConnection(async conn =>
-                await conn.QuerySingleOrDefaultAsync<User>(_commandText.GetUserById, new { Id = id })
+                await conn.QuerySingleOrDefaultAsync<User>(_commandText.GetUserById, new {Id = id})
             );
         }
 
         public async Task<User> GetUserByUsername(string username)
         {
             return await WithConnection(async conn =>
-                await conn.QuerySingleOrDefaultAsync<User>(_commandText.GetUserByUsername, new { Username = username })
+                await conn.QuerySingleOrDefaultAsync<User>(_commandText.GetUserByUsername, new {Username = username})
+            );
+        }
+
+        public async Task<User> GetUserByRefreshToken(string refreshToken)
+        {
+            return await WithConnection(async conn =>
+                await conn.QuerySingleOrDefaultAsync<User>(_commandText.GetUserByRefreshToken,
+                    new {Token = refreshToken})
             );
         }
 
@@ -51,7 +59,7 @@ namespace Skrabbl.DataAccess
         {
             await WithConnection(async conn =>
             {
-                await conn.ExecuteAsync(_commandText.AddUserToLobby, new { GameLobbyId = gameCode, Id = userId, });
+                await conn.ExecuteAsync(_commandText.AddUserToLobby, new {GameLobbyId = gameCode, Id = userId,});
             });
         }
     }

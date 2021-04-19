@@ -47,6 +47,11 @@ namespace Skrabbl.API.Services
             return null;
         }
 
+        public async Task<User> GetUserByRefreshToken(string token)
+        {
+            return await _userRepository.GetUserByRefreshToken(token);
+        }
+
         public async Task<User> GetUser(int id)
         {
             return await _userRepository.GetUserById(id);

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Skrabbl.API.Services;
 using Skrabbl.Model;
 using Skrabbl.Model.Dto;
@@ -13,14 +11,12 @@ namespace Skrabbl.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IGameLobbyService _gameLobbyService;
-        private IConfiguration _config;
+        private readonly IJwtService _jwtService;
 
-        public UserController(IUserService userService, IGameLobbyService gameLobbyService, IConfiguration config)
+        public UserController(IUserService userService, IJwtService jwtService)
         {
             _userService = userService;
-            _gameLobbyService = gameLobbyService;
-            _config = config;
+            _jwtService = jwtService;
         }
 
         [HttpPost]
@@ -40,17 +36,45 @@ namespace Skrabbl.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto login)
         {
-            try
+            var user = await _userService.GetUser(login.Username, login.Password);
+            if (user == null)
+                return Unauthorized();
+
+            var jwtToken = _jwtService.GenerateSecurityToken(user);
+            var refreshToken = await _jwtService.GenerateRefreshToken(user);
+
+            return Ok(new LoginResponseDto
             {
-                User user = await _userService.GetUser(login.Username, login.Password);
-                var jwt = new JwtService(_config);
-                var token = jwt.GenerateSecurityToken(user);
-                return Ok(token);
-            }
-            catch (Exception e)
+                JwtToken = jwtToken,
+                RefreshToken = refreshToken
+            });
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshDto refreshDto)
+        {
+            var user = await _userService.GetUserByRefreshToken(refreshDto.Token);
+            if (user == null)
+                return NotFound();
+
+            var refreshToken = await _jwtService.RefreshToken(user, refreshDto.Token);
+            if (refreshToken == null)
+                return NotFound();
+
+            var jwtToken = _jwtService.GenerateSecurityToken(user);
+            return Ok(new LoginResponseDto
             {
-                return BadRequest();
-            }
+                JwtToken = jwtToken,
+                RefreshToken = refreshToken
+            });
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout([FromBody] RefreshDto refreshDto)
+        {
+            await _jwtService.RemoveToken(refreshDto.Token);
+
+            return Ok();
         }
     }
 }

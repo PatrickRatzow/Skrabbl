@@ -1,6 +1,7 @@
+import UserService from "../../services/user.service"
+
 const state = () => ({
-    username: "",
-    jwt: "",
+    auth: null,
     showLoginModal: false,
     showRegisterModal: false,
     showLogoutModal: false,
@@ -9,40 +10,35 @@ const state = () => ({
 })
 
 const actions = {
-    login({ commit, dispatch }, { username, jwt, rememberMe }) {
-        const user = {
-            username,
-            jwt
-        }
-        commit("setUser", user)
+    async login({ commit, dispatch }, { username, password, rememberMe }) {
+        await UserService.login(username, password, rememberMe)
+
+        const auth = UserService.getAuthInfoFromCache()
+        commit("setAuth", auth)
         commit("setLoginModalVisible", false)
 
-        const json = JSON.stringify(user);
-        if (rememberMe) {
-            localStorage.setItem("user", json);
-        } else {
-            sessionStorage.setItem("user", json);
-        }
-
-        dispatch("signalR/connect", jwt, { root: true })
+        await dispatch("signalR/connect", null, { root: true })
     },
-    logout({ commit, dispatch }) {
-        commit("removeUser")
+    async logout({ commit, dispatch }) {
+        UserService.logout()
+
+        commit("removeAuth")
         commit("setLogoutModalVisible", false)
 
-        sessionStorage.removeItem("user")
-        localStorage.removeItem("user")
+        await dispatch("signalR/disconnect", {}, { root: true })
+    },
+    async refreshLogin({ commit }, token) {
+        await UserService.refreshToken(token)
 
-        dispatch("signalR/disconnect", {}, { root: true })
+        const auth = UserService.getAuthInfoFromCache()
+        commit("setAuth", auth)
     },
     loadUser({ commit, dispatch }) {
-        let user = localStorage.getItem("user")
-        if (user === null) user = sessionStorage.getItem("user")
-        if (user == null) return;
+        const auth = UserService.getAuthInfoFromCache()
+        if (!auth) return
 
-        const json = JSON.parse(user)
-        commit("setUser", json)
-        dispatch("signalR/connect", json.jwt, { root: true })
+        commit("setAuth", auth)
+        dispatch("signalR/connect", null, { root: true })
     },
     setLoginModalVisible({ commit }, visible) {
         commit("setLoginModalVisible", visible)
@@ -56,13 +52,11 @@ const actions = {
 }
 
 const mutations = {
-    setUser(state, { username, jwt }) {
-        state.username = username
-        state.jwt = jwt
+    setAuth(state, auth) {
+        state.auth = auth
     },
-    removeUser(state) {
-        state.username = ""
-        state.jwt = ""
+    removeAuth(state) {
+        state.auth = null
     },
     setLoginModalVisible(state, visible) {
         state.showLoginModal = visible
@@ -76,7 +70,7 @@ const mutations = {
 }
 
 const getters = {
-    isLoggedIn: state => state.jwt.length > 0,
+    isLoggedIn: state => state.auth !== null,
     isLoginModalVisible: state => state.showLoginModal && !getters.isLoggedIn(state),
     isRegisterModalVisible: state => state.showRegisterModal && !getters.isLoggedIn(state),
     isLogoutModalVisible: state => state.showLogoutModal && getters.isLoggedIn(state)
