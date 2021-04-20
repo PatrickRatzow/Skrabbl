@@ -73,6 +73,7 @@
         methods: {
             setupHandlers() {
                 this.connection.on("ReceiveDrawNode", (command) => {
+                    console.log(command)
                     if (command.startNode || command.continueNode) {
                         let position;
                         if (command.startNode) {
@@ -97,11 +98,18 @@
                         });
                     } else if (command.color) {
                         const [r, g, b] = command.color;
-                        this.canvasState.color = `${r.toString(16)}${g.toString(16)}${b.toString(16)}`
+                        this.canvasState.color = `${this.hexToNumber(r)}${this.hexToNumber(g)}${this.hexToNumber(b)}`
                     } else if (command.thickness) {
                         this.canvasState.thickness = command.thickness;
                     }
                 });
+            },
+            hexToNumber(hex) {
+                let num = hex.toString(16);
+                if (num.length === 1) {
+                    num = "0" + num
+                }
+                return num;
             },
             sendNode(node) {
                 const command = {}
