@@ -73,9 +73,9 @@ export default {
         methods: {
             setupHandlers() {
                 this.connection.on("ReceiveDrawNode", (command) => {
-                    console.log(command)
                     if (command.startNode || command.continueNode) {
                         let position;
+
                         if (command.startNode) {
                             position = command.startNode;
                             this.canvasState.previousNodeEnd = command.startNode.slice(2, 4);
@@ -86,11 +86,7 @@ export default {
                             ];
                             this.canvasState.previousNodeEnd = command.continueNode;
                         }
-                        console.log({
-                            position,
-                            size: this.canvasState.thickness,
-                            color: this.canvasState.color
-                        })
+
                         this.drawLine({
                             position,
                             size: this.canvasState.thickness,

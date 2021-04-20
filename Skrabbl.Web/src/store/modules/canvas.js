@@ -27,10 +27,13 @@ const getters = {
 const actions = {
     setColor({ commit }, color) {
         commit("setColor", color)
+
         return DrawService.sendColor(color);
     },
     setSize({ commit }, size) {
         commit("setSize", size)
+
+        return DrawService.sendThickness(size)
     }
 }
 
