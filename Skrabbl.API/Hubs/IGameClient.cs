@@ -1,3 +1,4 @@
+using Skrabbl.Model.Dto;
 using System.Threading.Tasks;
 
 namespace Skrabbl.API.Hubs
@@ -7,7 +8,7 @@ namespace Skrabbl.API.Hubs
         Task SendMessage(string message);
         Task DeleteMessage(string userName, string message);
         Task GetAllMessages();
-        Task SendDrawNode(string color, int size, int x1, int y1, int x2, int y2);
+        Task SendDrawNode(CommandDto commandDto);
         Task CreateLobby(string lobbyId);
         Task JoinLobby(int userId, string gameCode);
         Task ChooseWord(int gameId, string chosenWord);
