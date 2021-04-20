@@ -28,11 +28,11 @@
 </template>
 
 <script>
-    import { mapGetters, mapState } from "vuex"
-    import ColorButton from "@/components/canvas/ColorButton";
-    import SizeButton from "@/components/canvas/SizeButton";
+import { mapGetters, mapState } from "vuex"
+import ColorButton from "@/components/canvas/ColorButton";
+import SizeButton from "@/components/canvas/SizeButton";
 
-    export default {
+export default {
         name: "Canvas",
         components: {
             ColorButton,
@@ -97,14 +97,17 @@
                             color: this.canvasState.color
                         });
                     } else if (command.color) {
-                        const [r, g, b] = command.color;
-                        this.canvasState.color = `${this.hexToNumber(r)}${this.hexToNumber(g)}${this.hexToNumber(b)}`
+                        const r = this.hexToDecimal(command.color[0])
+                        const g = this.hexToDecimal(command.color[1])
+                        const b = this.hexToDecimal(command.color[2])
+
+                        this.canvasState.color = `#${r}${g}${b}`
                     } else if (command.thickness) {
                         this.canvasState.thickness = command.thickness;
                     }
                 });
             },
-            hexToNumber(hex) {
+            hexToDecimal(hex) {
                 let num = hex.toString(16);
                 if (num.length === 1) {
                     num = "0" + num
@@ -113,14 +116,13 @@
             },
             sendNode(node) {
                 const command = {}
-                if (true) {
+                if (!this.hasSendStartNode) {
                     this.hasSendStartNode = true;
                     command.startNode = node.position;
                 } else {
-                    command.startNode = node.position;
                     command.continueNode = node.position.slice(2, 4);
-                }  
-                console.log(!this.hasSendStartNode, command)
+                }
+
                 this.connection.invoke(
                     "SendDrawNode",
                     command
