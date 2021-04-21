@@ -16,7 +16,8 @@ namespace Skrabbl.API.Test.Services
             int gameId = 5;
             Game game = new Game();
             var mock = new Mock<IGameRepository>();
-            mock.Setup(m => m.GetGame(It.IsAny<int>())).Returns(Task.FromResult<Game>(game));
+            mock.Setup(m => m.GetGame(It.IsAny<int>()))
+                .ReturnsAsync(() => game);
             var service = new GameService(mock.Object);
 
             //Act

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Skrabbl.Model
 {
@@ -8,6 +6,6 @@ namespace Skrabbl.Model
     {
         public DateTime EndTime { get; set; }
         public DateTime StartTime { get; set; }
-        public GuessWord Word { get; set; }
+        public string Word { get; set; }
     }
 }

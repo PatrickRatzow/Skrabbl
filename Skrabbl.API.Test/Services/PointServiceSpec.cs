@@ -1,15 +1,13 @@
-﻿using NUnit.Framework;
-using Skrabbl.API.Services;
-using Skrabbl.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using NUnit.Framework;
+using Skrabbl.API.Services;
+using Skrabbl.Model;
 
 namespace Skrabbl.API.Test.Services
 {
-
     public class PointServiceSpec
     {
         private PointService _service;
@@ -40,7 +38,7 @@ namespace Skrabbl.API.Test.Services
             {
                 EndTime = endTime,
                 StartTime = startTime,
-                Word = new GuessWord { Word = "Hest" }
+                Word = "Hest"
             };
         }
 
@@ -86,6 +84,7 @@ namespace Skrabbl.API.Test.Services
             //Assert
             Assert.That(usersPoints, Is.EqualTo(expected));
         }
+
         [Test]
         public void TestSortMessagesByTime()
         {
@@ -107,9 +106,8 @@ namespace Skrabbl.API.Test.Services
 
             //Assert
             Assert.That(messages, Is.EqualTo(expectedList));
-
-
         }
+
         [Test]
         public void TestAllCorrectGuesses()
         {
@@ -125,6 +123,7 @@ namespace Skrabbl.API.Test.Services
             //Assert
             Assert.That(messages.Count == 3);
         }
+
         [Test]
         public void TestPointCalculationMinusWrongGuessesWithOneGuess()
         {
@@ -165,6 +164,7 @@ namespace Skrabbl.API.Test.Services
             //Assert
             Assert.That(usersPoints, Is.EqualTo(expected));
         }
+
         [Test]
         public void TestPointCalculationMinusWrongGuessesWithAllGuess()
         {
@@ -187,6 +187,7 @@ namespace Skrabbl.API.Test.Services
             //Assert
             Assert.That(usersPoints, Is.EqualTo(expected));
         }
+
         [Test]
         public void TestTotalPointsWith1Userwith1CorrectAnswer()
         {
@@ -269,10 +270,10 @@ namespace Skrabbl.API.Test.Services
                 Message = word
             };
         }
+
         private User CreateUser(int userId)
         {
-            return new User { Id = userId };
+            return new User {Id = userId};
         }
-
     }
 }

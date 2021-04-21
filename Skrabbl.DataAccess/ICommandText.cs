@@ -24,5 +24,7 @@ namespace Skrabbl.DataAccess
         string RemoveRefreshToken { get; }
         string RemoveAllRefreshTokensForUser { get; }
         string RemoveAllExpiredRefreshTokens { get; }
+        string GetCurrentTurnByUserId { get; }
+        string GetCurrentTurnByUserIfIdUserHasGuessedWord { get; }
     }
 }

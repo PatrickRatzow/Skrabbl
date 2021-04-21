@@ -22,6 +22,31 @@ namespace Skrabbl.DataAccess.MsSql
             });
         }
 
+        public async Task<Turn> GetCurrentTurn(int userId)
+        {
+            return await WithConnection(async conn =>
+            {
+                return await conn.QueryFirstOrDefaultAsync<Turn>(_commandText.GetCurrentTurnByUserId, new
+                {
+                    UserId = userId
+                });
+            });
+        }
+
+        public async Task<bool> HasUserGuessedWordForCurrentTurn(int userId)
+        {
+            return await WithConnection(async conn =>
+            {
+                var turn = await conn.QueryFirstOrDefaultAsync<Turn>(
+                    _commandText.GetCurrentTurnByUserIfIdUserHasGuessedWord, new
+                    {
+                        UserId = userId
+                    });
+
+                return turn != null;
+            });
+        }
+
         public async Task AddGame()
         {
             //Needs to be implemented

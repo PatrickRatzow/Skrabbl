@@ -15,14 +15,13 @@ namespace Skrabbl.API.Test.Services
         {
             //Arrange
             string msg = "Test msg";
-            int gameId = 5;
             int userId = 25;
             var mock = new Mock<IMessageRepository>();
             mock.Setup(m => m.SaveMessage(It.IsAny<ChatMessage>())).Returns(Task.FromResult<ChatMessage>(null));
             var service = new MessageService(mock.Object);
 
             //Act
-            await service.CreateMessage(msg, userId, gameId);
+            await service.CreateMessage(msg, userId);
 
             //Assert
             mock.VerifyAll();
