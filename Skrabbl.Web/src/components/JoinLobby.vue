@@ -33,7 +33,8 @@
 </template>
 
 <script>
-import LobbyService from "@/services/lobby.service"
+    import LobbyService from "@/services/lobby.service"
+    import { mapActions, mapGetters } from "vuex"
 
 export default {
     data() {
@@ -41,8 +42,20 @@ export default {
             lobbyCode: "",
             errors: []
         }
-    },
-    methods: {
+
+        },
+        mounted() {
+            if (!this.$store.getters["user/isLoggedIn"]) {
+                this.$router.push("/")
+                this.setLoginModalVisible(true)
+                
+            }
+        },
+
+        methods: {
+            ...mapActions("user", {
+                setLoginModalVisible: "setLoginModalVisible"
+            }),
         async joinLobby() {
             this.errors = []
 
