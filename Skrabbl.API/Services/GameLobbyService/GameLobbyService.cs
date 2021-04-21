@@ -1,19 +1,14 @@
-﻿
-using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Skrabbl.DataAccess;
-using Skrabbl.DataAccess.Queries;
 using Skrabbl.Model;
 using Skrabbl.Model.Errors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Skrabbl.API.Services
 {
     public class GameLobbyService : IGameLobbyService
     {
-
         private IGameLobbyRepository _gameLobbyRepository;
 
         public GameLobbyService(IGameLobbyRepository gameLobbyRepo)
@@ -36,13 +31,15 @@ namespace Skrabbl.API.Services
             {
                 gameCode = GenerateGameLobbyCode();
                 var gameLobby = await GetGameLobbyById(gameCode);
-                
+
                 if (gameLobby == null)
                 {
                     break;
                 }
             }
-            GameLobby lobby = new GameLobby { 
+
+            GameLobby lobby = new GameLobby
+            {
                 GameCode = gameCode,
                 LobbyOwnerId = userId
             };
@@ -59,7 +56,8 @@ namespace Skrabbl.API.Services
             {
                 await _gameLobbyRepository.RemoveGameLobby(id);
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }

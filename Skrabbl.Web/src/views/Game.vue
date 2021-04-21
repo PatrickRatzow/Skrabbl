@@ -8,7 +8,7 @@
             </div>
             <div class="column p-0">
                 <div class="box has-text-centered">
-                    <h1 class="title word-hint">____</h1>
+                    <h1 class="title word-hint">{{ hiddenWord }}</h1>
                 </div>
                 <div class="columns">
                     <Canvas class="ml-3 mr-3 column box canvas" />
@@ -33,9 +33,22 @@
             ChatboxList,
             PointList
         },
+        data() {
+            return {
+                hiddenWord: "____"
+            }
+        },
         mounted() {
+            this.showPartOfWord(0, "C")
             if (!this.$store.getters["user/isLoggedIn"]) {
                 this.$router.push("/")
+            }
+        },
+        methods: {
+            showPartOfWord(index, letter) {
+                    this.hiddenWord = this.hiddenWord.substring(0, index) +
+                        letter + 
+                        this.hiddenWord.substring(index + 1);             
             }
         }
     }

@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
-using Skrabbl.DataAccess.Queries;
 using Skrabbl.Model;
 
-namespace Skrabbl.DataAccess
+namespace Skrabbl.DataAccess.MsSql
 {
     public class TokenRepository : BaseRepository, ITokenRepository
     {

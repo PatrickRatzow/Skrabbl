@@ -1,4 +1,4 @@
-namespace Skrabbl.DataAccess.Queries
+namespace Skrabbl.DataAccess.MsSql.Queries
 {
     public partial class CommandText : ICommandText
     {

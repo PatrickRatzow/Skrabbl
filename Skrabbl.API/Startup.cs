@@ -9,7 +9,8 @@ using Skrabbl.API.Hubs;
 using Skrabbl.API.Middleware;
 using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
-using Skrabbl.DataAccess.Queries;
+using Skrabbl.DataAccess.MsSql;
+using Skrabbl.DataAccess.MsSql.Queries;
 
 namespace Skrabbl.API
 {
@@ -25,21 +26,8 @@ namespace Skrabbl.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<ICommandText, CommandText>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IMessageRepository, MessageRepository>();
-            services.AddTransient<IGameLobbyRepository, GameLobbyRepository>();
-            services.AddTransient<IGameRepository, GameRepository>();
-            services.AddTransient<IWordListRepository, WordListRepository>();
-            services.AddTransient<ITokenRepository, TokenRepository>();
-
-            services.AddScoped<IJwtService, JwtService>();
-            services.AddScoped<ICryptographyService, CryptographyService>();
-            services.AddScoped<IGameLobbyService, GameLobbyService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IMessageService, MessageService>();
-            services.AddScoped<IGameService, GameService>();
-            services.AddScoped<IWordService, WordService>();
+            AddMsSqlRepositories(services);
+            AddBusinessLogicServices(services);
 
             services.AddTokenAuthentication(Configuration);
 
@@ -97,6 +85,28 @@ namespace Skrabbl.API
             using var scope = app.ApplicationServices.CreateScope();
             var migrator = scope.ServiceProvider.GetService<IMigrationRunner>();
             migrator.MigrateUp();
+        }
+
+        private void AddMsSqlRepositories(IServiceCollection services)
+        {
+            services.AddTransient<ICommandText, CommandText>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<IGameLobbyRepository, GameLobbyRepository>();
+            services.AddTransient<IGameRepository, GameRepository>();
+            services.AddTransient<IWordListRepository, WordListRepository>();
+            services.AddTransient<ITokenRepository, TokenRepository>();
+        }
+
+        private void AddBusinessLogicServices(IServiceCollection services)
+        {
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<ICryptographyService, CryptographyService>();
+            services.AddScoped<IGameLobbyService, GameLobbyService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IWordService, WordService>();
         }
     }
 }

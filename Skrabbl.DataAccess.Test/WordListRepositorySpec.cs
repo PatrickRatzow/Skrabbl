@@ -1,13 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using NUnit.Framework;
-using Skrabbl.DataAccess.Queries;
-using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using Skrabbl.DataAccess.MsSql.Queries;
+using Skrabbl.Model;
 
-namespace Skrabbl.DataAccess.Test
+namespace Skrabbl.DataAccess.MsSql.Test
 {
     class WordListRepositorySpec
     {
@@ -28,7 +25,7 @@ namespace Skrabbl.DataAccess.Test
             //Arrange
             IEnumerable<GuessWord> words;
             //Act
-            words  = await _wordListRepository.GetAllWords();
+            words = await _wordListRepository.GetAllWords();
 
             //Assert
             Assert.IsNotNull(words);

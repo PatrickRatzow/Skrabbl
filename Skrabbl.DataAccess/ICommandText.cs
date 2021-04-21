@@ -1,4 +1,4 @@
-namespace Skrabbl.DataAccess.Queries
+namespace Skrabbl.DataAccess
 {
     public interface ICommandText
     {

@@ -1,18 +1,17 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Skrabbl.DataAccess.Queries;
+using Skrabbl.DataAccess.MsSql.Queries;
 using Skrabbl.Model;
 
-namespace Skrabbl.DataAccess.Test
+namespace Skrabbl.DataAccess.MsSql.Test
 {
     [TestFixture]
     public class UserRepositorySpec
     {
         private IUserRepository _userRepository;
         private List<int> _userIds;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -35,11 +34,11 @@ namespace Skrabbl.DataAccess.Test
                 Password = password,
                 Salt = salt
             };
-            
+
             // Act
             var id = await _userRepository.AddUser(user);
             _userIds.Add(id);
-            
+
             // Assert
             Assert.IsNotNull(id);
         }
@@ -48,7 +47,6 @@ namespace Skrabbl.DataAccess.Test
         [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2")]
         public async Task GetUserById(string username, string email, string password, string salt)
         {
-
             //Arrange
             var user = new User
             {
@@ -74,7 +72,6 @@ namespace Skrabbl.DataAccess.Test
         [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2")]
         public async Task GetUserByUsername(string username, string email, string password, string salt)
         {
-
             //Arrange
             var user = new User
             {
@@ -100,7 +97,6 @@ namespace Skrabbl.DataAccess.Test
         [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2")]
         public async Task DeleteUserById(string username, string email, string password, string salt)
         {
-
             //Arrange
             var user = new User
             {
@@ -111,12 +107,12 @@ namespace Skrabbl.DataAccess.Test
             };
             var id = await _userRepository.AddUser(user);
             _userIds.Add(id);
-            
+
 
             //Act
             await _userRepository.DeleteUserById(id);
             User gottenUser = await _userRepository.GetUserById(id);
-            
+
             //Assert
             Assert.IsNull(gottenUser);
         }
@@ -125,7 +121,6 @@ namespace Skrabbl.DataAccess.Test
         [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2", "1111")]
         public async Task AddUserToLobby(string username, string email, string password, string salt, string lobby)
         {
-
             //Arrange
             var user = new User
             {
@@ -155,6 +150,5 @@ namespace Skrabbl.DataAccess.Test
                 _userRepository.DeleteUserById(id);
             }
         }
-        
     }
 }
