@@ -61,7 +61,6 @@ namespace Skrabbl.DataAccess.MsSql
                 {
                     Message = message.Message,
                     CreatedAt = message.CreatedAt,
-                    GameId = message.Game.Id,
                     UserId = message.User.Id
                 });
             });

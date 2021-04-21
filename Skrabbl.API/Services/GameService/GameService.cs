@@ -23,11 +23,6 @@ namespace Skrabbl.API.Services
             return await _gameRepository.GetGame(id);
         }
 
-        public void EndTurn()
-        {
-
-        }
-
         public void CreateTimer(int gameId, int time)
         {
             //For now this timer is set to 60 seconds.
@@ -43,6 +38,22 @@ namespace Skrabbl.API.Services
         public void StopTimer(int gameId)
         {
             turnTimerService.StopTimer(gameId);
+        }
+
+        public async Task<bool> DidUserGuessWord(int userId, string message)
+        {
+            var turn = await _gameRepository.GetCurrentTurn(userId);
+
+            return turn?.Word == message;
+        }
+
+        public async Task<bool> HasUserGuessedWord(int userId)
+        {
+            return await _gameRepository.HasUserGuessedWordForCurrentTurn(userId);
+        }
+
+        public void EndTurn()
+        {
         }
     }
 }

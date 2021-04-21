@@ -8,6 +8,6 @@ namespace Skrabbl.API.Services
     {
         Task<IEnumerable<ChatMessage>> GetMessages(int lobbyId);
         Task<IEnumerable<ChatMessage>> GetMessagesByUserId(int userId);
-        Task<ChatMessage> CreateMessage(string message, int gameId, int userId);
+        Task<ChatMessage> CreateMessage(string message, int userId);
     }
 }

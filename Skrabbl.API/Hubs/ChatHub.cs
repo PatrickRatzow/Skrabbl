@@ -16,27 +16,28 @@ namespace Skrabbl.API.Hubs
             if (idClaim == null || userName == null) return;
             var userId = int.Parse(idClaim.Value);
 
-            var gameId = 5;
-            /*
-            var user = await _userService.GetUser(userId);
-            var game = _gameService.GetGame(user.GameLobbyId);
+            var user = _userService.GetUser(userId);
+            var hasGuessedWord = _gameService.HasUserGuessedWord(userId);
 
-            await Task.WhenAll(user, game);
+            await Task.WhenAll(user, hasGuessedWord);
 
-            if (user.Result == null || game.Result == null)
-                return;
-            */
-            await _messageService.CreateMessage(message, gameId, userId);
-            bool wordExist = await _wordService.DoesWordExist(message);
+            if (user.Result.GameLobbyId == null || hasGuessedWord.Result) return;
 
-            if (wordExist)
+            var guessedWord = _gameService.DidUserGuessWord(userId, message);
+
+            await Task.WhenAll(
+                _messageService.CreateMessage(message, userId),
+                guessedWord
+            );
+
+            if (guessedWord.Result)
             {
                 await Clients.All.GuessedWord(userName);
+
+                return;
             }
-            else
-            {
-                await Clients.All.ReceiveMessage(userName, message);
-            }
+
+            await Clients.All.ReceiveMessage(userName, message);
         }
 
         public async Task DeleteMessage(string user, string msg)

@@ -6,5 +6,7 @@ namespace Skrabbl.DataAccess
     public interface IGameRepository
     {
         Task<Game> GetGame(int id);
+        Task<Turn> GetCurrentTurn(int userId);
+        Task<bool> HasUserGuessedWordForCurrentTurn(int userId);
     }
 }
