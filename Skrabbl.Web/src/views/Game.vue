@@ -6,7 +6,6 @@
                 <div v-if="true" class="column box pr-1 pl-1 mr-4">
                     <h2 class="subtitle">Players</h2>
                     <PointList class=" PointList" />
-
                 </div>
                 <div class="column p-0">
                     <div class="box has-text-centered">
@@ -23,15 +22,14 @@
 </template>
 
 <script>
-    import Canvas from "@/components/canvas/Canvas";
-    import ChatboxList from "@/components/chatbox/ChatboxList";
-    import PointList from "@/components/PointList";
-    import ConnectionModal from "@/components/modals/ConnectionModal";
-    import Store from '@/store/index.js'
-    import { mapGetters, mapState } from "vuex"
+import Canvas from "@/components/canvas/Canvas";
+import ChatboxList from "@/components/chatbox/ChatboxList";
+import PointList from "@/components/PointList";
+import ConnectionModal from "@/components/modals/ConnectionModal";
+import { mapGetters, mapState } from "vuex"
 
 
-    export default {
+export default {
         name: "Game",
         components: {
             ConnectionModal,

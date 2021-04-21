@@ -1,35 +1,36 @@
+<script src="../store/modules/user.js"></script>
 <template>
-    <article class="media">
-        <div>
-            <div class="media-content" v-for="player in pointList">
-                <div class="content pt-0 pb-1">
-                    <span class="box">
-                        <span class="columns is-vcentered is-pulled-left ml-3 pr-4"><strong>{{ player.player }}</strong></span>
-                        <span class="columns is-vcenteres is-pulled-right mr-3 pl-6 has-text-success">{{ player.score }}</span>
-                    </span>
-
-                </div>
-            </div>
-        </div>
-    </article>
+    <ul class="is-flex is-flex-direction-column">
+        <li class="pl-3 pr-3 pt-1 pb-1 is-flex is-justify-content-space-between" v-for="player in sortedPlayers">
+            <span class="has-text-weight-bold">{{ player.name }}</span>
+            <span>{{ player.score }}</span>
+        </li>
+    </ul>
 </template>
 
 <script>
-    import { mapGetters, mapState } from "vuex"
-    export default {
-        name: "PointList",
-        computed: {
-            ...mapGetters("game", {
-                isNewScoresAdded: "isNewScoresAdded"
-            }),
-            ...mapState("game", {
-                pointList: "pointList"
-            })
+export default {
+    name: "PointList",
+    computed: {
+        sortedPlayers() {
+            return this.$store.state.game.players.sort((a, b) => {
+                if (a.score < b.score) return 1
+                if (a.score > b.score) return -1
 
+                return 0
+            });
         }
-
     }
+
+}
 </script>
 
 <style scoped>
+li:nth-child(2n) {
+    background: rgb(242, 242, 242);
+}
+
+ul {
+    margin: -0.25rem;
+}
 </style>
