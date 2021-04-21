@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using Skrabbl.API.Services;
+using Skrabbl.API.Services.TimerService;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
 
@@ -16,9 +17,8 @@ namespace Skrabbl.API.Test.Services
             int gameId = 5;
             Game game = new Game();
             var mock = new Mock<IGameRepository>();
-            mock.Setup(m => m.GetGame(It.IsAny<int>()))
-                .ReturnsAsync(() => game);
-            var service = new GameService(mock.Object);
+            mock.Setup(m => m.GetGame(It.IsAny<int>())).Returns(Task.FromResult<Game>(game));
+            var service = new GameService(mock.Object, null);
 
             //Act
             await service.GetGame(gameId);

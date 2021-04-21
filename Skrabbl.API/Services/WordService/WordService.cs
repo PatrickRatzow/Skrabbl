@@ -54,7 +54,6 @@ namespace Skrabbl.API.Services
 
         }
 
-
         private async Task<IEnumerable<GuessWord>> WordList()
         {
             Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
