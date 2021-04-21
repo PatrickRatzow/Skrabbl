@@ -26,5 +26,15 @@ namespace Skrabbl.DataAccess.MsSql
         {
             //Needs to be implemented
         }
+
+        public async Task GetTurn()
+        {
+        }
+
+        public async Task Timer()
+        {
+
+        }
+
     }
 }

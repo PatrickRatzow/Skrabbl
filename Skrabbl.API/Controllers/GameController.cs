@@ -26,13 +26,10 @@ namespace Skrabbl.API.Controllers
         [HttpPost("{gameId}/round/{roundId}")]
         public async Task<IActionResult> Post(int gameId, int roundId, [FromBody] EndTurnDto endTurnDto)
         {
-
-
             var game = await _gameService.GetGame(gameId);
             return null;
-
-
-
         }
+
+
     }
 }
