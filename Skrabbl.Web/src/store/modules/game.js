@@ -6,7 +6,14 @@ const state = () => ({
     lobbyCode: "a2C4",
     chosenWord: "",
     wordList: [],
-    roundOverview: null
+    roundOverview: null,
+    pointList: [
+        { player: "Patrick", score: 345 },
+        { player: "Simon", score: 765 },
+        { player: "Floris", score: 585 },
+        { player: "Thor", score: 895 },
+        { player: "Nikolaj", score: 570 },
+    ]
 })
 
 const getters = {
@@ -15,6 +22,9 @@ const getters = {
     },
     isRoundOverviewVisible: state => {
         return state.roundOverview != null;
+    },
+    isNewScoresAdded: state => {
+        return state.pointList != null;
     }
 }
 
@@ -31,6 +41,9 @@ const actions = {
     },
     roundOver({ commit }, status) {
         commit("setRoundOverview", status);
+    },
+    newScoresAdded({ commit }, points) {
+        commit("setNewScores", points);
     }
 }
 
@@ -43,6 +56,9 @@ const mutations = {
     },
     setRoundOverview(state, status) {
         state.roundOverview = status
+    },
+    setNewScores(state, points) {
+        state.pointList = points
     }
 }
 
