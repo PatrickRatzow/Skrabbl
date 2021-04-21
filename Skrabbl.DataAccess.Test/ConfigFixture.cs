@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
-namespace Skrabbl.DataAccess.Test
+namespace Skrabbl.DataAccess.MsSql.Test
 {
     class ConfigFixture
     {

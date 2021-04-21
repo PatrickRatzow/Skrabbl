@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace Skrabbl.DataAccess.Test
+namespace Skrabbl.DataAccess.MsSql.Test
 {
     public class DbUser
     {

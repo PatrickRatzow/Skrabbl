@@ -1,15 +1,14 @@
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
-using Skrabbl.DataAccess.Queries;
 using Skrabbl.Model;
 
-namespace Skrabbl.DataAccess
+namespace Skrabbl.DataAccess.MsSql
 {
     public class GameRepository : BaseRepository, IGameRepository
     {
         private readonly ICommandText _commandText;
-        
+
         public GameRepository(IConfiguration configuration, ICommandText commandText) : base(configuration)
         {
             _commandText = commandText;
@@ -19,7 +18,7 @@ namespace Skrabbl.DataAccess
         {
             return await WithConnection(async conn =>
             {
-                return await conn.QueryFirstOrDefaultAsync<Game>(_commandText.GetGameById, new { Id = id });
+                return await conn.QueryFirstOrDefaultAsync<Game>(_commandText.GetGameById, new {Id = id});
             });
         }
 

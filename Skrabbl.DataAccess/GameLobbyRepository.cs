@@ -1,10 +1,8 @@
-﻿using Dapper;
-using Microsoft.Extensions.Configuration;
-using Skrabbl.DataAccess.Queries;
-using Skrabbl.Model;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Dapper;
+using Microsoft.Extensions.Configuration;
+using Skrabbl.Model;
 
 namespace Skrabbl.DataAccess
 {
@@ -21,34 +19,29 @@ namespace Skrabbl.DataAccess
         {
             return await WithConnection(async conn =>
             {
-                return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyById, 
-                    new { GameCode = ownerId});
+                return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyById,
+                    new {GameCode = ownerId});
             });
         }
 
         public async Task AddGameLobby(GameLobby entity)
         {
-            await WithConnection(async conn =>
-            {
-                await conn.ExecuteAsync(_commandText.AddLobby, entity);
-            });
+            await WithConnection(async conn => { await conn.ExecuteAsync(_commandText.AddLobby, entity); });
         }
 
         public async Task<int> RemoveGameLobby(string ownerId)
         {
             return await WithConnection(async conn =>
             {
-                return await conn.ExecuteAsync(_commandText.RemoveLobbyById, new { GameCode = ownerId });
+                return await conn.ExecuteAsync(_commandText.RemoveLobbyById, new {GameCode = ownerId});
             });
         }
 
         public async Task RemoveAllGameLobbies()
         {
-            await WithConnection(async conn =>
-            {
-                await conn.ExecuteAsync(_commandText.RemoveAllLobbies);
-            });
+            await WithConnection(async conn => { await conn.ExecuteAsync(_commandText.RemoveAllLobbies); });
         }
+
         public async Task<IEnumerable<GameLobby>> GetAllGameLobbies()
         {
             return await WithConnection<IEnumerable<GameLobby>>(async conn =>
@@ -61,8 +54,8 @@ namespace Skrabbl.DataAccess
         {
             return await WithConnection(async conn =>
             {
-                return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyByOwnerId, 
-                    new { LobbyOwnerId = ownerId });
+                return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyByOwnerId,
+                    new {LobbyOwnerId = ownerId});
             });
         }
     }

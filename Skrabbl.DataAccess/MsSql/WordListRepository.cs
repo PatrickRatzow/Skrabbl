@@ -1,13 +1,10 @@
-﻿using Dapper;
-using Microsoft.Extensions.Configuration;
-using Skrabbl.DataAccess.Queries;
-using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Dapper;
+using Microsoft.Extensions.Configuration;
+using Skrabbl.Model;
 
-namespace Skrabbl.DataAccess
+namespace Skrabbl.DataAccess.MsSql
 {
     public class WordListRepository : BaseRepository, IWordListRepository
     {
@@ -17,6 +14,7 @@ namespace Skrabbl.DataAccess
         {
             _commandText = commandText;
         }
+
         public async ValueTask<IEnumerable<GuessWord>> GetAllWords()
         {
             return await WithConnection<IEnumerable<GuessWord>>(async conn =>

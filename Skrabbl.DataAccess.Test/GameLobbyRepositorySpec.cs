@@ -1,14 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using NUnit.Framework;
-using Skrabbl.DataAccess.Queries;
-using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using Skrabbl.DataAccess.MsSql.Queries;
+using Skrabbl.Model;
 
-namespace Skrabbl.DataAccess.Test
+namespace Skrabbl.DataAccess.MsSql.Test
 {
     class GameLobbyRepositorySpec
     {
@@ -79,7 +75,6 @@ namespace Skrabbl.DataAccess.Test
 
             //Assert
             Assert.AreEqual(rowsAffected, 1);
-            
         }
 
         [Test]
@@ -98,8 +93,7 @@ namespace Skrabbl.DataAccess.Test
         [OneTimeTearDown]
         public void TearDown()
         {
-           // _gameLobbyRepository.RemoveGameLobby("1111");
+            // _gameLobbyRepository.RemoveGameLobby("1111");
         }
-
     }
 }

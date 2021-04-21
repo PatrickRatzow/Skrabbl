@@ -1,16 +1,11 @@
-﻿using Microsoft.Azure.Amqp.Framing;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-using NUnit.Framework;
-using Skrabbl.DataAccess.Queries;
-using Skrabbl.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using Skrabbl.DataAccess.MsSql.Queries;
+using Skrabbl.Model;
 
-
-namespace Skrabbl.DataAccess.Test
+namespace Skrabbl.DataAccess.MsSql.Test
 {
     class MessageRepositorySpec
     {
@@ -23,7 +18,6 @@ namespace Skrabbl.DataAccess.Test
             var cmd = new CommandText();
 
             _messageRepository = new MessageRepository(config, cmd);
-
         }
 
         [Test]
@@ -50,8 +44,8 @@ namespace Skrabbl.DataAccess.Test
             {
                 Message = "hej",
                 CreatedAt = date,
-                Game = new Game { Id = 3 },
-                User = new User { Id = 25 }
+                Game = new Game {Id = 3},
+                User = new User {Id = 25}
             };
 
             //Act

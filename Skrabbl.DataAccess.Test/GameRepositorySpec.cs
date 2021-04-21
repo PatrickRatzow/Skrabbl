@@ -1,13 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Threading.Tasks;
 using NUnit.Framework;
-using Skrabbl.DataAccess.Queries;
+using Skrabbl.DataAccess.MsSql.Queries;
 using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Skrabbl.DataAccess.Test
+namespace Skrabbl.DataAccess.MsSql.Test
 {
     class GameRepositorySpec
     {

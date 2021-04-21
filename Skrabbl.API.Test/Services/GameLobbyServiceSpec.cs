@@ -1,14 +1,10 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using Moq;
+using NUnit.Framework;
+using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
-using Skrabbl.API.Services;
 using Skrabbl.Model.Errors;
-using NUnit.Framework.Constraints;
 
 namespace Skrabbl.API.Test.Services
 {
@@ -64,7 +60,8 @@ namespace Skrabbl.API.Test.Services
                 .Returns(Task.FromResult<GameLobby>(null));
             mock.SetupSequence(m => m.GetGameLobbyById(It.IsAny<string>()))
                 .Returns(Task.FromResult<GameLobby>(gameLobby))
-                .Returns(Task.FromResult<GameLobby>(null)); ;
+                .Returns(Task.FromResult<GameLobby>(null));
+            ;
             var service = new GameLobbyService(mock.Object);
 
             //Act
