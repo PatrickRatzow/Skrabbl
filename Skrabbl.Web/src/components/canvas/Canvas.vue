@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!isConnected">Is not connected to SignalR!</div>
+      
     <canvas id="draw-canvas"
             height="500"
             width="500"
@@ -44,8 +44,8 @@ export default {
     SizeButton
   },
   computed: {
-    ...mapState({
-      isConnected: state => state.signalR.connected,
+      ...mapState({
+          isConnected: state => state.signalR.connected,
       sizes: state => state.canvas.sizes,
       colors: state => state.canvas.colors,
       connection: state => state.signalR.connection
