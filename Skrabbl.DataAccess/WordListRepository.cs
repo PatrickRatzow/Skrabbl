@@ -4,7 +4,9 @@ using Skrabbl.DataAccess.Queries;
 using Skrabbl.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Skrabbl.DataAccess
@@ -19,6 +21,7 @@ namespace Skrabbl.DataAccess
         }
         public async ValueTask<IEnumerable<GuessWord>> GetAllWords()
         {
+            Debug.WriteLine(Thread.CurrentThread.ManagedThreadId); 
             return await WithConnection<IEnumerable<GuessWord>>(async conn =>
             {
                 return await conn.QueryAsync<GuessWord>(_commandText.GetAllWords);
