@@ -31,8 +31,12 @@ namespace Skrabbl.API
 
             services.AddTokenAuthentication(Configuration);
 
+            
+
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
+            services.AddMemoryCache();
             services.AddControllers();
+            
             services.AddSignalR();
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb

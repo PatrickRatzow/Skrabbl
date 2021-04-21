@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Skrabbl.API.Services;
 using Skrabbl.Model;
 using Skrabbl.Model.Dto;
@@ -17,10 +18,12 @@ namespace Skrabbl.API.Controllers
     public class WordController : ControllerBase
     {
         private readonly IWordService _wordService;
+        private readonly IMemoryCache memoryCache;
 
-        public WordController(IWordService wordService)
+        public WordController(IMemoryCache memoryCache, IWordService wordService)
         {
             _wordService = wordService;
+            this.memoryCache = memoryCache;
         }
 
         // GET: api/<GameLobbyController>
@@ -30,7 +33,9 @@ namespace Skrabbl.API.Controllers
             try
             {
                 var words = await _wordService.GetNewWords();
-                return Ok(words);
+                List<GuessWord> wordList = words.ToList();
+
+                return Ok(wordList);
             }
             catch
             {
@@ -41,9 +46,9 @@ namespace Skrabbl.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] WordDto wordDto)
         {
-                await _wordService.UsedWords(wordDto.Word);
-                return Ok();
-           
+            await _wordService.UsedWords(wordDto.Word);
+            return Ok();
+
         }
 
 

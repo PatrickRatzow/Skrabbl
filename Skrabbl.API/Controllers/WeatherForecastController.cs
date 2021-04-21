@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Skrabbl.API.Services.Cache;
+using Skrabbl.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,10 +22,12 @@ namespace Skrabbl.API.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IMemoryCache _memoryCache;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IMemoryCache memoryCache)
         {
             _logger = logger;
+            _memoryCache = memoryCache;
         }
 
         [HttpGet]
