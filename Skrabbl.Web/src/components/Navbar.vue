@@ -15,9 +15,11 @@
             <div id="navbar" class="navbar-menu is-spaced">
                 <div class="navbar-start">
                     <router-link class="navbar-item" to="/">Home</router-link>
-                    <router-link class="navbar-item" v-if="isLoggedIn" to="/game-lobby">Game Lobby</router-link>
-                    <router-link class="navbar-item" v-if="isLoggedIn" to="/game">Game</router-link>
-                    <router-link class="navbar-item" v-if="isLoggedIn" to="/join-lobby">Join Lobby</router-link>
+                    <template v-if="isLoggedIn">
+                        <router-link class="navbar-item" to="/game-lobby">Game Lobby</router-link>
+                        <router-link class="navbar-item" to="/game">Game</router-link>
+                        <router-link class="navbar-item" to="/join-lobby">Join Lobby</router-link>
+                    </template>
                 </div>
 
                 <div class="navbar-end">
