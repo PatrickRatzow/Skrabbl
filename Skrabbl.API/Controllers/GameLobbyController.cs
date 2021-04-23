@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -113,33 +112,27 @@ namespace Skrabbl.API.Controllers
         [Authorize]
         public async Task<IActionResult> Join(string lobbyCode)
         {
-            try
-            {
-                var claimUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-                if (claimUserId == null)
-                    return Unauthorized();
+            var claimUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
+                ?.Value;
+            if (claimUserId == null)
+                return Unauthorized();
 
-                var userId = int.Parse(claimUserId);
-                var user = _userService.GetUser(userId);
-                var gameLobby = _gameLobbyService.GetGameLobbyById(lobbyCode);
+            var userId = int.Parse(claimUserId);
+            var user = _userService.GetUser(userId);
+            var gameLobby = _gameLobbyService.GetGameLobbyById(lobbyCode);
 
-                await Task.WhenAll(user, gameLobby);
+            await Task.WhenAll(user, gameLobby);
 
-                if (gameLobby.Result == null)
-                    return NotFound();
+            if (gameLobby.Result == null)
+                return NotFound();
 
-                if (user.Result == null || user.Result.GameLobbyId != null)
-                    return Forbid();
+            if (user.Result == null || user.Result.GameLobbyId != null)
+                return Forbid();
 
-                //Go to database and change the players connected to lobby + player connected lobby
-                await _userService.AddToLobby(user.Result.Id, gameLobby.Result.GameCode);
+            //Go to database and change the players connected to lobby + player connected lobby
+            await _userService.AddToLobby(user.Result.Id, gameLobby.Result.GameCode);
 
-                return Ok(gameLobby.Result);
-            }
-            catch (Exception e)
-            {
-                return BadRequest();
-            }
+            return Ok(gameLobby.Result);
         }
     }
 }
