@@ -1,12 +1,7 @@
-﻿using Dapper;
-using Microsoft.Extensions.Configuration;
-using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Threading;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Dapper;
+using Microsoft.Extensions.Configuration;
 
 namespace Skrabbl.DataAccess.MsSql
 {
@@ -19,12 +14,11 @@ namespace Skrabbl.DataAccess.MsSql
             _commandText = commandText;
         }
 
-        public async ValueTask<IEnumerable<GuessWord>> GetAllWords()
+        public async ValueTask<IEnumerable<string>> GetAllWords()
         {
-            Debug.WriteLine(Thread.CurrentThread.ManagedThreadId); 
-            return await WithConnection<IEnumerable<GuessWord>>(async conn =>
+            return await WithConnection(async conn =>
             {
-                return await conn.QueryAsync<GuessWord>(_commandText.GetAllWords);
+                return await conn.QueryAsync<string>(_commandText.GetAllWords);
             });
         }
     }

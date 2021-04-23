@@ -1,22 +1,16 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using Skrabbl.API.Services.Cache;
 using Skrabbl.DataAccess;
-using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
 
 namespace Skrabbl.API.Services
 {
     public class WordService : IWordService
     {
-        IWordListRepository _wordListRepository;
-        IEnumerable<GuessWord> words;
-        HashSet<GuessWord> usedWords = new HashSet<GuessWord>();
+        private readonly IWordListRepository _wordListRepository;
         private readonly IMemoryCache _memoryCache;
 
         public WordService(IWordListRepository wordListRepo, IMemoryCache memoryCache)
@@ -24,51 +18,52 @@ namespace Skrabbl.API.Services
             _wordListRepository = wordListRepo;
             _memoryCache = memoryCache;
         }
-        public async Task<bool> DoesWordExist(string word)
-        {
-            IEnumerable<GuessWord> words = await WordList();
 
-            return words.Any(w => w.Word == word);
+        public async Task<IEnumerable<string>> GetNewWords(int gameId)
+        {
+            var wordList = GetWordList();
+            var usedWords = GetUsedWords(gameId);
+
+            await Task.WhenAll(wordList, usedWords);
+
+            var random = new Random();
+            return wordList.Result
+                .Except(usedWords.Result)
+                .OrderBy(x => random.Next())
+                .Take(3);
         }
 
-
-
-        public async Task<IEnumerable<GuessWord>> GetNewWords()
+        public async Task AddUsedWord(int gameId, string word)
         {
-            Debug.WriteLine(_memoryCache.GetHashCode());
-            IEnumerable<GuessWord> list = await WordList();
-            var wordList = list.Except(usedWords).ToList();
-            Random random = new Random();
-            var shuffledList = wordList.OrderBy(x => random.Next()).ToList();
-            return shuffledList.GetRange(0, 3);
+            var usedWords = await GetUsedWords(gameId);
+            usedWords.Add(word);
+
+            _memoryCache.Set(UsedWordCacheKey(gameId), usedWords, TimeSpan.FromMinutes(10));
         }
 
-        public Task<bool> UsedWords(string word)
+        private string UsedWordCacheKey(int gameId) => $"usedWords:{gameId}";
+
+        private Task<HashSet<string>> GetUsedWords(int gameId)
         {
-            return Task.Run(() =>
+            return _memoryCache.GetOrCreateAsync(UsedWordCacheKey(gameId), async (entry) =>
             {
-                //FejlHåndtering find ud af om det ord der bliver sendt videre findes i den cached liste
-                usedWords.Add(new GuessWord { Word = word });
-                return true;
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+
+                return new HashSet<string>();
             });
-
         }
 
-        private async Task<IEnumerable<GuessWord>> WordList()
+        private Task<IEnumerable<string>> GetWordList()
         {
-            Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
-            var cacheEntry = await _memoryCache.GetOrCreateAsync(CachedKeys.AllWords, async entry =>
+            return _memoryCache.GetOrCreateAsync(CachedKeys.AllWords, async entry =>
             {
-
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
                 entry.SlidingExpiration = TimeSpan.FromMinutes(2);
-                IEnumerable<GuessWord> words = await _wordListRepository.GetAllWords();
-                List<GuessWord> allWordsList = words.ToList();
-                return allWordsList;
 
+                return await _wordListRepository.GetAllWords();
             });
-            return cacheEntry;
         }
+
         // en anden måde at implementere cache på
         /* private async Task<IEnumerable<GuessWord>> WordList1()
         {
@@ -94,5 +89,4 @@ namespace Skrabbl.API.Services
             return allWordsList;
         }*/
     }
-
 }
