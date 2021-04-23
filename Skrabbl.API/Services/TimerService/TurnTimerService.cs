@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace Skrabbl.API.Services.TimerService
 {
-    public class TurnTimerService
+    public class TurnTimerService : ITurnTimerService
     {
         private readonly ConcurrentDictionary<int, Timer> _timers;
 
@@ -24,8 +21,9 @@ namespace Skrabbl.API.Services.TimerService
             timer.Interval = interval;
             _timers.TryAdd(gameId, timer);
         }
+
         //This happens when the Timer reached 0, and tries to start over.
-        public void TimerElapsed(object sender, ElapsedEventArgs e, Action<Timer> callback)
+        private void TimerElapsed(object sender, ElapsedEventArgs e, Action<Timer> callback)
         {
             //Stop the turn, and then the timer?
             //Send message forward
@@ -35,14 +33,14 @@ namespace Skrabbl.API.Services.TimerService
             timer.Stop();
             if (callback == null)
                 return;
-                
+
             callback(timer);
         }
 
         public void StartTimer(int gameId)
         {
             bool success = _timers.TryGetValue(gameId, out Timer timer);
-            if (!success) 
+            if (!success)
                 return;
 
             timer.Start();
