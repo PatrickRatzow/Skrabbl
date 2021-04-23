@@ -11,7 +11,6 @@ namespace Skrabbl.API.Services
     public class WordService : IWordService
     {
         private readonly IWordListRepository _wordListRepository;
-        private readonly HashSet<string> _usedWords = new HashSet<string>();
         private readonly IMemoryCache _memoryCache;
 
         public WordService(IWordListRepository wordListRepo, IMemoryCache memoryCache)
@@ -20,20 +19,38 @@ namespace Skrabbl.API.Services
             _memoryCache = memoryCache;
         }
 
-        public async Task<IEnumerable<string>> GetNewWords()
+        public async Task<IEnumerable<string>> GetNewWords(int gameId)
         {
-            IEnumerable<string> wordList = await GetWordList();
+            var wordList = GetWordList();
+            var usedWords = GetUsedWords(gameId);
+
+            await Task.WhenAll(wordList, usedWords);
 
             var random = new Random();
-            return wordList
-                .Except(_usedWords)
+            return wordList.Result
+                .Except(usedWords.Result)
                 .OrderBy(x => random.Next())
                 .Take(3);
         }
 
-        public void AddUsedWord(string word)
+        public async Task AddUsedWord(int gameId, string word)
         {
-            _usedWords.Add(word);
+            var usedWords = await GetUsedWords(gameId);
+            usedWords.Add(word);
+
+            _memoryCache.Set(UsedWordCacheKey(gameId), usedWords, TimeSpan.FromMinutes(10));
+        }
+
+        private string UsedWordCacheKey(int gameId) => $"usedWords:{gameId}";
+
+        private Task<HashSet<string>> GetUsedWords(int gameId)
+        {
+            return _memoryCache.GetOrCreateAsync(UsedWordCacheKey(gameId), async (entry) =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+
+                return new HashSet<string>();
+            });
         }
 
         private Task<IEnumerable<string>> GetWordList()

@@ -5,7 +5,7 @@ namespace Skrabbl.API.Services
 {
     public interface IWordService
     {
-        Task<IEnumerable<string>> GetNewWords();
-        public void AddUsedWord(string word);
+        Task<IEnumerable<string>> GetNewWords(int gameId);
+        public Task AddUsedWord(int gameId, string word);
     }
 }
