@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Skrabbl.DataAccess.MsSql.Queries;
-using Skrabbl.Model;
 
 namespace Skrabbl.DataAccess.MsSql.Test
 {
@@ -23,7 +22,7 @@ namespace Skrabbl.DataAccess.MsSql.Test
         public async Task GetAllWordsFromDb()
         {
             //Arrange
-            IEnumerable<GuessWord> words;
+            IEnumerable<string> words;
             //Act
             words = await _wordListRepository.GetAllWords();
 

@@ -1,22 +1,17 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using Skrabbl.API.Services.Cache;
 using Skrabbl.DataAccess;
-using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
 
 namespace Skrabbl.API.Services
 {
     public class WordService : IWordService
     {
-        IWordListRepository _wordListRepository;
-        IEnumerable<GuessWord> words;
-        HashSet<GuessWord> usedWords = new HashSet<GuessWord>();
+        private readonly IWordListRepository _wordListRepository;
+        private readonly HashSet<string> _usedWords = new HashSet<string>();
         private readonly IMemoryCache _memoryCache;
 
         public WordService(IWordListRepository wordListRepo, IMemoryCache memoryCache)
@@ -24,51 +19,34 @@ namespace Skrabbl.API.Services
             _wordListRepository = wordListRepo;
             _memoryCache = memoryCache;
         }
-        public async Task<bool> DoesWordExist(string word)
-        {
-            IEnumerable<GuessWord> words = await WordList();
 
-            return words.Any(w => w.Word == word);
+        public async Task<IEnumerable<string>> GetNewWords()
+        {
+            IEnumerable<string> wordList = await GetWordList();
+
+            var random = new Random();
+            return wordList
+                .Except(_usedWords)
+                .OrderBy(x => random.Next())
+                .Take(3);
         }
 
-
-
-        public async Task<IEnumerable<GuessWord>> GetNewWords()
+        public void AddUsedWord(string word)
         {
-            Debug.WriteLine(_memoryCache.GetHashCode());
-            IEnumerable<GuessWord> list = await WordList();
-            var wordList = list.Except(usedWords).ToList();
-            Random random = new Random();
-            var shuffledList = wordList.OrderBy(x => random.Next()).ToList();
-            return shuffledList.GetRange(0, 3);
+            _usedWords.Add(word);
         }
 
-        public Task<bool> UsedWords(string word)
+        private Task<IEnumerable<string>> GetWordList()
         {
-            return Task.Run(() =>
+            return _memoryCache.GetOrCreateAsync(CachedKeys.AllWords, async entry =>
             {
-                //FejlHåndtering find ud af om det ord der bliver sendt videre findes i den cached liste
-                usedWords.Add(new GuessWord { Word = word });
-                return true;
-            });
-
-        }
-
-        private async Task<IEnumerable<GuessWord>> WordList()
-        {
-            Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
-            var cacheEntry = await _memoryCache.GetOrCreateAsync(CachedKeys.AllWords, async entry =>
-            {
-
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
                 entry.SlidingExpiration = TimeSpan.FromMinutes(2);
-                IEnumerable<GuessWord> words = await _wordListRepository.GetAllWords();
-                List<GuessWord> allWordsList = words.ToList();
-                return allWordsList;
 
+                return await _wordListRepository.GetAllWords();
             });
-            return cacheEntry;
         }
+
         // en anden måde at implementere cache på
         /* private async Task<IEnumerable<GuessWord>> WordList1()
         {
@@ -94,5 +72,4 @@ namespace Skrabbl.API.Services
             return allWordsList;
         }*/
     }
-
 }
