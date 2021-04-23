@@ -8,5 +8,6 @@ namespace Skrabbl.DataAccess
         Task<Game> GetGame(int id);
         Task<Turn> GetCurrentTurn(int userId);
         Task<bool> HasUserGuessedWordForCurrentTurn(int userId);
+        Task<bool> GoToNextRound(int gameId);
     }
 }

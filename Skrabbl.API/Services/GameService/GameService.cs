@@ -1,7 +1,6 @@
-using System;
 using System.Threading.Tasks;
-using System.Timers;
-using Skrabbl.API.Services.TimerService;
+using Microsoft.AspNetCore.SignalR;
+using Skrabbl.API.Hubs;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
 
@@ -9,13 +8,13 @@ namespace Skrabbl.API.Services
 {
     public class GameService : IGameService
     {
-        IGameRepository _gameRepository;
-        TurnTimerService turnTimerService;
+        private readonly IGameRepository _gameRepository;
+        private readonly IHubContext<GameHub, IGameHub> _gameHub;
 
-        public GameService(IGameRepository gameRepository, TurnTimerService turn)
+        public GameService(IGameRepository gameRepository, IHubContext<GameHub, IGameHub> gameHub)
         {
             _gameRepository = gameRepository;
-            turnTimerService = turn;
+            _gameHub = gameHub;
         }
 
         public async Task<Game> GetGame(int id)
@@ -23,21 +22,20 @@ namespace Skrabbl.API.Services
             return await _gameRepository.GetGame(id);
         }
 
-        public void CreateTimer(int gameId, int time)
+        public async Task StartNextRound(int gameId)
         {
-            //For now this timer is set to 60 seconds.
-            //TurnTimer timer = new TurnTimer(60000);
-            turnTimerService.CreateTimer(gameId, time);
-        }
+            var updatedRound = await _gameRepository.GoToNextRound(gameId);
+            // Game is over, inform users & exit.
+            if (!updatedRound)
+            {
+                await _gameHub.Clients.All.SendGameIsOver();
 
-        public void StartTimer(int gameId)
-        {
-            turnTimerService.StartTimer(gameId);
-        }
+                return;
+            }
 
-        public void StopTimer(int gameId)
-        {
-            turnTimerService.StopTimer(gameId);
+            // Send round status overview
+            // TODO: Add actual data
+            await _gameHub.Clients.All.SendRoundStatus();
         }
 
         public async Task<bool> DidUserGuessWord(int userId, string message)
@@ -50,10 +48,6 @@ namespace Skrabbl.API.Services
         public async Task<bool> HasUserGuessedWord(int userId)
         {
             return await _gameRepository.HasUserGuessedWordForCurrentTurn(userId);
-        }
-
-        public void EndTurn()
-        {
         }
     }
 }

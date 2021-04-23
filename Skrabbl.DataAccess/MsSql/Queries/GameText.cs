@@ -27,5 +27,29 @@ namespace Skrabbl.DataAccess.MsSql.Queries
                 AND m.TurnId = t.Id 
                 AND m.UserId = u.Id
             WHERE u.Id = @UserId";
+
+        public string GetRoundStatusForGame => @"
+            SELECT
+                COUNT(*) AS NumberOfRounds,
+                (
+                    SELECT
+                        r2.RoundNumber 
+                    FROM Round r2
+                    INNER JOIN Game g ON r2.GameId = g.Id AND r2.Id = g.ActiveRoundId
+                    WHERE r2.GameId = @GameId
+                ) AS ActiveRoundNumber
+            FROM Round r
+            WHERE r.GameId = @GameId";
+
+        public string SetRoundNumberForGame => @"
+            UPDATE Game
+            SET ActiveRoundId = (
+                SELECT 
+                    Id
+                FROM Round 
+                WHERE RoundNumber = @RoundNumber
+                  AND GameId = @GameId
+            )
+            WHERE Id = @GameId";
     }
 }

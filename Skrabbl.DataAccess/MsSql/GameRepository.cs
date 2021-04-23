@@ -47,6 +47,36 @@ namespace Skrabbl.DataAccess.MsSql
             });
         }
 
+        private class GameRoundStatus
+        {
+            public int NumberOfRounds { get; }
+            public int ActiveRoundNumber { get; }
+        }
+
+        public Task<bool> GoToNextRound(int gameId)
+        {
+            return WithConnection(async conn =>
+            {
+                var gameRoundStatus = await conn.QuerySingleOrDefaultAsync<GameRoundStatus>(
+                    _commandText.GetRoundStatusForGame, new
+                    {
+                        GameId = gameId
+                    });
+
+                // If the next round would be higher than total amount of rounds we exit
+                if (gameRoundStatus.ActiveRoundNumber + 1 > gameRoundStatus.NumberOfRounds)
+                    return false;
+
+                var affectedRows = await conn.ExecuteAsync(_commandText.SetRoundNumberForGame, new
+                {
+                    GameId = gameId,
+                    RoundNumber = gameRoundStatus.ActiveRoundNumber
+                });
+
+                return affectedRows > 0;
+            });
+        }
+
         public async Task AddGame()
         {
             //Needs to be implemented
@@ -58,8 +88,6 @@ namespace Skrabbl.DataAccess.MsSql
 
         public async Task Timer()
         {
-
         }
-
     }
 }
