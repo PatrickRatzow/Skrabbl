@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace Skrabbl.API.Migrations
+namespace Skrabbl.DataAccess.Migrations
 {
     [Migration(1)]
     public class CreateLoginTable : Migration

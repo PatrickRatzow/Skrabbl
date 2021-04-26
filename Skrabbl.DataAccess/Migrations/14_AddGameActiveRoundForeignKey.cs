@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace Skrabbl.API.Migrations
+namespace Skrabbl.DataAccess.Migrations
 {
     [Migration(14)]
     public class AddGameActiveRoundForeignKey : Migration

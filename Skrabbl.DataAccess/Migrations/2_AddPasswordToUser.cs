@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace Skrabbl.API.Migrations
+namespace Skrabbl.DataAccess.Migrations
 {
     [Migration(2)]
     public class AddPasswordToUser : Migration

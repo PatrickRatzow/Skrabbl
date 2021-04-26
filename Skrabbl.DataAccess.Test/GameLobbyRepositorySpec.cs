@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Skrabbl.DataAccess.MsSql.Queries;
 using Skrabbl.Model;
 
-namespace Skrabbl.DataAccess.MsSql.Test
+namespace Skrabbl.DataAccess.Test
 {
     class GameLobbyRepositorySpec
     {
@@ -13,7 +13,7 @@ namespace Skrabbl.DataAccess.MsSql.Test
         [SetUp]
         public void Setup()
         {
-            var config = new ConfigFixture().Config;
+            var config = ConfigFixture.Config;
             var cmd = new CommandText();
 
             _gameLobbyRepository = new GameLobbyRepository(config, cmd);

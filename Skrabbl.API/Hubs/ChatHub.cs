@@ -16,6 +16,10 @@ namespace Skrabbl.API.Hubs
             if (idClaim == null || userName == null) return;
             var userId = int.Parse(idClaim.Value);
 
+            var clients = Clients.All;
+            _turnTimerService.CreateTimer(5, 2500, async t => { await clients.ReceiveMessage("Timer", "Callback!"); });
+            _turnTimerService.StartTimer(5);
+
             var user = _userService.GetUser(userId);
             var hasGuessedWord = _gameService.HasUserGuessedWord(userId);
 

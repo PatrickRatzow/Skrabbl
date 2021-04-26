@@ -1,10 +1,6 @@
 ﻿using FluentMigrator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Skrabbl.API.Migrations
+namespace Skrabbl.DataAccess.Migrations
 {
     [Migration(9)]
     public class CreateRoundTable : Migration
@@ -23,11 +19,10 @@ namespace Skrabbl.API.Migrations
                 .FromTable("Round").ForeignColumn("GameId")
                 .ToTable("Game").PrimaryColumn("Id");
         }
+
         public override void Down()
         {
             Delete.Table("Round");
         }
-
-
     }
 }
