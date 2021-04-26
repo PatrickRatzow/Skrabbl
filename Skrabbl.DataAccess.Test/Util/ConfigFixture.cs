@@ -1,26 +1,30 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
-namespace Skrabbl.DataAccess.MsSql.Test
+namespace Skrabbl.DataAccess.Test
 {
-    class ConfigFixture
+    public class ConfigFixture
     {
-        public IConfiguration Config
+        private static IConfiguration _config;
+
+        public static IConfiguration Config
         {
             get
             {
+                if (_config != null) return _config;
+
                 var configDictionary = new Dictionary<string, string>
                 {
                     {
                         "ConnectionStrings:DefaultConnection",
-                        "Server=hildur.ucn.dk;Database=dmaa0220_1083739;User Id=dmaa0220_1083739;Password=Password1!;Trusted_Connection=False;"
+                        "Server=hildur.ucn.dk;Database=dmaa0220_1086234;User Id=dmaa0220_1086234;Password=Password1!;Trusted_Connection=False;"
                     }
                 };
-                var config = new ConfigurationBuilder()
+                _config = new ConfigurationBuilder()
                     .AddInMemoryCollection(configDictionary)
                     .Build();
 
-                return config;
+                return _config;
             }
         }
     }

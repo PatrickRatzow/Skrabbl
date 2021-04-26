@@ -1,8 +1,4 @@
 ﻿using FluentMigrator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Skrabbl.API.Migrations
 {
@@ -12,7 +8,7 @@ namespace Skrabbl.API.Migrations
         public override void Up()
         {
             Create.Table("WordList")
-               .WithColumn("Word").AsString(30).PrimaryKey().NotNullable().Unique();
+                .WithColumn("Word").AsString(30).PrimaryKey().NotNullable().Unique();
         }
 
         public override void Down()

@@ -1,13 +1,10 @@
 ﻿using FluentMigrator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Skrabbl.API.Migrations
+namespace Skrabbl.DataAccess.Migrations
 {
     [Migration(10)]
-    public class CreateTurnTable : Migration{
+    public class CreateTurnTable : Migration
+    {
         public override void Up()
         {
             Create.Table("Turn")
@@ -24,11 +21,10 @@ namespace Skrabbl.API.Migrations
                 .FromTable("Turn").ForeignColumn("UserId")
                 .ToTable("Users").PrimaryColumn("Id");
         }
+
         public override void Down()
         {
             Delete.Table("Turn");
         }
-
-
     }
 }

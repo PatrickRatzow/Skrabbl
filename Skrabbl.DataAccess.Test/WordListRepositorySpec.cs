@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Skrabbl.DataAccess.MsSql.Queries;
+using Skrabbl.DataAccess.Test;
 
 namespace Skrabbl.DataAccess.MsSql.Test
 {
@@ -12,10 +13,9 @@ namespace Skrabbl.DataAccess.MsSql.Test
         [SetUp]
         public void Setup()
         {
-            var config = new ConfigFixture().Config;
             var cmd = new CommandText();
 
-            _wordListRepository = new WordListRepository(config, cmd);
+            _wordListRepository = new WordListRepository(ConfigFixture.Config, cmd);
         }
 
         [Test]

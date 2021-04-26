@@ -1,8 +1,4 @@
 using FluentMigrator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Skrabbl.API.Migrations
 {
@@ -26,11 +22,10 @@ namespace Skrabbl.API.Migrations
                 .FromTable("ChatMessage").ForeignColumn("UserId")
                 .ToTable("Users").PrimaryColumn("Id");
         }
-        
+
         public override void Down()
         {
             Delete.Table("ChatMessage");
         }
-
     }
 }

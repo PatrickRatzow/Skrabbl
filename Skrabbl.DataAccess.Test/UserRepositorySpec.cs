@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Skrabbl.DataAccess.MsSql.Queries;
+using Skrabbl.DataAccess.Test;
 using Skrabbl.Model;
 
 namespace Skrabbl.DataAccess.MsSql.Test
@@ -15,10 +16,9 @@ namespace Skrabbl.DataAccess.MsSql.Test
         [SetUp]
         public void Setup()
         {
-            var config = new ConfigFixture().Config;
             var cmd = new CommandText();
 
-            _userRepository = new UserRepository(config, cmd);
+            _userRepository = new UserRepository(ConfigFixture.Config, cmd);
             _userIds = new List<int>();
         }
 
