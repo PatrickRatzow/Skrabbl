@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using Skrabbl.API.Services;
-using Skrabbl.API.Services.TurnService;
+using Skrabbl.API.Services.TimerService;
 
 namespace Skrabbl.API.Hubs
 {
@@ -11,10 +11,10 @@ namespace Skrabbl.API.Hubs
         private readonly IMessageService _messageService;
         private readonly IUserService _userService;
         private readonly IWordService _wordService;
-        private readonly ITurnService _turnTimerService;
+        private readonly ITurnTimerService _turnTimerService;
 
         public GameHub(IMessageService messageService, IUserService userService, IGameService gameService,
-            IGameLobbyService gameLobbyService, IWordService wordService, ITurnService turnTimerService)
+            IGameLobbyService gameLobbyService, IWordService wordService, ITurnTimerService turnTimerService)
         {
             _messageService = messageService;
             _userService = userService;

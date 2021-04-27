@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Skrabbl.API.Hubs;
 using Skrabbl.API.Middleware;
 using Skrabbl.API.Services;
-using Skrabbl.API.Services.TurnService;
+using Skrabbl.API.Services.TimerService;
 using Skrabbl.DataAccess;
 using Skrabbl.DataAccess.MsSql;
 using Skrabbl.DataAccess.MsSql.Queries;
@@ -32,7 +32,7 @@ namespace Skrabbl.API
 
             services.AddTokenAuthentication(Configuration);
 
-            services.AddSingleton<TurnService>();
+            services.AddSingleton<TurnTimerService>();
 
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddMemoryCache();
@@ -108,7 +108,7 @@ namespace Skrabbl.API
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IWordService, WordService>();
-            services.AddScoped<ITurnService, TurnService>();
+            services.AddScoped<ITurnTimerService, TurnTimerService>();
         }
     }
 }
