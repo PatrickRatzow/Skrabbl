@@ -1,23 +1,19 @@
 ﻿using FluentMigrator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Skrabbl.API.Migrations
+namespace Skrabbl.DataAccess.Migrations
 {
     [Migration(12)]
     public class AddGameLobbyForeignKeyCascade : Migration
-    {        
+    {
         public override void Up()
         {
             Delete.ForeignKey("FK_GameLobby_LobbyOwnerId_Users_Id")
                 .OnTable("GameLobby");
 
             Create.ForeignKey()
-               .FromTable("GameLobby").ForeignColumn("LobbyOwnerId")
-               .ToTable("Users").PrimaryColumn("Id")
-               .OnDelete(System.Data.Rule.Cascade);
+                .FromTable("GameLobby").ForeignColumn("LobbyOwnerId")
+                .ToTable("Users").PrimaryColumn("Id")
+                .OnDelete(System.Data.Rule.Cascade);
 
             Delete.ForeignKey("FK_Game_GameLobbyId_GameLobby_GameCode")
                 .OnTable("Game");
@@ -52,11 +48,9 @@ namespace Skrabbl.API.Migrations
                 .ToTable("Round").PrimaryColumn("Id")
                 .OnDelete(System.Data.Rule.Cascade);
         }
+
         public override void Down()
         {
-            
         }
-
-
     }
 }

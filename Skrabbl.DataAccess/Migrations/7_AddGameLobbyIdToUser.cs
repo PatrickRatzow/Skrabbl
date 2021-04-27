@@ -1,6 +1,6 @@
 ﻿using FluentMigrator;
 
-namespace Skrabbl.API.Migrations
+namespace Skrabbl.DataAccess.Migrations
 {
     [Migration(7)]
     public class AddGameLobbyIdToUser : Migration

@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace Skrabbl.API.Migrations
+namespace Skrabbl.DataAccess.Migrations
 {
     [Migration(6)]
     public class ChangeUserSaltToBe24Character : Migration

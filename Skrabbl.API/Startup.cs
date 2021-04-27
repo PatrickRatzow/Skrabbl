@@ -32,12 +32,12 @@ namespace Skrabbl.API
 
             services.AddTokenAuthentication(Configuration);
 
-            services.AddSingleton<TurnTimerService>(); 
+            services.AddSingleton<TurnTimerService>();
 
             services.AddSpaStaticFiles(options => { options.RootPath = "wwwroot"; });
             services.AddMemoryCache();
             services.AddControllers();
-            
+
             services.AddSignalR();
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
@@ -46,7 +46,7 @@ namespace Skrabbl.API
                     // Set the connection string
                     .WithGlobalConnectionString(Configuration.GetConnectionString("DefaultConnection"))
                     // Define the assembly containing the migrations
-                    .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations())
+                    .ScanIn(Assembly.Load("Skrabbl.DataAccess")).For.Migrations())
                 // Enable logging to console in the FluentMigrator way
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 // Build the service provider
@@ -108,6 +108,7 @@ namespace Skrabbl.API
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IWordService, WordService>();
+            services.AddScoped<ITurnTimerService, TurnTimerService>();
         }
     }
 }
