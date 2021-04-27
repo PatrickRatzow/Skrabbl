@@ -9,7 +9,14 @@ const state = () => ({
     lobbyCode: "a2C4",
     chosenWord: "",
     wordList: [],
-    roundOverview: null
+    roundOverview: null,
+
+    settings: [
+        { name: "Max players", value: "12" },
+        { name: "Max rounds", value: "10" },
+        { name: "Min rounds", value: "17" },
+        { name: "Turn time", value: "10000 fisk" }
+    ]
 })
 
 const getters = {
