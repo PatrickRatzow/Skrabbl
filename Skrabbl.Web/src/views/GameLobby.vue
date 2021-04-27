@@ -16,7 +16,8 @@
                 </section>
 
                 <section class="settings">
-                    <!-- <h1 class="is-size-5">Settings</h1> -->
+                    <h1 class="is-size-5">Settings</h1> 
+                    <SettingList :settings="settings" /> 
                 </section>
             </div>
         </section>
@@ -34,6 +35,7 @@
             ...mapState("game", {
                 players: "players",
                 lobbyCode: "lobbyCode",
+                settings: "settings",
             }),
             ...mapState("signalR", {
                 isConnected: "connected"
