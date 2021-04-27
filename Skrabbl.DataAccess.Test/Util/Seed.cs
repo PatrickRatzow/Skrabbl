@@ -1,14 +1,21 @@
-using System;
+using System.Data;
+using System.Threading.Tasks;
+using Dapper;
 
 namespace Skrabbl.DataAccess.Test
 {
-    internal class Seed : Attribute
+    public abstract class Seed : ISeed
     {
-        public int Order { get; }
+        public IDbConnection Connection { private get; set; }
+        public IDbTransaction Transaction { private get; set; }
 
-        public Seed(int order)
+        public abstract Task Up();
+
+        public abstract Task Down();
+
+        protected Task Execute(string query, object param = null)
         {
-            Order = order;
+            return Connection.QueryAsync(query, param, Transaction);
         }
     }
 }

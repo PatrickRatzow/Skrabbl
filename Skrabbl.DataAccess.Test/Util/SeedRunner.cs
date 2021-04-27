@@ -11,7 +11,7 @@ namespace SboxTerror.DataAccess.Test
 {
     internal class SeedRunner : IAsyncDisposable
     {
-        private List<ISeed> _seeds;
+        private List<Seed> _seeds;
         private readonly IConfiguration _configuration;
         private SqlConnection _connection;
 
@@ -28,11 +28,12 @@ namespace SboxTerror.DataAccess.Test
 
             // Flip it around, so the last seed is the first to be cleaned up
             var seeds = _seeds.OrderByDescending(s =>
-                (Attribute.GetCustomAttribute(s.GetType(), typeof(Seed)) as Seed)!.Order
+                (Attribute.GetCustomAttribute(s.GetType(), typeof(SeedAttribute)) as SeedAttribute)!.Order
             );
             foreach (var seed in seeds)
             {
-                await seed.Down(_connection);
+                seed.Connection = _connection;
+                await seed.Down();
             }
         }
 
@@ -46,7 +47,9 @@ namespace SboxTerror.DataAccess.Test
                 trx = await _connection.BeginTransactionAsync();
                 foreach (var seed in _seeds)
                 {
-                    await seed.Up(_connection, trx);
+                    seed.Connection = _connection;
+                    seed.Transaction = trx;
+                    await seed.Up();
                 }
 
                 await trx.CommitAsync();
@@ -71,13 +74,13 @@ namespace SboxTerror.DataAccess.Test
         {
             _seeds ??= AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
-                .Where(x => typeof(ISeed).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
+                .Where(x => x.IsSubclassOf(typeof(Seed)) && !x.IsAbstract)
                 .Select(Activator.CreateInstance)
-                .Cast<ISeed>()
-                .Where(x => Attribute.GetCustomAttribute(x.GetType(), typeof(Seed)) != null)
+                .Cast<Seed>()
+                .Where(x => Attribute.GetCustomAttribute(x.GetType(), typeof(SeedAttribute)) != null)
                 .OrderBy(x =>
                 {
-                    var attr = Attribute.GetCustomAttribute(x.GetType(), typeof(Seed)) as Seed;
+                    var attr = Attribute.GetCustomAttribute(x.GetType(), typeof(SeedAttribute)) as SeedAttribute;
 
                     return attr!.Order;
                 })
