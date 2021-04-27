@@ -2,7 +2,6 @@
 using Moq;
 using NUnit.Framework;
 using Skrabbl.API.Services;
-using Skrabbl.API.Services.TimerService;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
 
