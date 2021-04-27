@@ -1,13 +1,8 @@
-﻿using Moq;
-using NUnit.Framework;
-using Skrabbl.API.Services;
-using Skrabbl.API.Services.TurnService;
-using Skrabbl.DataAccess;
-using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using Skrabbl.API.Services.TurnService;
+using Skrabbl.Model;
 
 namespace Skrabbl.API.Test.Services
 {
@@ -25,12 +20,27 @@ namespace Skrabbl.API.Test.Services
             //Arrange
             var service = new TurnService(null);
             var timer = service.CreateTurnTimer(gameId, currentWord, turnInterval, letterInterval);
+            var cts = new CancellationTokenSource();
             bool hasElapsed = false;
 
             //Act
-            timer.TurnOver += (s, e) => hasElapsed = true;
+            timer.TurnOver += (s, e) =>
+            {
+                hasElapsed = true;
+
+                cts.Cancel();
+            };
             timer.Start();
-            await Task.Delay(600);
+            try
+            {
+                await Task.Delay(turnInterval + 250, cts.Token);
+            }
+            catch
+            {
+                // Ignored
+            }
+
+            timer.Stop();
 
             //Assert
             Assert.IsTrue(hasElapsed);
@@ -41,15 +51,30 @@ namespace Skrabbl.API.Test.Services
         {
             var service = new TurnService(null);
             var timer = service.CreateTurnTimer(gameId, currentWord, turnInterval, letterInterval);
+            var cts = new CancellationTokenSource();
             char foundLetter = 'å';
 
             //Act
             timer.ShouldSendLetter = () => true;
-            timer.FoundLetter += (s, e) => foundLetter = e.Letter;
-            timer.Start();
-            await Task.Delay(letterInterval + 5);
+            timer.FoundLetter += (s, e) =>
+            {
+                foundLetter = e.Letter;
 
-            //Assert
+                cts.Cancel();
+            };
+            timer.Start();
+            try
+            {
+                await Task.Delay(letterInterval + 250, cts.Token);
+            }
+            catch
+            {
+                // Ignored
+            }
+
+            timer.Stop();
+
+            // Assert
             Assert.AreNotEqual(foundLetter, 'å');
         }
     }
