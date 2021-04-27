@@ -18,6 +18,7 @@ namespace Skrabbl.DataAccess
         string SaveMessage { get; }
         string RemoveAllMessages { get; }
         string GetGameById { get; }
+        string AddGame { get; }
         string AddUserToLobby { get; }
         string GetAllWords { get; }
         string AddRefreshToken { get; }
@@ -28,5 +29,6 @@ namespace Skrabbl.DataAccess
         string GetCurrentTurnByUserIfIdUserHasGuessedWord { get; }
         string GetRoundStatusForGame { get; }
         string SetRoundNumberForGame { get; }
+        string AddRound { get; }
     }
 }

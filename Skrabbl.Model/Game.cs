@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Skrabbl.Model
 {
@@ -8,7 +6,6 @@ namespace Skrabbl.Model
     {
         public int Id { get; set; }
         public int ActiveRoundId { get; set; }
-        public int GameLobbyId { get; set; }
-        
+        public List<Round> Rounds { get; set; } = new List<Round>();
     }
 }

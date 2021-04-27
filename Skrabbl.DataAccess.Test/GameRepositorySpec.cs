@@ -1,61 +1,74 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
+using Skrabbl.DataAccess.MsSql;
 using Skrabbl.DataAccess.MsSql.Queries;
-using Skrabbl.DataAccess.Test;
-using Skrabbl.Model;
+using Skrabbl.DataAccess.Test.Util;
 
-namespace Skrabbl.DataAccess.MsSql.Test
+namespace Skrabbl.DataAccess.Test
 {
     class GameRepositorySpec
     {
-        class GameLobbyRepositorySpec
+        IGameRepository _gameRepository;
+
+        [SetUp]
+        public void Setup()
         {
-            IGameRepository _gameRepository;
+            var cmd = new CommandText();
 
-            [SetUp]
-            public void Setup()
-            {
-                var cmd = new CommandText();
+            _gameRepository = new GameRepository(ConfigFixture.Config, cmd);
+        }
 
-                _gameRepository = new GameRepository(ConfigFixture.Config, cmd);
-            }
+        [Test]
+        public async Task GetGameFromDbTestByValidId()
+        {
+            //Act
+            var game = await _gameRepository.GetGame(TestData.Games.PatrickGame.Id);
 
-            [Test]
-            public async Task GetGameFromDbTestByValidId()
-            {
-                //Arrange
-                Game game;
+            //Assert
+            Assert.IsNotNull(game);
+        }
 
-                //Act
-                game = await _gameRepository.GetGame(4);
+        [Test]
+        public async Task GetGameFromDbTestByInvalidId()
+        {
+            //Act
+            var game = await _gameRepository.GetGame(99999999);
 
-                //Assert
-                Assert.IsNotNull(game);
-            }
+            //Assert
+            Assert.IsNull(game);
+        }
 
-            [Test]
-            public async Task GetGameFromDbTestByInvalidId()
-            {
-                //Arrange
-                Game game = new Game();
+        [Test]
+        public async Task AddGameToDb()
+        {
+            // Act
+            var game = await _gameRepository.AddGame();
+            TestData.Games.FlorisGame = game;
 
-                //Act
-                game = await _gameRepository.GetGame(9999);
+            // Assert
+            Assert.IsNotNull(game);
+        }
 
-                //Assert
-                Assert.IsNull(game);
-            }
+        [Test]
+        public async Task GetCurrentTurn()
+        {
+            // Act
+            var turn = await _gameRepository.GetCurrentTurn(TestData.Users.Patrick.Id);
 
-            [Test]
-            public async Task AddGameToDb()
-            {
-                //Needs to be implemented
-            }
+            // Assert
+            Assert.IsNotNull(turn);
+        }
 
-            [OneTimeTearDown]
-            public void TearDown()
-            {
-            }
+        [Test]
+        public async Task HasUserGuessedWordForCurrentTurn()
+        {
+            Assert.Ignore();
+        }
+
+        [Test]
+        public async Task GoToNextRound()
+        {
+            Assert.Ignore();
         }
     }
 }

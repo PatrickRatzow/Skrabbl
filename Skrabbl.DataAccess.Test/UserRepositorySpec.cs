@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Skrabbl.DataAccess.MsSql;
 using Skrabbl.DataAccess.MsSql.Queries;
-using Skrabbl.DataAccess.Test;
 using Skrabbl.Model;
 
-namespace Skrabbl.DataAccess.MsSql.Test
+namespace Skrabbl.DataAccess.Test
 {
     [TestFixture]
     public class UserRepositorySpec
@@ -43,8 +43,10 @@ namespace Skrabbl.DataAccess.MsSql.Test
             Assert.IsNotNull(id);
         }
 
-        [TestCase("patrickratzow", "patrickratzow@ucn.dk", "password1", "salt1")]
-        [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2")]
+        [TestCase("patrickratzow", "patrickratzow@ucn.dk", "pLNZSux4l2ar1z6PKh4tiBSZ25OSaim5R1bmXuD+aS8=",
+            "mvV8K4PoKh41psKjxAWTGQ==")]
+        [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "z7W5yuuDOuPNrkX8bYVFiWUSxwyJRfp4U4uEEGtDLn8=",
+            "0ccvXWEEtGOmwtJRSEG1+g==")]
         public async Task GetUserById(string username, string email, string password, string salt)
         {
             //Arrange
@@ -68,8 +70,10 @@ namespace Skrabbl.DataAccess.MsSql.Test
             Assert.AreEqual(gottenUser.Salt, salt);
         }
 
-        [TestCase("patrickratzow", "patrickratzow@ucn.dk", "password1", "salt1")]
-        [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2")]
+        [TestCase("patrickratzow", "patrickratzow@ucn.dk", "pLNZSux4l2ar1z6PKh4tiBSZ25OSaim5R1bmXuD+aS8=",
+            "mvV8K4PoKh41psKjxAWTGQ==")]
+        [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "z7W5yuuDOuPNrkX8bYVFiWUSxwyJRfp4U4uEEGtDLn8=",
+            "0ccvXWEEtGOmwtJRSEG1+g==")]
         public async Task GetUserByUsername(string username, string email, string password, string salt)
         {
             //Arrange
@@ -117,8 +121,8 @@ namespace Skrabbl.DataAccess.MsSql.Test
             Assert.IsNull(gottenUser);
         }
 
-        [TestCase("patrickratzow", "patrickratzow@ucn.dk", "password1", "salt1", "2234")]
-        [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2", "1111")]
+        [TestCase("patrickratzow", "patrickratzow@ucn.dk", "password1", "salt1", "abcd")]
+        [TestCase("nikolajjensen", "nikolajjensen@ucn.dk", "password2", "salt2", "ABCD")]
         public async Task AddUserToLobby(string username, string email, string password, string salt, string lobby)
         {
             //Arrange

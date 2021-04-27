@@ -14,6 +14,19 @@ namespace Skrabbl.DataAccess.MsSql
             _commandText = commandText;
         }
 
+        public async Task<Game> AddGame()
+        {
+            return await WithConnection(async conn =>
+            {
+                var id = await conn.QuerySingleAsync<int>(_commandText.AddGame);
+
+                return new Game
+                {
+                    Id = id
+                };
+            });
+        }
+
         public async Task<Game> GetGame(int id)
         {
             return await WithConnection(async conn =>
@@ -75,19 +88,6 @@ namespace Skrabbl.DataAccess.MsSql
 
                 return affectedRows > 0;
             });
-        }
-
-        public async Task AddGame()
-        {
-            //Needs to be implemented
-        }
-
-        public async Task GetTurn()
-        {
-        }
-
-        public async Task Timer()
-        {
         }
     }
 }
