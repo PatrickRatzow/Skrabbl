@@ -27,7 +27,7 @@ namespace Skrabbl.GameClient
     {
         int[] players = { 2, 3, 5, 8, 13, 21 };
         int[] drawingTime = { 30, 45, 60, 75, 90, 105, 120 };
-        Login _loginWindow;
+        private Login _loginWindow;
         private SettingsService _settingsService;
         private int userId;
         private string JWT;
@@ -37,12 +37,12 @@ namespace Skrabbl.GameClient
             InitializeComponent();
 
             _loginWindow = loginWindow;
-            tbCustomWords.Text = JWT;
+            //tbCustomWords.Text = JWT;
             _settingsService = new SettingsService();
-            var id = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
-            userId = id.UserId;
+            //var id = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
+            //userId = id.UserId;
 
-            var gotJwt = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
+            //var gotJwt = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
             //JWT = gotJwt.JWT
 
             foreach (int i in players)

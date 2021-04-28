@@ -66,7 +66,7 @@ namespace Skrabbl.GameClient.GUI
             //5001;
             //NOTE: If the client is not working properly, it either requires ServiceURI to be without or with https. 
             string PortOfTheDay = "50916"; //This port number changes!
-            string ServiceURI = "https://localhost:" + PortOfTheDay + "/api/user/login";
+            string ServiceURI = "http://localhost:" + PortOfTheDay + "/api/user/login";
 
 
             rest_client.BaseUrl = new Uri(ServiceURI);
@@ -102,11 +102,14 @@ namespace Skrabbl.GameClient.GUI
 
         private void SaveTokens(LoginResponseDto tokens)
         {
-            Properties.Settings.Default.JWT = tokens.JwtToken.Token;
-            Properties.Settings.Default.JWTExpire = tokens.JwtToken.ExpiresAt;
+            Properties.Settings.Default.JWT = tokens.Jwt.Token;
+            Properties.Settings.Default.JWTExpire = tokens.Jwt.ExpiresAt;
 
             Properties.Settings.Default.RefreshToken = tokens.RefreshToken.Token;
             Properties.Settings.Default.JWTExpire = tokens.RefreshToken.ExpiresAt;
+
+            Properties.Settings.Default.UserId = tokens.UserId;
+
             Properties.Settings.Default.Save();
         }
 
@@ -125,7 +128,7 @@ namespace Skrabbl.GameClient.GUI
             //Building the Token structure
             LoginResponseDto resp = new LoginResponseDto()
             {
-                JwtToken = new JwtToken()
+                Jwt = new Jwt()
                 {
                     Token = Properties.Settings.Default.JWT,
                     ExpiresAt = Properties.Settings.Default.JWTExpire
