@@ -24,13 +24,14 @@ namespace Skrabbl.GameClient
             int[] players = { 2, 3, 5, 8, 13, 21 };
             int[] drawingTime = { 30, 45, 60, 75, 90, 105, 120 };
 
-        public MainWindow()
+        public MainWindow(string JWT)
         {
             InitializeComponent();
+            tbCustomWords.Text = JWT;
 
-            
 
-            foreach(int i in players)
+
+            foreach (int i in players)
             {
                 comboPlayers.Items.Add(i + " Players");
                 comboPlayers.SelectedIndex = 3;
