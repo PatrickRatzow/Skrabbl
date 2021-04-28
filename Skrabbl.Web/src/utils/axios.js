@@ -21,7 +21,7 @@ function refreshJWTIfNeeded(cfg) {
 
     const auth = store.state.user.auth
     if (auth !== null) {
-        const expiresAt = auth.jwtToken.expiresAt
+        const expiresAt = auth.jwt.expiresAt
         const currentTime = new Date()
         const hasExpired = currentTime > expiresAt
         if (hasExpired) {
@@ -44,7 +44,7 @@ function refreshJWTIfNeeded(cfg) {
 
 function authorizationToken() {
     if (store.state.user.auth !== null) {
-        return { Authorization: `Bearer ${store.state.user.auth.jwtToken.token}` }
+        return { Authorization: `Bearer ${store.state.user.auth.jwt.token}` }
     } else {
         return {}
     }
