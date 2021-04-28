@@ -40,12 +40,12 @@ namespace Skrabbl.API.Controllers
             if (user == null)
                 return Unauthorized();
 
-            var jwtToken = _jwtService.GenerateSecurityToken(user);
+            var jwt = _jwtService.GenerateSecurityToken(user);
             var refreshToken = await _jwtService.GenerateRefreshToken(user);
 
             return Ok(new LoginResponseDto
             {
-                JwtToken = jwtToken,
+                Jwt = jwt,
                 RefreshToken = refreshToken
             });
         }
@@ -61,10 +61,10 @@ namespace Skrabbl.API.Controllers
             if (refreshToken == null)
                 return NotFound();
 
-            var jwtToken = _jwtService.GenerateSecurityToken(user);
+            var jwt = _jwtService.GenerateSecurityToken(user);
             return Ok(new LoginResponseDto
             {
-                JwtToken = jwtToken,
+                Jwt = jwt,
                 RefreshToken = refreshToken
             });
         }
