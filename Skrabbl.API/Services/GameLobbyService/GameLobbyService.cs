@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
@@ -63,9 +64,9 @@ namespace Skrabbl.API.Services
             }
         }
 
-        public async Task<GameLobby> GetGameLobbyById(string lobbyId)
+        public async Task<GameLobby> GetGameLobbyById(string lobbyCode)
         {
-            return await _gameLobbyRepository.GetGameLobbyById(lobbyId);
+            return await _gameLobbyRepository.GetGameLobbyByLobbyCode(lobbyCode);
         }
 
         public async Task<IEnumerable<GameLobby>> GetAllGameLobbies()
@@ -76,6 +77,17 @@ namespace Skrabbl.API.Services
         public async Task<GameLobby> GetLobbyByOwnerId(int ownerId)
         {
             return await _gameLobbyRepository.GetLobbyByOwnerId(ownerId);
+        }
+
+        public async Task<List<GameSetting>> GetGameSettingsByGameId(int gameId)
+        {
+            IEnumerable<GameSetting> gameSettingList = await _gameLobbyRepository.GetGameSettingsByGameId(gameId);
+
+            return gameSettingList.ToList();
+        }
+        public async Task SetGameSettingsByGameId(int gameId, string setting)
+        {
+            await _gameLobbyRepository.SetGameSettingsByGameId(gameId, setting);
         }
 
         private string GenerateGameLobbyCode()
@@ -91,5 +103,7 @@ namespace Skrabbl.API.Services
 
             return new String(stringChars);
         }
+
+
     }
 }

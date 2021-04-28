@@ -12,14 +12,14 @@ namespace Skrabbl.GameClient.Service
 {
     public class SettingsService
     {
-        static readonly string gameLoginUrl = "http://localhost:5001/api/user/login";
+        static readonly string gameLoginUrl = "https://localhost:5001/api/";
         HubConnection connection;
         readonly HttpClient _httpClient;
 
         public SettingsService()
         {
             connection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:50916/ws/game")
+            .WithUrl("http://localhost:5001/ws/game")
             .Build();
 
             _httpClient = new HttpClient();
@@ -30,34 +30,13 @@ namespace Skrabbl.GameClient.Service
                 await connection.StartAsync();
             };
         }
-        public async Task HardCodedLogin()
+
+        public async Task<HttpResponseMessage> CreateLobbyId(int userId) 
         {
-            string username = "simon";
-            string password = "asdfghjk";
-
-            var uri = new Uri(gameLoginUrl);
+            var gameURI = gameLoginUrl + $"gamelobby/create/{userId}";
+            return await _httpClient.PostAsync(gameURI, null);
             
-            //Also check if userId exists
-                try
-                {
-                    LoginDto loginInformation = new LoginDto()
-                    {
-                        Username = username,
-                        Password = password
-
-                    };
-                    var json = JsonConvert.SerializeObject(loginInformation);
-
-                    HttpContent userInfo = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await _httpClient.PostAsync(uri, userInfo);
-                    string responseContent = await response.Content.ReadAsStringAsync();
-
-                Debug.WriteLine("You are logged in");
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
         }
+      
     }
 }

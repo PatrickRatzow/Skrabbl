@@ -4,7 +4,7 @@ namespace Skrabbl.DataAccess.MsSql.Queries
     {
         public string AddLobby => "INSERT INTO GameLobby(GameCode, LobbyOwnerId) VALUES(@GameCode, @LobbyOwnerId)";
 
-        public string GetLobbyById => "SELECT * FROM GameLobby WHERE GameCode = @GameCode";
+        public string GetLobbyByLobbyCode => "SELECT * FROM GameLobby WHERE GameCode = @GameCode";
 
         public string RemoveLobbyById => "DELETE FROM GameLobby WHERE GameCode = @GameCode";
 
@@ -12,5 +12,8 @@ namespace Skrabbl.DataAccess.MsSql.Queries
 
         public string RemoveAllLobbies => "DELETE FROM GameLobby";
         public string GetLobbyByOwnerId => "SELECT * FROM GameLobby WHERE LobbyOwnerId = @LobbyOwnerId";
+        public string GetGameSettingsByGameId => "SELECT * FROM GameSetiing WHERE GameId = @GameId";
+        public string SetGameSettingsByGameId => "UPDATE GameSetting SET Value = @Value WHERE GameId = @GameId AND Setting = @Setting";
+
     }
 }

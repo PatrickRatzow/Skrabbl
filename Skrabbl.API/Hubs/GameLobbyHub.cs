@@ -54,6 +54,12 @@ namespace Skrabbl.API.Hubs
             await _userService.AddToLobby(userId, newLobby.GameCode);
         }
 
+        public async Task CreateLobbyWithUserId(int userId)
+        {
+            var newLobby = await _gameLobbyService.AddGameLobby(userId);
+            await _userService.AddToLobby(userId, newLobby.GameCode);
+        }
+
         public async Task JoinLobby(int userId, string gameCode)
         {
             User user = await _userService.GetUser(userId);
@@ -65,5 +71,6 @@ namespace Skrabbl.API.Hubs
             //Go to database and change the players connected to lobby + player connected lobby
             await _userService.AddToLobby(user.Id, gameLobby.GameCode);
         }
+
     }
 }

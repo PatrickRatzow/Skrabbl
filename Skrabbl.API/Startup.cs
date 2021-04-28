@@ -97,6 +97,7 @@ namespace Skrabbl.API
             services.AddTransient<IGameRepository, GameRepository>();
             services.AddTransient<IWordListRepository, WordListRepository>();
             services.AddTransient<ITokenRepository, TokenRepository>();
+
         }
 
         private void AddBusinessLogicServices(IServiceCollection services)

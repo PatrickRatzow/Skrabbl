@@ -7,5 +7,6 @@ namespace Skrabbl.Model.Dto
     {
         public JwtToken JwtToken { get; set; }
         public RefreshToken RefreshToken { get; set; }
+        public int UserId { get; set; }
     }
 }

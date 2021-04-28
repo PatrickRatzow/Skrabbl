@@ -34,7 +34,7 @@ namespace Skrabbl.DataAccess.Test
 
             //Act
             await _gameLobbyRepository.AddGameLobby(gameLobby);
-            GameLobby lobby = await _gameLobbyRepository.GetGameLobbyById(gameLobby.GameCode);
+            GameLobby lobby = await _gameLobbyRepository.GetGameLobbyByLobbyCode(gameLobby.GameCode);
 
             //Assert
             Assert.IsNotNull(lobby);
@@ -60,7 +60,7 @@ namespace Skrabbl.DataAccess.Test
             string lobbyId = TestData.GameLobbies.FlorisLobby!.GameCode;
 
             //Act
-            var gameLobby = await _gameLobbyRepository.GetGameLobbyById(lobbyId);
+            var gameLobby = await _gameLobbyRepository.GetGameLobbyByLobbyCode(lobbyId);
 
             //Assert
             Assert.IsNotNull(gameLobby);
