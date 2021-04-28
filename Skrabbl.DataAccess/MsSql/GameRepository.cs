@@ -83,7 +83,7 @@ namespace Skrabbl.DataAccess.MsSql
                 var affectedRows = await conn.ExecuteAsync(_commandText.SetRoundNumberForGame, new
                 {
                     GameId = gameId,
-                    RoundNumber = gameRoundStatus.ActiveRoundNumber
+                    RoundNumber = gameRoundStatus.ActiveRoundNumber + 1
                 });
 
                 return affectedRows > 0;

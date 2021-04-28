@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Skrabbl.API.Services;
@@ -22,22 +21,6 @@ namespace Skrabbl.API.Test.Services
 
             //Act
             await service.CreateMessage(msg, userId);
-
-            //Assert
-            mock.VerifyAll();
-        }
-
-        [Test]
-        public async Task GetAllMessages_Succeeds()
-        {
-            //Arrange
-            int gameId = 5;
-            var mock = new Mock<IMessageRepository>();
-            mock.Setup(m => m.GetAllMessages(It.IsAny<int>())).Returns(Task.FromResult<IEnumerable<ChatMessage>>(null));
-            var service = new MessageService(mock.Object);
-
-            //Act
-            await service.GetMessages(gameId);
 
             //Assert
             mock.VerifyAll();

@@ -21,5 +21,10 @@ namespace Skrabbl.Model
         {
             return HashCode.Combine(Id);
         }
+
+        public override string ToString()
+        {
+            return Email;
+        }
     }
 }
