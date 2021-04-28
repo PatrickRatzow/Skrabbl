@@ -1,4 +1,6 @@
-﻿using Skrabbl.GameClient.GUI;
+using Skrabbl.GameClient.GUI;
+﻿using Newtonsoft.Json;
+using Skrabbl.GameClient.Service;
 using Skrabbl.Model.Dto;
 using System;
 using System.Collections.Generic;
@@ -26,11 +28,22 @@ namespace Skrabbl.GameClient
         int[] players = { 2, 3, 5, 8, 13, 21 };
         int[] drawingTime = { 30, 45, 60, 75, 90, 105, 120 };
         Login _loginWindow;
+        private SettingsService _settingsService;
+        private int userId;
+        private string JWT;
 
         public MainWindow(LoginResponseDto JWT, Login loginWindow)
         {
             InitializeComponent();
+
             _loginWindow = loginWindow;
+            tbCustomWords.Text = JWT;
+            _settingsService = new SettingsService();
+            var id = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
+            userId = id.UserId;
+
+            var gotJwt = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
+            //JWT = gotJwt.JWT
 
             foreach (int i in players)
             {
@@ -51,9 +64,12 @@ namespace Skrabbl.GameClient
             }
         }
 
-        public void StartGame(object sender, RoutedEventArgs e)
+        public async void StartGame(object sender, RoutedEventArgs e)
         {
-            Game newgame = new Game(players[comboPlayers.SelectedIndex], comboRounds.SelectedIndex + 1, drawingTime[comboDrawingTime.SelectedIndex]);
+            
+            await _settingsService.CreateLobbyId(userId);
+            tbCustomWords.Text = "GameLobby created :)";
+           // Game newgame = new Game(players[comboPlayers.SelectedIndex], comboRounds.SelectedIndex + 1, drawingTime[comboDrawingTime.SelectedIndex]);
         }
 
         private void BtnLogOut_Click(object sender, RoutedEventArgs e)

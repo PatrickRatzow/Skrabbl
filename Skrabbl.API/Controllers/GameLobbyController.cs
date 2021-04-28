@@ -48,5 +48,15 @@ namespace Skrabbl.API.Controllers
 
             return Ok(gameLobby.Result);
         }
+
+        [HttpPost("create/{userId}")]
+        //[Authorize]
+        public async Task<IActionResult> Create(int userId)
+        {
+            var user = _userService.GetUser(userId);
+            var gameLobby = _gameLobbyService.AddGameLobby(userId);
+
+            return Ok();
+        }
     }
 }
