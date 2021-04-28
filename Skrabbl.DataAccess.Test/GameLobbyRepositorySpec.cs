@@ -7,6 +7,7 @@ using Skrabbl.Model;
 
 namespace Skrabbl.DataAccess.Test
 {
+    [TestFixture]
     class GameLobbyRepositorySpec
     {
         IGameLobbyRepository _gameLobbyRepository;
@@ -14,10 +15,9 @@ namespace Skrabbl.DataAccess.Test
         [SetUp]
         public void Setup()
         {
-            var config = ConfigFixture.Config;
             var cmd = new CommandText();
 
-            _gameLobbyRepository = new GameLobbyRepository(config, cmd);
+            _gameLobbyRepository = new GameLobbyRepository(ConfigFixture.Config, cmd);
 
             TestData.GameLobbies.FlorisLobby = new GameLobby()
             {

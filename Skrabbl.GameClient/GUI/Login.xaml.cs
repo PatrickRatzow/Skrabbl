@@ -63,7 +63,9 @@ namespace Skrabbl.GameClient.GUI
             txtError.Text = "";
             IRestResponse response_POST;
             RestClient rest_client = new RestClient();
-            string PortOfTheDay = "5001"; //This port number changes!
+            //5001;
+            //NOTE: If the client is not working properly, it either requires ServiceURI to be without or with https. 
+            string PortOfTheDay = "50916"; //This port number changes!
             string ServiceURI = "https://localhost:" + PortOfTheDay + "/api/user/login";
 
 

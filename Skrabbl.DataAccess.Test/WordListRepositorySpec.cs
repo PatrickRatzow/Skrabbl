@@ -6,6 +6,7 @@ using Skrabbl.DataAccess.MsSql.Queries;
 
 namespace Skrabbl.DataAccess.Test
 {
+    [TestFixture]
     class WordListRepositorySpec
     {
         IWordListRepository _wordListRepository;

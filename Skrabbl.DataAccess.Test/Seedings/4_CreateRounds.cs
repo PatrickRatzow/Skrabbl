@@ -27,6 +27,23 @@ namespace Skrabbl.DataAccess.Test
             };
 
             game.Rounds.Add(round);
+
+            // Only on first round
+            if (game.Rounds.Count != 1) return;
+
+            // Don't care about the inaccuracy
+
+            game.ActiveRoundId = round.Id;
+
+            await Execute(@"
+                UPDATE Game
+                SET ActiveRoundId = @RoundId
+                WHERE Id = @Id
+            ", new
+            {
+                RoundId = round.Id,
+                game.Id
+            });
         }
 
         public override async Task Up()
@@ -42,9 +59,10 @@ namespace Skrabbl.DataAccess.Test
             }
         }
 
-        public override Task Down()
+        public override async Task Down()
         {
-            return Execute("DELETE FROM Round");
+            await Execute("UPDATE Game SET ActiveRoundId = NULL");
+            await Execute("DELETE FROM Round");
         }
     }
 }

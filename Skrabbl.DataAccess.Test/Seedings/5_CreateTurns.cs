@@ -34,7 +34,17 @@ namespace Skrabbl.DataAccess.Test
             if (round.Turns.Count != 1) return;
 
             // Don't care about the inaccuracy
-            round.Turns.First().StartTime = DateTime.Now;
+            round.Turns.First().StartTime = DateTime.UtcNow;
+
+            await Execute(@"
+                UPDATE Turn
+                SET StartedAt = @Time
+                WHERE Id = @Id
+            ", new
+            {
+                turn.Id,
+                Time = DateTime.UtcNow
+            });
 
             await Execute(@"
                 UPDATE Round
@@ -56,8 +66,6 @@ namespace Skrabbl.DataAccess.Test
             await CreateTurn(patrickRounds[0], TestData.Users.Simon, "Kage");
             await CreateTurn(patrickRounds[1], TestData.Users.Patrick, "Kage");
             await CreateTurn(patrickRounds[1], TestData.Users.Simon, "Cake");
-
-            var xd = TestData.Users.Patrick;
         }
 
         public override async Task Down()
