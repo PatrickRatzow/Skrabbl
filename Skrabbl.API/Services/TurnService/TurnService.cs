@@ -48,6 +48,7 @@ namespace Skrabbl.API.Services.TurnService
 
             _letterTimer = new Timer();
             _letterTimer.Interval = letterInterval;
+            
             _letterTimer.Elapsed += (sender, eventArgs) =>
             {
                 var shouldRun = ShouldSendLetter();
@@ -80,7 +81,7 @@ namespace Skrabbl.API.Services.TurnService
                     Letter = chosenTuple.Item1
                 });
             };
-        }
+        }        
 
         public void Start()
         {
@@ -135,6 +136,7 @@ namespace Skrabbl.API.Services.TurnService
             _timers.TryRemove(gameId, out var timer);
         }
 
+        //TODO delete.
         public void DetermineChance(int gameId, int userId)
         {
             //Based of the length of a word we want to send a letter. 
@@ -146,7 +148,7 @@ namespace Skrabbl.API.Services.TurnService
             timer.Start();
         }
 
-        public async Task<string> CurrentWord(int userId)
+        private async Task<string> CurrentWord(int userId)
         {
             var turn = await _gameRepository.GetCurrentTurn(userId);
             return turn.Word;

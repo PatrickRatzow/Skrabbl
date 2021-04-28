@@ -77,5 +77,17 @@ namespace Skrabbl.API.Test.Services
             // Assert
             Assert.AreNotEqual(foundLetter, 'å');
         }
+
+        [Test]
+        public void AllLettersHaveBeenIndentifiedAndTurnOverHasBeenCalled()
+        {
+            //test if statemenet on line 70.
+        }
+
+        [Test]
+        public void FoundLetterDoesNotUseTheSameIndicesForCurrentWordAgain()
+        {
+            //Test if statement line 59
+        }
     }
 }
