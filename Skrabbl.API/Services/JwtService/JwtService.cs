@@ -24,7 +24,7 @@ namespace Skrabbl.API.Services
             _tokenRepository = tokenRepository;
         }
 
-        public JwtToken GenerateSecurityToken(User user)
+        public Jwt GenerateSecurityToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_secret);
@@ -44,7 +44,7 @@ namespace Skrabbl.API.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new JwtToken
+            return new Jwt
             {
                 Token = tokenHandler.WriteToken(token),
                 ExpiresAt = expiresAt

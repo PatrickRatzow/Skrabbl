@@ -1,0 +1,23 @@
+﻿<Window x:Class="Skrabbl.GameClient.GUI.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Skrabbl.GameClient.GUI"
+        mc:Ignorable="d"
+        Height="250" Width="250">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" Width="175">
+            <Label HorizontalAlignment="Center" FontSize="25" FontWeight="Bold">Log in</Label>
+
+            <Label HorizontalAlignment="Center" FontSize="17" Margin="0,0,0,0">create new user</Label>
+            <TextBlock x:Name="txtError" Foreground="Red" ></TextBlock>
+            
+            <TextBox Name="txtUsername" Opacity="0.25" Margin="0,0,0,10" GotFocus="UsernameTxtFocus">Username</TextBox>
+            <TextBox Name="txtPassword" Opacity="0.25" Margin="0,0,0,30" GotFocus="PasswordTxtFocus">Password</TextBox>
+            
+            <Button Name="btnLogin" Background="LightSeaGreen" Foreground="White" Click="btnLogin_Click">Log in</Button>
+
+        </StackPanel>
+    </Grid>
+</Window>

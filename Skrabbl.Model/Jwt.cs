@@ -1,9 +1,11 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Skrabbl.Model
 {
     [Serializable]
-    public class JwtToken
+    public class Jwt
     {
         public string Token { get; set; }
         public DateTime ExpiresAt { get; set; }

@@ -37,16 +37,21 @@ namespace Skrabbl.API.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto login)
         {
             var user = await _userService.GetUser(login.Username, login.Password);
+            
             if (user == null)
                 return Unauthorized();
+
+            var userId = user.Id;
 
             var jwtToken = _jwtService.GenerateSecurityToken(user);
             var refreshToken = await _jwtService.GenerateRefreshToken(user);
 
             return Ok(new LoginResponseDto
             {
-                JwtToken = jwtToken,
-                RefreshToken = refreshToken
+                Jwt = jwtToken,
+                RefreshToken = refreshToken,
+                UserId = userId
+                // TODO: when jwt is implemented, this has to be removed
             });
         }
 
@@ -61,10 +66,10 @@ namespace Skrabbl.API.Controllers
             if (refreshToken == null)
                 return NotFound();
 
-            var jwtToken = _jwtService.GenerateSecurityToken(user);
+            var jwt = _jwtService.GenerateSecurityToken(user);
             return Ok(new LoginResponseDto
             {
-                JwtToken = jwtToken,
+                Jwt = jwt,
                 RefreshToken = refreshToken
             });
         }
