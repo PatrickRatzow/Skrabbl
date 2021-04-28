@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using RestSharp;
+using Skrabbl.Model;
 using Skrabbl.Model.Dto;
 using System;
 using System.Collections.Generic;
@@ -13,16 +15,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace Skrabbl.GameClient.GUI
 {
-    /// <summary>
-    /// Interaction logic for Login.xaml
-    /// </summary>
     public partial class Login : Window
     {
         public Login()
         {
             InitializeComponent();
+            if (Properties.Settings.Default.JWT != String.Empty)
+            {
+                //check if saved JWT is valid
+                if (Properties.Settings.Default.JWTExpire < DateTime.Now)
+                {
+                    //To old JWT, go for refresh
+                }
+                else
+                {
+                    OpenGameWindow();
+                }
+                //if(Properties.Settings.Default.JWT)
+
+                checkBoxRememberMe.IsChecked = true;
+            }
         }
 
         public void UsernameTxtFocus(object sender, RoutedEventArgs e)
@@ -54,8 +69,8 @@ namespace Skrabbl.GameClient.GUI
 
             rest_client.BaseUrl = new Uri(ServiceURI);
             RestRequest request_POST = new RestRequest(ServiceURI, Method.POST);
-            LoginDto loginData = new LoginDto { Username = txtUsername.Text, Password = txtPassword.Text};
-                
+            LoginDto loginData = new LoginDto { Username = txtUsername.Text, Password = txtPassword.Text };
+
             request_POST.AddJsonBody(loginData);
 
             response_POST = rest_client.Execute(request_POST);
@@ -66,17 +81,70 @@ namespace Skrabbl.GameClient.GUI
 
             if (integerStatus == 200)
             {
-                MainWindow gameWindow = new MainWindow(response_POST.Content);
-                //this will open your child window
-                gameWindow.Show();
-                //this will close parent window. windowOne in this case
-                this.Close();
+                if (checkBoxRememberMe.IsChecked.Value)
+                {
+                    LoginResponseDto tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
+                    SaveTokens(tokens);
+                }
+                else
+                    RemoveTokenValues();
+
+                OpenGameWindow();
             }
-            else if(integerStatus == 401)
+            else if (integerStatus == 401)
             {
-                txtError.Text = "Wrong combination of username and password"; 
+                txtError.Text = "Wrong combination of username and password";
             }
-            
+
+        }
+
+        private void SaveTokens(LoginResponseDto tokens)
+        {
+            Properties.Settings.Default.JWT = tokens.JwtToken.Token;
+            Properties.Settings.Default.JWTExpire = tokens.JwtToken.ExpiresAt;
+
+            Properties.Settings.Default.RefreshToken = tokens.RefreshToken.Token;
+            Properties.Settings.Default.JWTExpire = tokens.RefreshToken.ExpiresAt;
+            Properties.Settings.Default.Save();
+        }
+
+        public void RemoveTokenValues()
+        {
+            Properties.Settings.Default.JWT = String.Empty;
+            Properties.Settings.Default.JWTExpire = DateTime.Now;
+
+            Properties.Settings.Default.RefreshToken = String.Empty;
+            Properties.Settings.Default.JWTExpire = DateTime.Now;
+            Properties.Settings.Default.Save();
+        }
+
+        private LoginResponseDto LogindtoBuilder()
+        {
+            //Building the Token structure
+            LoginResponseDto resp = new LoginResponseDto()
+            {
+                JwtToken = new JwtToken()
+                {
+                    Token = Properties.Settings.Default.JWT,
+                    ExpiresAt = Properties.Settings.Default.JWTExpire
+                },
+                RefreshToken = new RefreshToken()
+                {
+                    Token = Properties.Settings.Default.RefreshToken,
+                    ExpiresAt = Properties.Settings.Default.RefreshExpiresAt
+                    //Dont know if i should get the user here
+                }
+            };
+
+            return resp;
+        }
+
+        private void OpenGameWindow()
+        {
+            LoginResponseDto resp = LogindtoBuilder();
+            MainWindow gameWindow = new MainWindow(resp, this);
+            gameWindow.Show();
+            this.Visibility = Visibility.Hidden;
         }
     }
 }

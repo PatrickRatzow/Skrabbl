@@ -10,12 +10,11 @@
         <StackPanel HorizontalAlignment="Center" Width="175">
             <Label HorizontalAlignment="Center" FontSize="25" FontWeight="Bold">Log in</Label>
 
-            <Label HorizontalAlignment="Center" FontSize="17" Margin="0,0,0,0">create new user</Label>
             <TextBlock x:Name="txtError" Foreground="Red" ></TextBlock>
             
             <TextBox Name="txtUsername" Opacity="0.25" Margin="0,0,0,10" GotFocus="UsernameTxtFocus">Username</TextBox>
-            <TextBox Name="txtPassword" Opacity="0.25" Margin="0,0,0,30" GotFocus="PasswordTxtFocus">Password</TextBox>
-            
+            <TextBox Name="txtPassword" Opacity="0.25" Margin="0,0,0,5" GotFocus="PasswordTxtFocus">Password</TextBox>
+            <CheckBox Name="checkBoxRememberMe" Opacity=".65" Margin="0,0,0,20">remember me</CheckBox>
             <Button Name="btnLogin" Background="LightSeaGreen" Foreground="White" Click="btnLogin_Click">Log in</Button>
 
         </StackPanel>
