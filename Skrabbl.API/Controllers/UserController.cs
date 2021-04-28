@@ -48,7 +48,7 @@ namespace Skrabbl.API.Controllers
 
             return Ok(new LoginResponseDto
             {
-                JwtToken = jwtToken,
+                Jwt = jwtToken,
                 RefreshToken = refreshToken,
                 UserId = userId
                 // TODO: when jwt is implemented, this has to be removed
