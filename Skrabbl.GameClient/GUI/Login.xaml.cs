@@ -20,6 +20,7 @@ namespace Skrabbl.GameClient.GUI
 {
     public partial class Login : Window
     {
+        private LoginResponseDto _tokens;
         public Login()
         {
             InitializeComponent();
@@ -44,7 +45,8 @@ namespace Skrabbl.GameClient.GUI
                 }
                 else
                 {
-                    OpenGameWindow();
+                    btnLogin_Click(null, null);
+                    OpenGameWindow(_tokens);
                 }
             }
         }
@@ -73,7 +75,7 @@ namespace Skrabbl.GameClient.GUI
             IRestResponse response_POST;
             RestClient rest_client = new RestClient();
             //5001;
-            //NOTE: If the client is not working properly, it either requires ServiceURI to be without or with https. 
+
             string PortOfTheDay = "50916"; //This port number changes!
             string ServiceURI = "http://localhost:" + PortOfTheDay + "/api/user/login";
 
@@ -94,13 +96,13 @@ namespace Skrabbl.GameClient.GUI
             {
                 if (checkBoxRememberMe.IsChecked.Value)
                 {
-                    LoginResponseDto tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
-                    SaveTokens(tokens);
+                    _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
+                    SaveTokens(_tokens);
                 }
                 else
                     RemoveTokenValues();
 
-                OpenGameWindow();
+                OpenGameWindow(_tokens);
             }
             else if (integerStatus == 401)
             {
@@ -129,6 +131,8 @@ namespace Skrabbl.GameClient.GUI
 
             Properties.Settings.Default.RefreshToken = String.Empty;
             Properties.Settings.Default.JWTExpire = DateTime.Now;
+
+            Properties.Settings.Default.UserId = 0;
             Properties.Settings.Default.Save();
         }
 
@@ -154,10 +158,10 @@ namespace Skrabbl.GameClient.GUI
             return resp;
         }
 
-        private void OpenGameWindow()
+        private void OpenGameWindow(LoginResponseDto tokens)
         {
-            LoginResponseDto resp = BuildLoginResponseFromSettings();
-            MainWindow gameWindow = new MainWindow(resp, this);
+            LoginResponseDto resp = BuildLoginResponseFromSettings(); //Problemer hvis man ikke gemmer kode
+            MainWindow gameWindow = new MainWindow(tokens, this);
             gameWindow.Show();
             this.Visibility = Visibility.Hidden;
         }
