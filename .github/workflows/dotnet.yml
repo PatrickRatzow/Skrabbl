@@ -39,8 +39,11 @@ jobs:
       
     # Build
     - name: Build
-      run: dotnet build
+      run: dotnet build --no-restore
       
-    # Execute all unit tests in the solution
-    - name: Test
-      run: dotnet test
+    # API Unit Tests
+    - name: API Unit Tests
+      run: dotnet test ./Skrabbl.API.Test --no-build --verbosity normal
+      
+    - name: Database Integration Tests
+      run: dotnet test ./Skrabbl.DataAccess.Test --no-build --verbosity normal
