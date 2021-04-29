@@ -12,6 +12,9 @@ jobs:
       matrix:
         configuration: [Debug, Release]
 
+    env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      
     runs-on: windows-latest
     
     steps:
