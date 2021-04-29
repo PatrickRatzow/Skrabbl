@@ -1,5 +1,5 @@
 using Skrabbl.GameClient.GUI;
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Skrabbl.GameClient.Service;
 using Skrabbl.Model.Dto;
 using System;
@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using RestSharp;
 
 namespace Skrabbl.GameClient
 {
@@ -30,14 +31,14 @@ namespace Skrabbl.GameClient
         private Login _loginWindow;
         private SettingsService _settingsService;
         private int userId;
-        private string JWT;
+        private string _portOfTheDay = "50916"; //This port number changes!
+        private LoginResponseDto _tokens;
 
         public MainWindow(LoginResponseDto JWT, Login loginWindow)
         {
             InitializeComponent();
-
             _loginWindow = loginWindow;
-            //tbCustomWords.Text = JWT;
+            _tokens = JWT;
             _settingsService = new SettingsService();
             //var id = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
             //userId = id.UserId;
@@ -66,14 +67,27 @@ namespace Skrabbl.GameClient
 
         public async void StartGame(object sender, RoutedEventArgs e)
         {
-            
+
             await _settingsService.CreateLobbyId(userId);
             tbCustomWords.Text = "GameLobby created :)";
-           // Game newgame = new Game(players[comboPlayers.SelectedIndex], comboRounds.SelectedIndex + 1, drawingTime[comboDrawingTime.SelectedIndex]);
+            // Game newgame = new Game(players[comboPlayers.SelectedIndex], comboRounds.SelectedIndex + 1, drawingTime[comboDrawingTime.SelectedIndex]);
         }
 
         private void BtnLogOut_Click(object sender, RoutedEventArgs e)
         {
+            //Make logout request to API so it deletes the tokens
+            IRestResponse response_POST;
+            RestClient rest_client = new RestClient();
+
+            string serviceURI = "http://localhost:" + _portOfTheDay + "/api/user/logout";
+            rest_client.BaseUrl = new Uri(serviceURI);
+            RestRequest request_POST = new RestRequest(serviceURI, Method.POST);
+            RefreshDto refreshToken = new RefreshDto { Token = Properties.Settings.Default.RefreshToken };
+            request_POST.AddJsonBody(refreshToken);
+            response_POST = rest_client.Execute(request_POST);
+            _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
+
+            //Open up the login window
             _loginWindow.Visibility = Visibility.Visible;
             _loginWindow.RemoveTokenValues();
             this.Visibility = Visibility.Collapsed;
