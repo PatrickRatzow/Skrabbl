@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -75,19 +74,19 @@ namespace Skrabbl.DataAccess.Test
             );
         }
 
-        private static IEnumerable<Tuple<User, bool>> GuessedWordTestCases
+        private static IEnumerable<(User, bool)> GuessedWordTestCases
         {
             get
             {
-                yield return new Tuple<User, bool>(TestData.Users.Patrick, true);
-                yield return new Tuple<User, bool>(TestData.Users.Simon, false);
-                yield return new Tuple<User, bool>(TestData.Users.Nikolaj, false);
+                yield return (TestData.Users.Patrick, true);
+                yield return (TestData.Users.Simon, false);
+                yield return (TestData.Users.Nikolaj, false);
             }
         }
 
         [TestCaseSource(nameof(GuessedWordTestCases))]
         [Order(1)]
-        public async Task HasUserGuessedWordForCurrentTurn(Tuple<User, bool> tuple)
+        public async Task HasUserGuessedWordForCurrentTurn((User, bool) tuple)
         {
             // Arrange
             var (user, expectedResult) = tuple;
@@ -100,24 +99,24 @@ namespace Skrabbl.DataAccess.Test
         }
 
 
-        private static IEnumerable<Tuple<Game, bool>> GoToNextRoundTestCases
+        private static IEnumerable<(Game, bool)> GoToNextRoundTestCases
         {
             get
             {
-                yield return new Tuple<Game, bool>(TestData.Games.PatrickGame, true);
-                yield return new Tuple<Game, bool>(TestData.Games.PatrickGame, true);
-                yield return new Tuple<Game, bool>(TestData.Games.PatrickGame, true);
-                yield return new Tuple<Game, bool>(TestData.Games.PatrickGame, true);
+                yield return (TestData.Games.PatrickGame, true);
+                yield return (TestData.Games.PatrickGame, true);
+                yield return (TestData.Games.PatrickGame, true);
+                yield return (TestData.Games.PatrickGame, true);
                 // Fail due to having reached max round.
-                yield return new Tuple<Game, bool>(TestData.Games.PatrickGame, false);
-                yield return new Tuple<Game, bool>(TestData.Games.NikolajGame, true);
+                yield return (TestData.Games.PatrickGame, false);
+                yield return (TestData.Games.NikolajGame, true);
             }
         }
 
         [TestCaseSource(nameof(GoToNextRoundTestCases))]
         [Parallelizable(ParallelScope.Self)]
         [Order(2)]
-        public async Task GoToNextRound(Tuple<Game, bool> tuple)
+        public async Task GoToNextRound((Game, bool) tuple)
         {
             // Arrange
             var (game, expectedResult) = tuple;
