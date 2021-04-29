@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -29,14 +28,13 @@ namespace Skrabbl.API.Test.Controllers
             UserName = User.Username
         };
 
-        private Tuple<UserController, Mock<IUserService>, Mock<IJwtService>> TestObjects()
+        private (UserController, Mock<IUserService>, Mock<IJwtService>) TestObjects()
         {
             var userService = new Mock<IUserService>();
             var jwtService = new Mock<IJwtService>();
             var userController = new UserController(userService.Object, jwtService.Object);
 
-            return new Tuple<UserController, Mock<IUserService>, Mock<IJwtService>>(userController, userService,
-                jwtService);
+            return (userController, userService, jwtService);
         }
 
         [Test]
