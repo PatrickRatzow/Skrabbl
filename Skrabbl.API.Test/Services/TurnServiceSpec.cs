@@ -118,5 +118,31 @@ namespace Skrabbl.API.Test.Services
             Assert.AreEqual(result, longerWord);
             Assert.True(turnIsOver);
         }
+
+        [Test]
+        public async Task ShouldSendLetterWorks()
+        {
+            //Arrange
+            var timer = Timer();
+            bool hasSendLetter = false;
+            var cts = new CancellationTokenSource();
+
+            //Act
+            timer.Start();
+            timer.ShouldSendLetter = () => hasSendLetter = true;
+            try
+            {
+                await Task.Delay(_turnInterval + 250, cts.Token);
+            }
+            catch
+            {
+                // Ignored
+            }
+
+            timer.Stop();
+
+            //Assert
+            Assert.True(hasSendLetter);
+        }
     }
 }
