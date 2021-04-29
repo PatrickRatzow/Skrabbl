@@ -67,7 +67,7 @@ namespace Skrabbl.API.Services.TurnService
 
                 _usedIndices.Add(chosenTuple.Item2);
 
-                FoundLetter(sender, new TurnLetterFoundEventArgs
+                FoundLetter?.Invoke(sender, new TurnLetterFoundEventArgs
                 {
                     Index = chosenTuple.Item2,
                     Letter = chosenTuple.Item1
@@ -76,7 +76,7 @@ namespace Skrabbl.API.Services.TurnService
                 // If we have sent all letters, end the round
                 if (_usedIndices.Count == _currentWord.Length)
                 {
-                    TurnOver(sender, eventArgs);
+                    TurnOver?.Invoke(sender, eventArgs);
                 }
             };
         }        
