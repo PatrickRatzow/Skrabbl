@@ -22,7 +22,7 @@ namespace Skrabbl.GameClient.GUI
     {
         //Issues
         //  - Empty settings = fail
-        //  - 
+        //  -
         private LoginResponseDto _tokens;
         private string _portOfTheDay = "50916"; //This port number changes!
 
@@ -38,7 +38,7 @@ namespace Skrabbl.GameClient.GUI
                 {
                     IRestResponse response_POST;
                     RestClient rest_client = new RestClient();
-                    
+
                     string serviceURI = "http://localhost:" + _portOfTheDay + "/api/user/refresh";
                     rest_client.BaseUrl = new Uri(serviceURI);
                     RestRequest request_POST = new RestRequest(serviceURI, Method.POST);

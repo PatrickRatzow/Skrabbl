@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Skrabbl.API.Services;
+using Skrabbl.Model.Errors;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,7 +42,7 @@ namespace Skrabbl.API.Controllers
             if (gameLobby.Result == null)
                 return NotFound();
 
-            if (user.Result == null || user.Result.GameLobbyId != null)
+            if (user.Result == null || !string.IsNullOrEmpty(user.Result.GameLobbyId))
                 return Forbid();
 
             //Go to database and change the players connected to lobby + player connected lobby
@@ -53,10 +55,24 @@ namespace Skrabbl.API.Controllers
         //[Authorize]
         public async Task<IActionResult> Create(int userId)
         {
-            var user = _userService.GetUser(userId);
-            var gameLobby = _gameLobbyService.AddGameLobby(userId);
+            var user = await _userService.GetUser(userId);
 
-            return Ok();
+            if (user == null || !string.IsNullOrEmpty(user.GameLobbyId))
+                return Forbid();
+            
+            try
+            {
+                var gameLobby = await _gameLobbyService.AddGameLobby(userId);            
+                return Ok(gameLobby);
+            }
+            catch (UserAlreadyHaveALobbyException e)
+            {
+                return Forbid();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }
