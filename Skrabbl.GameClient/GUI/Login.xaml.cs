@@ -40,7 +40,6 @@ namespace Skrabbl.GameClient.GUI
                         //7+ dage skal log ind igen
                         //Hver gang programmet startes gives der en ny refresh token
                             //Gør det gennem login post
-
                     }
                 }
                 else
@@ -74,8 +73,8 @@ namespace Skrabbl.GameClient.GUI
             txtError.Text = "";
             IRestResponse response_POST;
             RestClient rest_client = new RestClient();
+            
             //5001;
-
             string PortOfTheDay = "50916"; //This port number changes!
             string ServiceURI = "http://localhost:" + PortOfTheDay + "/api/user/login";
 

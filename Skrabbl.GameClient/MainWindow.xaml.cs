@@ -66,7 +66,7 @@ namespace Skrabbl.GameClient
 
         public async void StartGame(object sender, RoutedEventArgs e)
         {
-            
+            //Check If user does not already have a lobby
             await _settingsService.CreateLobbyId(userId);
             tbCustomWords.Text = "GameLobby created :)";
            // Game newgame = new Game(players[comboPlayers.SelectedIndex], comboRounds.SelectedIndex + 1, drawingTime[comboDrawingTime.SelectedIndex]);
