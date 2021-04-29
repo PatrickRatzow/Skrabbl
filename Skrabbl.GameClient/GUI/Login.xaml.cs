@@ -28,15 +28,24 @@ namespace Skrabbl.GameClient.GUI
                 //check if saved JWT is valid
                 if (Properties.Settings.Default.JWTExpire < DateTime.Now)
                 {
-                    //To old JWT, go for refresh
+                    if(Properties.Settings.Default.RefreshExpiresAt < DateTime.Now)
+                    {
+                        //To old refresh and JWT
+                    }
+                    else
+                    {
+                        //Valid refresh token but old JWT, generate a new one
+
+                        //7+ dage skal log ind igen
+                        //Hver gang programmet startes gives der en ny refresh token
+                            //Gør det gennem login post
+
+                    }
                 }
                 else
                 {
                     OpenGameWindow();
                 }
-                //if(Properties.Settings.Default.JWT)
-
-                checkBoxRememberMe.IsChecked = true;
             }
         }
 
@@ -123,7 +132,7 @@ namespace Skrabbl.GameClient.GUI
             Properties.Settings.Default.Save();
         }
 
-        private LoginResponseDto LogindtoBuilder()
+        private LoginResponseDto BuildLoginResponseFromSettings()
         {
             //Building the Token structure
             LoginResponseDto resp = new LoginResponseDto()
@@ -138,7 +147,8 @@ namespace Skrabbl.GameClient.GUI
                     Token = Properties.Settings.Default.RefreshToken,
                     ExpiresAt = Properties.Settings.Default.RefreshExpiresAt
                     //Dont know if i should get the user here
-                }
+                },
+                UserId = Properties.Settings.Default.UserId
             };
 
             return resp;
@@ -146,7 +156,7 @@ namespace Skrabbl.GameClient.GUI
 
         private void OpenGameWindow()
         {
-            LoginResponseDto resp = LogindtoBuilder();
+            LoginResponseDto resp = BuildLoginResponseFromSettings();
             MainWindow gameWindow = new MainWindow(resp, this);
             gameWindow.Show();
             this.Visibility = Visibility.Hidden;
