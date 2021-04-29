@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Skrabbl.DataAccess.MsSql;
 using Skrabbl.DataAccess.MsSql.Queries;
-using Skrabbl.DataAccess.Test;
 
-namespace Skrabbl.DataAccess.MsSql.Test
+namespace Skrabbl.DataAccess.Test
 {
+    [TestFixture]
     class WordListRepositorySpec
     {
         IWordListRepository _wordListRepository;

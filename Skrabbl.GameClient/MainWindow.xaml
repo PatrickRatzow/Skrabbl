@@ -58,6 +58,7 @@
             </TextBox>
         </Grid>
         <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+            <Button Name="BtnLogOut" Width="50" HorizontalAlignment="Right" Background="Red" Foreground="White" Margin="0,5,0,0" Click="BtnLogOut_Click">Log out</Button>
             <TextBlock FontSize="20">Players:</TextBlock>
             <ListView Name="lvPlayers" Height="342" Width="234">
 

@@ -28,11 +28,6 @@ namespace Skrabbl.API.Services
             return msg;
         }
 
-        public async Task<IEnumerable<ChatMessage>> GetMessages(int lobbyId)
-        {
-            return await _messageRepository.GetAllMessages(lobbyId);
-        }
-
         public Task<IEnumerable<ChatMessage>> GetMessagesByUserId(int userId)
         {
             return _messageRepository.GetAllMessagesByUserId(userId);

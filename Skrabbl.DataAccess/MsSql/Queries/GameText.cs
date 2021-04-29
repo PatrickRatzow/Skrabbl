@@ -2,6 +2,11 @@ namespace Skrabbl.DataAccess.MsSql.Queries
 {
     public partial class CommandText : ICommandText
     {
+        public string AddGame => @"
+            INSERT INTO Game(ActiveRoundId)
+            DEFAULT VALUES;
+            SELECT CAST(SCOPE_IDENTITY() AS int)";
+
         public string GetGameById => "SELECT * FROM game WHERE Id = @Id";
 
         public string GetCurrentTurnByUserId => @"
@@ -51,5 +56,10 @@ namespace Skrabbl.DataAccess.MsSql.Queries
                   AND GameId = @GameId
             )
             WHERE Id = @GameId";
+
+        public string AddRound => @"
+            INSERT INTO Round(RoundNumber, GameId)
+            VALUES (@RoundNumber, @GameId);
+            SELECT CAST(SCOPE_IDENTITY() AS int)";
     }
 }

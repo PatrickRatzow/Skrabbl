@@ -51,8 +51,8 @@ class UserService {
             return
 
         const json = JSON.parse(auth)
-        if (json?.jwtToken?.expiresAt) {
-            json.jwtToken.expiresAt = new Date(json.jwtToken.expiresAt)
+        if (json?.jwt?.expiresAt) {
+            json.jwt.expiresAt = new Date(json.jwt.expiresAt)
         }
         if (json?.refreshToken?.expiresAt) {
             json.refreshToken.expiresAt = new Date(json.refreshToken.expiresAt)

@@ -19,7 +19,7 @@ namespace Skrabbl.API.Test.Services
             mock.Setup(m => m.AddGameLobby(It.IsAny<GameLobby>()));
             mock.Setup(m => m.GetLobbyByOwnerId(userId))
                 .ReturnsAsync(() => null);
-            mock.Setup(m => m.GetGameLobbyById(It.IsAny<string>()));
+            mock.Setup(m => m.GetGameLobbyByLobbyCode(It.IsAny<string>()));
             var service = new GameLobbyService(mock.Object);
 
             //Act
@@ -60,7 +60,7 @@ namespace Skrabbl.API.Test.Services
             mock.Setup(m => m.AddGameLobby(It.IsAny<GameLobby>()));
             mock.Setup(m => m.GetLobbyByOwnerId(userId))
                 .ReturnsAsync(() => null);
-            mock.SetupSequence(m => m.GetGameLobbyById(It.IsAny<string>()))
+            mock.SetupSequence(m => m.GetGameLobbyByLobbyCode(It.IsAny<string>()))
                 .ReturnsAsync(() => gameLobby)
                 .ReturnsAsync(() => null);
 
@@ -70,7 +70,7 @@ namespace Skrabbl.API.Test.Services
             await service.AddGameLobby(userId);
 
             //Assert
-            mock.Verify(m => m.GetGameLobbyById(It.IsAny<string>()), Times.Exactly(2));
+            mock.Verify(m => m.GetGameLobbyByLobbyCode(It.IsAny<string>()), Times.Exactly(2));
             mock.VerifyAll();
         }
 
@@ -79,7 +79,7 @@ namespace Skrabbl.API.Test.Services
         {
             var gameLobby = new GameLobby();
             var mock = new Mock<IGameLobbyRepository>();
-            mock.Setup(m => m.GetGameLobbyById(It.IsAny<string>()))
+            mock.Setup(m => m.GetGameLobbyByLobbyCode(It.IsAny<string>()))
                 .ReturnsAsync(() => gameLobby);
             var service = new GameLobbyService(mock.Object);
 
@@ -95,7 +95,7 @@ namespace Skrabbl.API.Test.Services
         {
             var gameLobby = new GameLobby();
             var mock = new Mock<IGameLobbyRepository>();
-            mock.Setup(m => m.GetGameLobbyById(It.IsAny<string>()))
+            mock.Setup(m => m.GetGameLobbyByLobbyCode(It.IsAny<string>()))
                 .ReturnsAsync(() => null);
             var service = new GameLobbyService(mock.Object);
 
@@ -110,12 +110,12 @@ namespace Skrabbl.API.Test.Services
         public async Task GetGameLobbyById_ChecksIfCallsRepository()
         {
             var mock = new Mock<IGameLobbyRepository>();
-            mock.Setup(m => m.GetGameLobbyById(It.IsAny<string>()));
+            mock.Setup(m => m.GetGameLobbyByLobbyCode(It.IsAny<string>()));
             var service = new GameLobbyService(mock.Object);
 
             await service.GetGameLobbyById("");
 
-            mock.Verify(m => m.GetGameLobbyById(It.IsAny<string>()), Times.Once());
+            mock.Verify(m => m.GetGameLobbyByLobbyCode(It.IsAny<string>()), Times.Once());
         }
 
         [Test]

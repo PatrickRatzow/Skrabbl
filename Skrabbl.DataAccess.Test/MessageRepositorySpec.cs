@@ -1,16 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Skrabbl.DataAccess.MsSql;
 using Skrabbl.DataAccess.MsSql.Queries;
-using Skrabbl.DataAccess.Test;
+using Skrabbl.DataAccess.Test.Util;
 using Skrabbl.Model;
 
-namespace Skrabbl.DataAccess.MsSql.Test
+namespace Skrabbl.DataAccess.Test
 {
+    [TestFixture]
+    [Order(1)]
     class MessageRepositorySpec
     {
-        IMessageRepository _messageRepository;
+        private IMessageRepository _messageRepository;
+        private IGameRepository _gameRepository;
 
         [SetUp]
         public void Setup()
@@ -18,50 +22,50 @@ namespace Skrabbl.DataAccess.MsSql.Test
             var cmd = new CommandText();
 
             _messageRepository = new MessageRepository(ConfigFixture.Config, cmd);
+            _gameRepository = new GameRepository(ConfigFixture.Config, cmd);
         }
 
         [Test]
-        public async Task GetAllMessagesFromDbTest()
+        [Order(1)]
+        public async Task GetMessagesByUserIdTest()
         {
-            //Arrange
-            IEnumerable<ChatMessage> msgList;
-            int gamelobbyId = 10;
+            // Arrange
+            var turn = await _gameRepository.GetCurrentTurn(TestData.Users.Patrick.Id);
+            // This query does not have the joins for all chat messages to be in the object
+            var expectedMessages = TestData.Games.PatrickGame.Rounds
+                .Select(r => r.Turns.First(t => t.Id == turn.Id))
+                .First()
+                .Messages.Count;
 
-            //Act
-            msgList = await _messageRepository.GetAllMessages(gamelobbyId);
+            //Act            
+            var messages = await _messageRepository.GetAllMessagesByUserId(TestData.Users.Patrick.Id);
 
             //Assert
-            Assert.IsNotNull(msgList);
+            Assert.AreEqual(messages.Count(), expectedMessages);
         }
 
         [Test]
+        [Order(2)]
         public async Task AddChatMessageToDbTest()
         {
             //Arrange
-            DateTime date = new DateTime(2012, 12, 25, 10, 30, 50);
-
-            ChatMessage chatMessage = new ChatMessage
+            var chatMessage = new ChatMessage
             {
-                Message = "hej",
-                CreatedAt = date,
-                Game = new Game {Id = 3},
-                User = new User {Id = 25}
+                Message = "Test Message 1",
+                CreatedAt = DateTime.UtcNow,
+                User = TestData.Users.Patrick
             };
 
             //Act
+            var messagesBefore = (await _messageRepository.GetAllMessagesByUserId(TestData.Users.Patrick.Id))
+                .ToList();
             await _messageRepository.SaveMessage(chatMessage);
-            IEnumerable<ChatMessage> chatMsg = await _messageRepository.GetAllMessages(1223);
+            var messagesAfter = (await _messageRepository.GetAllMessagesByUserId(TestData.Users.Patrick.Id))
+                .ToList();
 
             //Assert
-            IList<ChatMessage> list = new List<ChatMessage>(chatMsg);
-
-            Assert.AreNotEqual(list.Count, 0);
-        }
-
-        [OneTimeTearDown]
-        public void TearDown()
-        {
-            _messageRepository.RemoveAllChatMessages();
+            Assert.AreNotEqual(messagesBefore.Count, messagesAfter.Count);
+            Assert.AreEqual(messagesBefore.Count + 1, messagesAfter.Count);
         }
     }
 }

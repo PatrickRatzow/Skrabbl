@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Skrabbl.DataAccess.MsSql.Queries;
+using Skrabbl.DataAccess.Test.Util;
 using Skrabbl.Model;
 
 namespace Skrabbl.DataAccess.Test
 {
+    [TestFixture]
     class GameLobbyRepositorySpec
     {
         IGameLobbyRepository _gameLobbyRepository;
@@ -13,36 +15,36 @@ namespace Skrabbl.DataAccess.Test
         [SetUp]
         public void Setup()
         {
-            var config = ConfigFixture.Config;
             var cmd = new CommandText();
 
-            _gameLobbyRepository = new GameLobbyRepository(config, cmd);
-            //_gameLobbyRepository.RemoveGameLobby("1111");
+            _gameLobbyRepository = new GameLobbyRepository(ConfigFixture.Config, cmd);
+
+            TestData.GameLobbies.FlorisLobby = new GameLobby()
+            {
+                GameCode = "a1b1",
+                LobbyOwnerId = TestData.Users.Floris.Id,
+            };
         }
 
-        [Test]
+        [Test, Order(1)]
         public async Task AddGameLobbyToDb()
         {
             //Arrange
-            GameLobby gameLobby = new GameLobby()
-            {
-                GameCode = "1111",
-                LobbyOwnerId = 25,
-            };
+            var gameLobby = TestData.GameLobbies.FlorisLobby!;
 
             //Act
             await _gameLobbyRepository.AddGameLobby(gameLobby);
-            GameLobby lobby = await _gameLobbyRepository.GetGameLobbyById(gameLobby.GameCode);
+            GameLobby lobby = await _gameLobbyRepository.GetGameLobbyByLobbyCode(gameLobby.GameCode);
 
             //Assert
             Assert.IsNotNull(lobby);
         }
 
-        [Test]
+        [Test, Order(2)]
         public async Task FindGameLobbyByOwnerId()
         {
             //Arrange
-            int userId = 26;
+            int userId = TestData.Users.Floris.Id;
 
             //Act
             var gameLobby = await _gameLobbyRepository.GetLobbyByOwnerId(userId);
@@ -51,49 +53,44 @@ namespace Skrabbl.DataAccess.Test
             Assert.IsNotNull(gameLobby);
         }
 
-        [Test]
+        [Test, Order(3)]
         public async Task FindGameLobbyById()
         {
             //Arrange
-            string lobbyId = "1111";
+            string lobbyId = TestData.GameLobbies.FlorisLobby!.GameCode;
 
             //Act
-            var gameLobby = await _gameLobbyRepository.GetGameLobbyById(lobbyId);
+            var gameLobby = await _gameLobbyRepository.GetGameLobbyByLobbyCode(lobbyId);
 
             //Assert
             Assert.IsNotNull(gameLobby);
         }
 
-        [Test]
+        [Test, Order(4)]
         public async Task RemoveGameLobby()
         {
             //Arrange
-            string lobbyId = "1223";
+            string lobbyId = TestData.GameLobbies.FlorisLobby!.GameCode;
 
             //Act
             int rowsAffected = await _gameLobbyRepository.RemoveGameLobby(lobbyId);
+            TestData.GameLobbies.FlorisLobby = null;
 
             //Assert
             Assert.AreEqual(rowsAffected, 1);
         }
 
-        [Test]
+        [Test, Order(5)]
         public async Task GetAllLobbies()
         {
             //Arrange
 
             //Act
-            var list = await _gameLobbyRepository.GetAllGameLobbies();
-            bool lobbiesWereRead = (list.ToList<GameLobby>().Count > 0);
+            var lobbies = await _gameLobbyRepository.GetAllGameLobbies();
 
             //Assert
-            Assert.True(lobbiesWereRead);
-        }
-
-        [OneTimeTearDown]
-        public void TearDown()
-        {
-            // _gameLobbyRepository.RemoveGameLobby("1111");
+            // According to seeding data we have 2 lobbies
+            Assert.AreEqual(lobbies.Count(), 2);
         }
     }
 }

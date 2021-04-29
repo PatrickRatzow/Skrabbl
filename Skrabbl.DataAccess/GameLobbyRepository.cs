@@ -15,12 +15,12 @@ namespace Skrabbl.DataAccess
             _commandText = commandText;
         }
 
-        public async Task<GameLobby> GetGameLobbyById(string ownerId)
+        public async Task<GameLobby> GetGameLobbyByLobbyCode(string lobbyCode)
         {
             return await WithConnection(async conn =>
             {
-                return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyById,
-                    new {GameCode = ownerId});
+                return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyByLobbyCode,
+                    new { GameCode = lobbyCode });
             });
         }
 
@@ -33,7 +33,7 @@ namespace Skrabbl.DataAccess
         {
             return await WithConnection(async conn =>
             {
-                return await conn.ExecuteAsync(_commandText.RemoveLobbyById, new {GameCode = ownerId});
+                return await conn.ExecuteAsync(_commandText.RemoveLobbyById, new { GameCode = ownerId });
             });
         }
 
@@ -55,7 +55,28 @@ namespace Skrabbl.DataAccess
             return await WithConnection(async conn =>
             {
                 return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyByOwnerId,
-                    new {LobbyOwnerId = ownerId});
+                    new { LobbyOwnerId = ownerId });
+            });
+        }
+        public async Task<IEnumerable<GameSetting>> GetGameSettingsByGameId(int gameId)
+        {
+            return await WithConnection(async conn =>
+            {
+                return await conn.QueryAsync<GameSetting>(_commandText.GetGameSettingsByGameId,
+                    new { GameId = gameId });
+            });
+        }
+
+        public async Task SetGameSettingsByGameId(int gameId, string setting)
+        {
+            await WithConnection(async conn =>
+            {
+                return await conn.QueryAsync<GameSetting>(_commandText.SetGameSettingsByGameId,
+                    new
+                    {
+                        GameId = gameId,
+                        Setting = setting
+                    });
             });
         }
     }

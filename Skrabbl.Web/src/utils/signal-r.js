@@ -5,7 +5,7 @@ class SignalRConnection {
     constructor() {
         this.conn = new HubConnectionBuilder()
             .withUrl("/ws/game", {
-                accessTokenFactory: () => store.state.user?.auth?.jwtToken?.token
+                accessTokenFactory: () => store.state.user?.auth?.jwt?.token
             })
             .configureLogging(LogLevel.Information)
             .build()

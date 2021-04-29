@@ -7,6 +7,7 @@ namespace Skrabbl.API.Services.Cache
 {
     public enum CachedKeys
     {
-        AllWords
+        AllWords,
+        GameSetting
     }
 }
