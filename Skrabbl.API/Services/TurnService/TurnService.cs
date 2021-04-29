@@ -1,10 +1,10 @@
-﻿using Skrabbl.DataAccess;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using Skrabbl.DataAccess;
 
 namespace Skrabbl.API.Services.TurnService
 {
@@ -12,33 +12,15 @@ namespace Skrabbl.API.Services.TurnService
     {
         public event ElapsedEventHandler TurnOver;
         public event EventHandler<TurnLetterFoundEventArgs> FoundLetter;
+        public Func<bool> ShouldSendLetter { private get; set; }
         private Timer _turnTimer { get; set; }
         private Timer _letterTimer { get; set; }
         private HashSet<int> _usedIndices = new HashSet<int>();
         private string _currentWord { get; }
-        private Func<bool> _shouldSendLetter;
 
-        public Func<bool> ShouldSendLetter
+        public TurnTimer(string currentWord, int turnInterval, int letterInterval)
         {
-            get => _shouldSendLetter;
-            set => _shouldSendLetter = value;
-        }
-
-        public TurnTimer(string currentWord, int turnInterval, int letterInterval, Func<bool> shouldSendLetterFunc = null)
-        {
-            if (shouldSendLetterFunc == null)
-            {
-                shouldSendLetterFunc = () =>
-                {
-                    var rnd = new Random();
-                    var length = _currentWord.Length;
-                    var val = rnd.Next(1, 10);
-
-                    return val == 1;
-                };
-            }
-
-            ShouldSendLetter = shouldSendLetterFunc;
+            ShouldSendLetter ??= DefaultShouldSendLetter;
 
             _currentWord = currentWord;
 
@@ -48,38 +30,38 @@ namespace Skrabbl.API.Services.TurnService
 
             _letterTimer = new Timer();
             _letterTimer.Interval = letterInterval;
-            
+
             _letterTimer.Elapsed += (sender, eventArgs) =>
             {
                 var shouldRun = ShouldSendLetter();
 
-                var possibilties = new List<Tuple<char, int>>();
+                var possibilties = new List<(char, int)>();
                 for (int i = 0; i < _currentWord.Length; i++)
                 {
                     if (_usedIndices.Contains(i)) continue;
 
-                    possibilties.Add(new Tuple<char, int>(_currentWord[i], i));
+                    possibilties.Add((_currentWord[i], i));
                 }
 
                 var rnd = new Random();
-                var chosenTuple = possibilties.OrderBy(x => rnd.Next())
+                var (letter, index) = possibilties.OrderBy(x => rnd.Next())
                     .First();
 
-                _usedIndices.Add(chosenTuple.Item2);
+                _usedIndices.Add(index);
 
                 FoundLetter?.Invoke(sender, new TurnLetterFoundEventArgs
                 {
-                    Index = chosenTuple.Item2,
-                    Letter = chosenTuple.Item1
-                });                
-                
+                    Index = index,
+                    Letter = letter
+                });
+
                 // If we have sent all letters, end the round
                 if (_usedIndices.Count == _currentWord.Length)
                 {
                     TurnOver?.Invoke(sender, eventArgs);
                 }
             };
-        }        
+        }
 
         public void Start()
         {
@@ -91,6 +73,15 @@ namespace Skrabbl.API.Services.TurnService
         {
             _turnTimer.Stop();
             _letterTimer.Stop();
+        }
+
+        private bool DefaultShouldSendLetter()
+        {
+            var rnd = new Random();
+            var length = _currentWord.Length;
+            var val = rnd.Next(1, 10);
+
+            return val == 1;
         }
     }
 

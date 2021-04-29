@@ -1,27 +1,29 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Skrabbl.API.Services.TurnService;
-using Skrabbl.Model;
 
 namespace Skrabbl.API.Test.Services
 {
     class TurnServiceSpec
     {
-        private int gameId = 5;
-        private Game game = new Game();
-        private int turnInterval = 500;
-        private int letterInterval = 10;
-        private string currentWord = "Cake";
+        private int _turnInterval = 500;
+        private int _letterInterval = 10;
+
+        private TurnTimer Timer(int gameId = 5, string word = "Cake", int turnInterval = 0, int letterInterval = 0)
+        {
+            turnInterval = turnInterval <= 0 ? _turnInterval : turnInterval;
+            letterInterval = letterInterval <= 0 ? _letterInterval : letterInterval;
+
+            var service = new TurnService(null);
+            return service.CreateTurnTimer(gameId, word, turnInterval, letterInterval);
+        }
 
         [Test]
         public async Task TimerElapsed_Success()
         {
             //Arrange
-            var service = new TurnService(null);
-            var timer = service.CreateTurnTimer(gameId, currentWord, turnInterval, letterInterval);
+            var timer = Timer();
             var cts = new CancellationTokenSource();
             bool hasElapsed = false;
 
@@ -35,7 +37,7 @@ namespace Skrabbl.API.Test.Services
             timer.Start();
             try
             {
-                await Task.Delay(turnInterval + 250, cts.Token);
+                await Task.Delay(_turnInterval + 250, cts.Token);
             }
             catch
             {
@@ -51,8 +53,7 @@ namespace Skrabbl.API.Test.Services
         [Test]
         public async Task FoundALetterEvent_Success()
         {
-            var service = new TurnService(null);
-            var timer = service.CreateTurnTimer(gameId, currentWord, turnInterval, letterInterval);
+            var timer = Timer();
             var cts = new CancellationTokenSource();
             char foundLetter = 'å';
 
@@ -67,7 +68,7 @@ namespace Skrabbl.API.Test.Services
             timer.Start();
             try
             {
-                await Task.Delay(letterInterval + 250, cts.Token);
+                await Task.Delay(_letterInterval + 250, cts.Token);
             }
             catch
             {
@@ -85,18 +86,14 @@ namespace Skrabbl.API.Test.Services
         {
             //Arrange 
             string longerWord = "fpewpgfowegoprejmgpiwemjpigwmi";
-            var service = new TurnService(null);
-            var timer = service.CreateTurnTimer(gameId, longerWord, turnInterval, letterInterval);
+            var timer = Timer(default, longerWord);
             bool turnIsOver = false;
             var cts = new CancellationTokenSource();
             char[] foundLetter = new char[longerWord.Length];
-            
+
             //Act
-            timer.ShouldSendLetter = () => true; 
-            timer.FoundLetter += (o, e) => 
-            {
-                foundLetter[e.Index] = e.Letter;
-            };
+            timer.ShouldSendLetter = () => true;
+            timer.FoundLetter += (o, e) => { foundLetter[e.Index] = e.Letter; };
             timer.TurnOver += (o, e) =>
             {
                 turnIsOver = true;
@@ -106,7 +103,7 @@ namespace Skrabbl.API.Test.Services
             timer.Start();
             try
             {
-                await Task.Delay(turnInterval + 250, cts.Token);
+                await Task.Delay(_turnInterval + 250, cts.Token);
             }
             catch
             {
