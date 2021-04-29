@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
-using Skrabbl.API.Services.Cache;
 using Skrabbl.DataAccess;
 
 namespace Skrabbl.API.Services
