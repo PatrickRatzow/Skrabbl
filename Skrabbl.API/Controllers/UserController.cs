@@ -63,7 +63,8 @@ namespace Skrabbl.API.Controllers
             return Ok(new LoginResponseDto
             {
                 Jwt = jwt,
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken,
+                UserId = user.Id
             });
         }
 

@@ -20,33 +20,39 @@ namespace Skrabbl.GameClient.GUI
 {
     public partial class Login : Window
     {
+        //Issues
+        //  - Empty settings = fail
+        //  - 
         private LoginResponseDto _tokens;
+        private string _portOfTheDay = "50916"; //This port number changes!
+
         public Login()
         {
             InitializeComponent();
-            if (Properties.Settings.Default.JWT != String.Empty)
+            Properties.Settings.Default.Reset();
+            Properties.Settings.Default.Save();
+            if (Properties.Settings.Default.RefreshToken != null && Properties.Settings.Default.RefreshToken != String.Empty)
             {
-                //check if saved JWT is valid
-                if (Properties.Settings.Default.JWTExpire < DateTime.Now)
+                //check if saved refresh token is still valid otherwise they will have to log in manually
+                if (Properties.Settings.Default.RefreshExpiresAt > DateTime.Now)
                 {
-                    if(Properties.Settings.Default.RefreshExpiresAt < DateTime.Now)
-                    {
-                        //To old refresh and JWT
-                    }
-                    else
-                    {
-                        //Valid refresh token but old JWT, generate a new one
+                    IRestResponse response_POST;
+                    RestClient rest_client = new RestClient();
+                    
+                    string serviceURI = "http://localhost:" + _portOfTheDay + "/api/user/refresh";
+                    rest_client.BaseUrl = new Uri(serviceURI);
+                    RestRequest request_POST = new RestRequest(serviceURI, Method.POST);
+                    RefreshDto refreshToken = new RefreshDto { Token = Properties.Settings.Default.RefreshToken};
+                    request_POST.AddJsonBody(refreshToken);
+                    response_POST = rest_client.Execute(request_POST);
+                    _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
+                    SaveTokens(_tokens);
+                    HttpStatusCode statusCode = response_POST.StatusCode;
 
-                        //7+ dage skal log ind igen
-                        //Hver gang programmet startes gives der en ny refresh token
-                            //Gør det gennem login post
-
+                    if(statusCode == HttpStatusCode.OK)
+                    {
+                        OpenGameWindow(_tokens);
                     }
-                }
-                else
-                {
-                    btnLogin_Click(null, null);
-                    OpenGameWindow(_tokens);
                 }
             }
         }
@@ -74,39 +80,30 @@ namespace Skrabbl.GameClient.GUI
             txtError.Text = "";
             IRestResponse response_POST;
             RestClient rest_client = new RestClient();
-            //5001;
-
-            string PortOfTheDay = "50916"; //This port number changes!
-            string ServiceURI = "http://localhost:" + PortOfTheDay + "/api/user/login";
-
-
+            string ServiceURI = "http://localhost:" + _portOfTheDay + "/api/user/login";
             rest_client.BaseUrl = new Uri(ServiceURI);
             RestRequest request_POST = new RestRequest(ServiceURI, Method.POST);
+            //Create request body
             LoginDto loginData = new LoginDto { Username = txtUsername.Text, Password = txtPassword.Text };
-
             request_POST.AddJsonBody(loginData);
-
+            //Execute
             response_POST = rest_client.Execute(request_POST);
-
+            _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
 
             HttpStatusCode statusCode = response_POST.StatusCode;
-            int integerStatus = (int)statusCode;
 
-            if (integerStatus == 200)
+            if (statusCode == HttpStatusCode.OK)
             {
                 if (checkBoxRememberMe.IsChecked.Value)
-                {
-                    _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
                     SaveTokens(_tokens);
-                }
                 else
                     RemoveTokenValues();
 
                 OpenGameWindow(_tokens);
             }
-            else if (integerStatus == 401)
+            else if (statusCode == HttpStatusCode.Unauthorized)
             {
-                txtError.Text = "Wrong combination of username and password";
+                txtError.Text = "Non-valid input";
             }
 
         }
@@ -117,7 +114,7 @@ namespace Skrabbl.GameClient.GUI
             Properties.Settings.Default.JWTExpire = tokens.Jwt.ExpiresAt;
 
             Properties.Settings.Default.RefreshToken = tokens.RefreshToken.Token;
-            Properties.Settings.Default.JWTExpire = tokens.RefreshToken.ExpiresAt;
+            Properties.Settings.Default.RefreshExpiresAt = tokens.RefreshToken.ExpiresAt;
 
             Properties.Settings.Default.UserId = tokens.UserId;
 
@@ -130,7 +127,7 @@ namespace Skrabbl.GameClient.GUI
             Properties.Settings.Default.JWTExpire = DateTime.Now;
 
             Properties.Settings.Default.RefreshToken = String.Empty;
-            Properties.Settings.Default.JWTExpire = DateTime.Now;
+            Properties.Settings.Default.RefreshExpiresAt = DateTime.Now;
 
             Properties.Settings.Default.UserId = 0;
             Properties.Settings.Default.Save();
