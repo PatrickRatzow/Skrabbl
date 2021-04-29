@@ -47,9 +47,8 @@ namespace Skrabbl.GameClient.GUI
                     response_POST = rest_client.Execute(request_POST);
                     _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
                     SaveTokens(_tokens);
-                    HttpStatusCode statusCode = response_POST.StatusCode;
 
-                    if(statusCode == HttpStatusCode.OK)
+                    if(response_POST.StatusCode == HttpStatusCode.OK)
                     {
                         OpenGameWindow(_tokens);
                     }
@@ -90,9 +89,7 @@ namespace Skrabbl.GameClient.GUI
             response_POST = rest_client.Execute(request_POST);
             _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
 
-            HttpStatusCode statusCode = response_POST.StatusCode;
-
-            if (statusCode == HttpStatusCode.OK)
+            if (response_POST.StatusCode == HttpStatusCode.OK)
             {
                 if (checkBoxRememberMe.IsChecked.Value)
                     SaveTokens(_tokens);
@@ -101,7 +98,7 @@ namespace Skrabbl.GameClient.GUI
 
                 OpenGameWindow(_tokens);
             }
-            else if (statusCode == HttpStatusCode.Unauthorized)
+            else if (response_POST.StatusCode == HttpStatusCode.Unauthorized)
             {
                 txtError.Text = "Non-valid input";
             }
