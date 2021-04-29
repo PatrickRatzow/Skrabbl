@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Skrabbl.API.Services.TurnService;
@@ -79,15 +81,45 @@ namespace Skrabbl.API.Test.Services
         }
 
         [Test]
-        public void AllLettersHaveBeenIndentifiedAndTurnOverHasBeenCalled()
+        public async Task AllLettersHaveBeenIndentifiedAndTurnOverHasBeenCalled()
         {
-            //test if statemenet on line 70.
-        }
+            //Arrange 
+            string longerWord = "fpewpgfowegoprejmgpiwemjpigwmi";
+            var service = new TurnService(null);
+            var timer = service.CreateTurnTimer(gameId, longerWord, turnInterval, letterInterval);
+            bool turnIsOver = false;
+            var cts = new CancellationTokenSource();
+            char[] foundLetter = new char[longerWord.Length];
+            
+            //Act
+            timer.ShouldSendLetter = () => true; 
+            timer.FoundLetter += (o, e) => 
+            {
+                foundLetter[e.Index] = e.Letter;
+            };
+            timer.TurnOver += (o, e) =>
+            {
+                turnIsOver = true;
+                cts.Cancel();
+            };
 
-        [Test]
-        public void FoundLetterDoesNotUseTheSameIndicesForCurrentWordAgain()
-        {
-            //Test if statement line 59
+            timer.Start();
+            try
+            {
+                await Task.Delay(turnInterval + 250, cts.Token);
+            }
+            catch
+            {
+                // Ignored
+            }
+
+            timer.Stop();
+
+            //Assert
+            //Hack to remove null terminators
+            var result = new string(foundLetter).Replace("\0", "") + "";
+            Assert.AreEqual(result, longerWord);
+            Assert.True(turnIsOver);
         }
     }
 }
