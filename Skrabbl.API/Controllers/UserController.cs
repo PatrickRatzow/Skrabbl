@@ -36,12 +36,12 @@ namespace Skrabbl.API.Controllers
 
             var userId = user.Id;
 
-            var jwtToken = _jwtService.GenerateSecurityToken(user);
+            var jwt = _jwtService.GenerateSecurityToken(user);
             var refreshToken = await _jwtService.GenerateRefreshToken(user);
 
             return Ok(new LoginResponseDto
             {
-                Jwt = jwtToken,
+                Jwt = jwt,
                 RefreshToken = refreshToken,
                 UserId = userId
                 // TODO: when jwt is implemented, this has to be removed
