@@ -12,17 +12,17 @@ namespace Skrabbl.DataAccess.Migrations
         public override void Up()
         {
             Create.Table("GameSetting")
-                .WithColumn("GameId").AsInt32()
+                .WithColumn("GameCode").AsFixedLengthString(4)
                 .WithColumn("Setting").AsString(255).NotNullable()
                 .WithColumn("Value").AsString(int.MaxValue).NotNullable();
 
             Create.ForeignKey()
-              .FromTable("GameSetting").ForeignColumn("GameId")
-              .ToTable("Game").PrimaryColumn("Id");
+              .FromTable("GameSetting").ForeignColumn("GameCode")
+              .ToTable("GameLobby").PrimaryColumn("GameCode");
 
             Create.PrimaryKey()
                 .OnTable("GameSetting")
-                .Columns("GameId", "Setting");
+                .Columns("GameCode", "Setting");
         }
 
         public override void Down()

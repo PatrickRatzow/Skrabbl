@@ -28,13 +28,13 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1" HorizontalAlignment="Center" Margin="0,12,0,12" Width="104">
-                <ComboBox x:Name="comboPlayers" Width="100" Margin="2" SelectedIndex="4">
+                <ComboBox x:Name="comboPlayers" Width="100" Margin="2" SelectedIndex="4" SelectionChanged="MaxPlayersChanged">
                     
                 </ComboBox>
-                <ComboBox x:Name="comboRounds" Width="100" Margin="2" SelectedIndex="2">
+                <ComboBox x:Name="comboRounds" Width="100" Margin="2" SelectedIndex="2" SelectionChanged="NoOfRoundsChanged">
                     
                 </ComboBox>
-                <ComboBox x:Name="comboDrawingTime" Width="100" Margin="2" SelectedIndex="2">
+                <ComboBox x:Name="comboDrawingTime" Width="100" Margin="2" SelectedIndex="2" SelectionChanged="DrawingTimeChanged">
                     
                 </ComboBox>
                 <CheckBox x:Name="checkCustomWords" HorizontalAlignment="Center">

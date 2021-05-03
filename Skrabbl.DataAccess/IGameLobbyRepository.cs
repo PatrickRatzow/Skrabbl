@@ -14,7 +14,8 @@ namespace Skrabbl.DataAccess
         Task<IEnumerable<GameLobby>> GetAllGameLobbies();
         Task RemoveAllGameLobbies();
         Task<GameLobby> GetLobbyByOwnerId(int ownerId);
-        Task<IEnumerable<GameSetting>> GetGameSettingsByGameId(int gameId);
-        Task SetGameSettingsByGameId(int gameId, string setting);
+        Task<IEnumerable<GameSetting>> GetGameSettingsByGameCode(int gameId);
+        Task SetGameSettingsByGameCode(GameSetting gameSetting);
+        Task UpdateGameLobbySettings(List<GameSetting> gameSettings, GameLobby entity);
     }
 }

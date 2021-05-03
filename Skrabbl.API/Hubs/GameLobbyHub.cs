@@ -50,14 +50,24 @@ namespace Skrabbl.API.Hubs
             Owners.TryAdd(Context.ConnectionId, lobbyId);
             await Groups.AddToGroupAsync(Context.ConnectionId, lobbyId);
 
-            var newLobby = await _gameLobbyService.AddGameLobby(userId);
-            await _userService.AddToLobby(userId, newLobby.GameCode);
+           // var newLobby = await _gameLobbyService.AddGameLobby(userId);
+            //await _userService.AddToLobby(userId, newLobby.GameCode);
         }
 
         public async Task CreateLobbyWithUserId(int userId)
         {
-            var newLobby = await _gameLobbyService.AddGameLobby(userId);
-            await _userService.AddToLobby(userId, newLobby.GameCode);
+            //var newLobby = await _gameLobbyService.AddGameLobby(userId);
+           // await _userService.AddToLobby(userId, newLobby.GameCode);
+        }
+
+        public async Task AddGameSettings(string gameCode, string setting, string value)
+        {
+            await _gameLobbyService.SetGameSettingsByGameCode(new GameSetting
+            {
+                GameCode = gameCode,
+                Setting = setting,
+                Value = value
+            });
         }
 
         public async Task JoinLobby(int userId, string gameCode)
