@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RestSharp;
+using Skrabbl.GameClient.Https;
 
 namespace Skrabbl.GameClient
 {
@@ -74,7 +75,7 @@ namespace Skrabbl.GameClient
             tbCustomWords.Text = "GameLobby created :)";
         }
 
-        private void BtnLogOut_Click(object sender, RoutedEventArgs e)
+        private async void BtnLogOut_Click(object sender, RoutedEventArgs e)
         {
             //Make logout request to API so it deletes the tokens
             IRestResponse response_POST;
@@ -92,6 +93,9 @@ namespace Skrabbl.GameClient
             _loginWindow.Visibility = Visibility.Visible;
             _loginWindow.RemoveTokenValues();
             this.Visibility = Visibility.Collapsed;
+
+            var response = await HttpHelper.Post<LoginResponseDto, RefreshDto>("user/logout", refreshToken);
+            _tokens = response.Result;
         }
         public void MaxPlayersChanged(object sender, RoutedEventArgs e)
         {
