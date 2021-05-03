@@ -29,7 +29,7 @@ namespace Skrabbl.GameClient.GUI
             if (Properties.Settings.Default.RefreshToken != null && Properties.Settings.Default.RefreshToken != String.Empty)
             {
                 //check if saved refresh token is still valid otherwise they will have to log in manually
-                if (Properties.Settings.Default.RefreshExpiresAt > DateTime.Now)
+                if (Properties.Settings.Default.RefreshExpiresAt > DateTime.UtcNow)
                 {
                     IRestResponse response_POST;
                     RestClient rest_client = new RestClient();
@@ -41,10 +41,10 @@ namespace Skrabbl.GameClient.GUI
                     request_POST.AddJsonBody(refreshToken);
                     response_POST = rest_client.Execute(request_POST);
                     _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
-                    SaveTokens(_tokens);
 
                     if(response_POST.StatusCode == HttpStatusCode.OK)
                     {
+                        SaveTokens(_tokens);
                         OpenGameWindow(_tokens);
                     }
                 }
@@ -119,10 +119,10 @@ namespace Skrabbl.GameClient.GUI
         public void RemoveTokenValues()
         {
             Properties.Settings.Default.JWT = String.Empty;
-            Properties.Settings.Default.JWTExpire = DateTime.Now;
+            Properties.Settings.Default.JWTExpire = DateTime.UtcNow;
 
             Properties.Settings.Default.RefreshToken = String.Empty;
-            Properties.Settings.Default.RefreshExpiresAt = DateTime.Now;
+            Properties.Settings.Default.RefreshExpiresAt = DateTime.UtcNow;
 
             Properties.Settings.Default.UserId = 0;
             Properties.Settings.Default.Save();

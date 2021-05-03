@@ -54,7 +54,7 @@ namespace Skrabbl.API
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("HasBoughtGame", policy => policy.RequireClaim("HasBoughtGame"));
+                options.AddPolicy("HasBoughtGame", policy => policy.RequireClaim("HasBoughtGame", "True"));
             });
         }
 
