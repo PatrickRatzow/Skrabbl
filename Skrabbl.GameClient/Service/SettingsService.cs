@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using Skrabbl.GameClient.Https;
 
 namespace Skrabbl.GameClient.Service
 {
@@ -19,6 +20,7 @@ namespace Skrabbl.GameClient.Service
         Dictionary<string, GameSettingDto> gameSettings = new Dictionary<string, GameSettingDto>();
         HubConnection connection;
         readonly HttpClient _httpClient;
+        readonly HttpRequest _http;
 
         public SettingsService()
         {
@@ -27,6 +29,7 @@ namespace Skrabbl.GameClient.Service
             .Build();
 
             _httpClient = new HttpClient();
+            _http = new HttpRequest();
 
             connection.Closed += async (error) =>
             {
@@ -38,7 +41,7 @@ namespace Skrabbl.GameClient.Service
         {
             await Task.Run(() =>
             {
-                Post("http://localhost", "50916", $"api/gamelobby/create/{userId}", gameSettings.Values.ToList());
+                _http.PostGameLobby(userId, gameSettings.Values.ToList());
             });
             // return await _httpClient.PostAsync(gameURI, null);
 
@@ -47,7 +50,7 @@ namespace Skrabbl.GameClient.Service
         {
             return Task.Run(() =>
             {
-                Put("http://localhost", "50916", $"api/gamelobby/update/{userId}", gameSettings.Values.ToList());
+                _http.PutGameLobby(userId, gameSettings.Values.ToList());
             });
             // return await _httpClient.PostAsync(gameURI, null);
 
@@ -83,56 +86,5 @@ namespace Skrabbl.GameClient.Service
             return await _httpClient.PostAsync(gameURI, null);
             
         }
-        private void Post(string baseUrl, string port, string url, List<GameSettingDto> gameSettings)
-        {
-            //Setup
-
-            IRestResponse response_POST;
-            RestClient rest_client = new RestClient();
-
-            string ServiceURI = baseUrl + ":" + port + "/" + url;
-
-
-            rest_client.BaseUrl = new Uri(ServiceURI);
-            RestRequest request_POST = new RestRequest(ServiceURI, Method.POST);
-
-            request_POST.AddJsonBody(gameSettings);
-
-            response_POST = rest_client.Execute(request_POST);
-
-
-            HttpStatusCode statusCode = response_POST.StatusCode;
-
-            if (statusCode == HttpStatusCode.OK)
-            {
-
-            }
-        }
-        private void Put(string baseUrl, string port, string url, List<GameSettingDto> gameSettings)
-        {
-            //Setup
-
-            IRestResponse response_PUT;
-            RestClient rest_client = new RestClient();
-
-            string ServiceURI = baseUrl + ":" + port + "/" + url;
-
-
-            rest_client.BaseUrl = new Uri(ServiceURI);
-            RestRequest request_PUT = new RestRequest(ServiceURI, Method.PUT);
-
-            request_PUT.AddJsonBody(gameSettings);
-
-            response_PUT = rest_client.Execute(request_PUT);
-
-
-            HttpStatusCode statusCode = response_PUT.StatusCode;
-
-            if (statusCode == HttpStatusCode.OK)
-            {
-
-            }
-        }
-
     }
 }
