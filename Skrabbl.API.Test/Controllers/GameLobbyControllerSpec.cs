@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -6,6 +7,7 @@ using Skrabbl.API.Services;
 using Skrabbl.Model;
 using Skrabbl.Model.Dto;
 using Skrabbl.Model.Errors;
+using System.Security.Claims;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -31,7 +33,7 @@ namespace Skrabbl.API.Test.Controllers
             Value = "4"
         };
 
-        private static List<GameSettingDto> GameSettingList() 
+        private static List<GameSettingDto> GameSettingList()
         {
             //GameSetting gameSetting = GameSetting;
             List<GameSettingDto> gameSettingList = new List<GameSettingDto>();
@@ -42,7 +44,7 @@ namespace Skrabbl.API.Test.Controllers
         private static readonly GameLobby GameLobby = new GameLobby
         {
             GameCode = "hGhG",
-           
+
 
         };
 
@@ -59,7 +61,7 @@ namespace Skrabbl.API.Test.Controllers
         public async Task UserAlreadyHaveLobby()
         {
             //Arrange
-            
+
             var (gameLobbyController, userService, gameLobbyService) = TestObjects();
             userService.Setup(m => m.GetUser(User.Id))
                 .ReturnsAsync(() => User);
@@ -67,7 +69,7 @@ namespace Skrabbl.API.Test.Controllers
                 .ThrowsAsync(new UserAlreadyHaveALobbyException());
 
             //Act
-            var result = await gameLobbyController.Create(gameSettingList, User.Id);
+            var result = await gameLobbyController.Create(User.Id, gameSettingList);
 
             //Assert
             Assert.IsInstanceOf<ForbidResult>(result);
@@ -86,7 +88,7 @@ namespace Skrabbl.API.Test.Controllers
                 .ReturnsAsync(() => GameLobby);
 
             //Act
-            var result = await gameLobbyController.Create(gameSettingList, User.Id);
+            var result = await gameLobbyController.Create(User.Id, gameSettingList);
 
             //Assert
             Assert.IsInstanceOf<OkObjectResult>(result);
@@ -108,22 +110,201 @@ namespace Skrabbl.API.Test.Controllers
                 Username = "UserMAN",
                 GameLobbyId = "GhhG"
             };
+
             var (gameLobbyController, userService, _) = TestObjects();
             userService.Setup(m => m.GetUser(user.Id))
                 .ReturnsAsync(() => user);
 
             //Act
-            var result = await gameLobbyController.Create(gameSettingList, user.Id);
+            var result = await gameLobbyController.Create(user.Id, gameSettingList);
 
             //Assert
             Assert.IsInstanceOf<ForbidResult>(result);
             userService.VerifyAll();
         }
 
-        /*public async Task CanUserJoinLobby()
+        [Test]
+        public async Task CanUserJoinLobby()
         {
+            //Arrange
+            string gameLobbyCode = "GhhG";
+
+            User user = new User
+            {
+                Id = 500,
+                Email = "test@email.dk",
+                Password = "Patrick",
+                Salt = "2retnut",
+                Username = "UserMAN",
+            };
+
+            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                }));
+
+            var (gameLobbyController, userService, gameLobbyService) = TestObjects();
+            userService.Setup(m => m.GetUser(user.Id))
+                .ReturnsAsync(() => user);
+            gameLobbyService.Setup(m => m.GetGameLobbyById(gameLobbyCode))
+                .ReturnsAsync(() => new GameLobby()
+                {
+                    GameCode = gameLobbyCode
+                });
+            userService.Setup(m => m.AddToLobby(user.Id, gameLobbyCode));
+
+            gameLobbyController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = claimsUser }
+            };
+
+            //Act
+            var result = await gameLobbyController.Join(gameLobbyCode);
+
+            //Assert
+            Assert.IsInstanceOf<OkObjectResult>(result);
+            userService.Verify(m => m.GetUser(user.Id), Times.Once);
+            gameLobbyService.Verify(m => m.GetGameLobbyById(gameLobbyCode), Times.Once);
+            userService.Verify(m => m.AddToLobby(user.Id, gameLobbyCode), Times.Once);
+        }
+
+        [Test]
+        public async Task UserTriesToJoinLobbyWithoutUserId()
+        {
+            //Arrange
+            string gameLobbyCode = "GhhG";
+
+            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {}));
+
+            var (gameLobbyController, _, _) = TestObjects();
+
+            gameLobbyController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = claimsUser }
+            };
+
+            //Act
+            var result = await gameLobbyController.Join(gameLobbyCode);
+
+            //Assert
+            Assert.IsInstanceOf<UnauthorizedResult>(result);
 
         }
-        */
+
+        [Test]
+        public async Task GameLobbyCodeDoesNotExist()
+        {
+            //Arrange
+            User user = new User
+            {
+                Id = 500,
+                Email = "test@email.dk",
+                Password = "Patrick",
+                Salt = "2retnut",
+                Username = "UserMAN",
+            };
+
+            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                }));
+
+            var (gameLobbyController, userService, _) = TestObjects();
+            userService.Setup(m => m.GetUser(user.Id))
+                .ReturnsAsync(() => user);
+
+            gameLobbyController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = claimsUser }
+            };
+
+            //Act
+            var result = await gameLobbyController.Join("HHgg");
+
+            //Assert
+            Assert.IsInstanceOf<NotFoundResult>(result);
+        }
+
+        [Test]
+        public async Task UserIsNonExisting()
+        {
+            //Arrange
+            string gameLobbyCode = "Ghhg";
+
+            User user = new User
+            {
+                Id = 500,
+                Email = "test@email.dk",
+                Password = "Patrick",
+                Salt = "2retnut",
+                Username = "UserMAN",
+            };
+
+            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                }));
+
+            var (gameLobbyController, userService, gameLobbyService) = TestObjects();
+
+            gameLobbyService.Setup(m => m.GetGameLobbyById(gameLobbyCode))
+                .ReturnsAsync(() => new GameLobby()
+                {
+                    GameCode = gameLobbyCode
+                });
+
+            gameLobbyController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = claimsUser }
+            };
+
+            //Act
+            var result = await gameLobbyController.Join(gameLobbyCode);
+
+            //Assert
+            Assert.IsInstanceOf<ForbidResult>(result);
+        }
+
+        [Test]
+        public async Task UserAlreadyHasAGameLobby()
+        {
+            //Arrange
+            string gameLobbyCode = "Ghhg";
+
+            User user = new User
+            {
+                Id = 500,
+                Email = "test@email.dk",
+                Password = "Patrick",
+                Salt = "2retnut",
+                Username = "UserMAN",
+                GameLobbyId = gameLobbyCode
+            };
+
+            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                }));
+
+            var (gameLobbyController, userService, gameLobbyService) = TestObjects();
+            userService.Setup(m => m.GetUser(user.Id))
+                .ReturnsAsync(() => user);
+            gameLobbyService.Setup(m => m.GetGameLobbyById(gameLobbyCode))
+                .ReturnsAsync(() => new GameLobby()
+                {
+                    GameCode = gameLobbyCode
+                });
+
+            gameLobbyController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = claimsUser }
+            };
+
+            //Act
+            var result = await gameLobbyController.Join(gameLobbyCode);
+
+            //Assert
+            Assert.IsInstanceOf<ForbidResult>(result);
+        }
     }
 }

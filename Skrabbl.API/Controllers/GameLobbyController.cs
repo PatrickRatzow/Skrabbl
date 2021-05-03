@@ -56,6 +56,7 @@ namespace Skrabbl.API.Controllers
         [HttpPost("create/{userId}")]
         [Authorize(Policy = "HasBoughtGame")]
         public async Task<IActionResult> Create([FromBody]List<GameSettingDto> gameSettings, int userId)
+
         {
             var user = await _userService.GetUser(userId);
 
@@ -65,6 +66,7 @@ namespace Skrabbl.API.Controllers
             try
             {
                 var gameLobby = await _gameLobbyService.AddGameLobby(userId, gameSettings);
+
                 return Ok(gameLobby);
             }
             catch (UserAlreadyHaveALobbyException e)
