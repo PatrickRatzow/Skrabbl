@@ -61,7 +61,6 @@ namespace Skrabbl.API.Test.Controllers
         public async Task UserAlreadyHaveLobby()
         {
             //Arrange
-
             var (gameLobbyController, userService, gameLobbyService) = TestObjects();
             userService.Setup(m => m.GetUser(User.Id))
                 .ReturnsAsync(() => User);
