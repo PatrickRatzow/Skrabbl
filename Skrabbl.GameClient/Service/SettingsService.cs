@@ -39,10 +39,7 @@ namespace Skrabbl.GameClient.Service
         }
         public async Task CreateLobbyId(int userId)
         {
-            await Task.Run(() =>
-            {
-                _http.PostGameLobby(userId, gameSettings.Values.ToList());
-            });
+            await _http.PostGameLobby(userId, gameSettings.Values.ToList());
             // return await _httpClient.PostAsync(gameURI, null);
 
         }
@@ -80,11 +77,11 @@ namespace Skrabbl.GameClient.Service
             //await connection.InvokeAsync("AddGameSettings", 6, setting, value);
         }
 
-        public async Task<HttpResponseMessage> CreateLobbyIdd(int userId) 
+        public async Task<HttpResponseMessage> CreateLobbyIdd(int userId)
         {
             var gameURI = gameLoginUrl + $"gamelobby/create/{userId}";
             return await _httpClient.PostAsync(gameURI, null);
-            
+
         }
     }
 }

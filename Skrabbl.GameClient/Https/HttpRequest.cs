@@ -1,9 +1,11 @@
 ﻿using RestSharp;
+using RestSharp.Authenticators;
 using Skrabbl.Model.Dto;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Skrabbl.GameClient.Https
 {
@@ -14,7 +16,7 @@ namespace Skrabbl.GameClient.Https
         private string postGameLobbyUrl = "api/gamelobby/create/";
         private string putGameLobbyUrl = "api/gamelobby/update/";
 
-        public void PostGameLobby(int userId, List<GameSettingDto> gameSettings)
+        public Task PostGameLobby(int userId, List<GameSettingDto> gameSettings)
         {
             //Setup
             IRestResponse response_POST;
@@ -23,9 +25,10 @@ namespace Skrabbl.GameClient.Https
             string ServiceURI = baseUrl + ":" + port + "/" + postGameLobbyUrl + userId;
 
             rest_client.BaseUrl = new Uri(ServiceURI);
+            rest_client.Authenticator = new JwtAuthenticator(MainWindow.Tokens.Jwt.Token);
             RestRequest request_POST = new RestRequest(ServiceURI, Method.POST);
-
             request_POST.AddJsonBody(gameSettings);
+            
 
             response_POST = rest_client.Execute(request_POST);
 
@@ -36,6 +39,8 @@ namespace Skrabbl.GameClient.Https
             {
 
             }
+
+            return Task.CompletedTask;
         }
         public void PutGameLobby(int userId, List<GameSettingDto> gameSettings)
         {

@@ -33,13 +33,13 @@ namespace Skrabbl.GameClient
         private SettingsService _settingsService;
         private int userId;
         private string _portOfTheDay = "5001"; //This port number changes!
-        private LoginResponseDto _tokens;
+        public static LoginResponseDto Tokens;
 
         public MainWindow(LoginResponseDto JWT, Login loginWindow)
         {
             InitializeComponent();
             _loginWindow = loginWindow;
-            _tokens = JWT;
+            Tokens = JWT;
             _settingsService = new SettingsService();
             userId = JWT.UserId;
            // userId = JWT.UserId;
@@ -87,7 +87,7 @@ namespace Skrabbl.GameClient
             RefreshDto refreshToken = new RefreshDto { Token = Properties.Settings.Default.RefreshToken };
             request_POST.AddJsonBody(refreshToken);
             response_POST = rest_client.Execute(request_POST);
-            _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
+            Tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
 
             //Open up the login window
             _loginWindow.Visibility = Visibility.Visible;
