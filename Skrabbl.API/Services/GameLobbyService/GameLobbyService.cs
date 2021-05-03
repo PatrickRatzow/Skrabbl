@@ -18,7 +18,7 @@ namespace Skrabbl.API.Services
             _gameLobbyRepository = gameLobbyRepo;
         }
 
-        public async Task<GameLobby> AddGameLobby(int userId, List<GameSettingDto> gameSettings)
+        public async Task<GameLobby> AddGameLobby(int userId, List<GameSettingDto>? gameSettings = null)
         {
             var existingLobby = await GetLobbyByOwnerId(userId);
 
@@ -44,7 +44,7 @@ namespace Skrabbl.API.Services
             {
                 GameCode = gameCode,
                 LobbyOwnerId = userId,
-                GameSettings = Map(gameSettings, gameCode)
+                GameSettings = Map(gameSettings ?? new List<GameSettingDto>(), gameCode)
             };
 
             await _gameLobbyRepository.AddGameLobby(lobby);

@@ -69,7 +69,7 @@ namespace Skrabbl.API.Test.Controllers
                 .ThrowsAsync(new UserAlreadyHaveALobbyException());
 
             //Act
-            var result = await gameLobbyController.Create(gameSettingList, User.Id);
+            var result = await gameLobbyController.Create(User.Id, gameSettingList);
 
             //Assert
             Assert.IsInstanceOf<ForbidResult>(result);
@@ -88,7 +88,7 @@ namespace Skrabbl.API.Test.Controllers
                 .ReturnsAsync(() => GameLobby);
 
             //Act
-            var result = await gameLobbyController.Create(gameSettingList, User.Id);
+            var result = await gameLobbyController.Create(User.Id, gameSettingList);
 
             //Assert
             Assert.IsInstanceOf<OkObjectResult>(result);
@@ -116,7 +116,7 @@ namespace Skrabbl.API.Test.Controllers
                 .ReturnsAsync(() => user);
 
             //Act
-            var result = await gameLobbyController.Create(gameSettingList, user.Id);
+            var result = await gameLobbyController.Create(user.Id, gameSettingList);
 
             //Assert
             Assert.IsInstanceOf<ForbidResult>(result);
