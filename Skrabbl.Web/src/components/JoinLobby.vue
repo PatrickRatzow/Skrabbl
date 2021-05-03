@@ -9,18 +9,22 @@
                     </li>
                 </ul>
             </div>
+            <div class="field has-text-success" v-else-if="message.length">
+                <b>Success!</b>
+                <p>{{ message }}</p>
+            </div>
             <div>
-                <label for="lobby-code" class="label">Lobby Code</label>
+                <label class="label" for="lobby-code">Lobby Code</label>
                 <div class="control has-icons-left">
                     <input
-                            type="text"
                             id="lobby-code"
+                            v-model="lobbyCode"
                             class="input"
                             maxlength="4"
                             minlength="4"
                             placeholder="0xXg"
-                            v-model="lobbyCode"
                             required
+                            type="text"
                     >
                     <span class="icon is-small is-left">
                         <i class="fa fa-code"/>
@@ -33,31 +37,30 @@
 </template>
 
 <script>
-    import LobbyService from "@/services/lobby.service"
-    import { mapActions, mapGetters } from "vuex"
+import LobbyService from "@/services/lobby.service"
+import { mapActions } from "vuex"
 
 export default {
     data() {
         return {
             lobbyCode: "",
-            errors: []
+            errors: [],
+            message: ""
         }
-
-        },
-        mounted() {
-            if (!this.$store.getters["user/isLoggedIn"]) {
-                this.$router.push("/")
-                this.setLoginModalVisible(true)
-                
-            }
-        },
-
-        methods: {
-            ...mapActions("user", {
-                setLoginModalVisible: "setLoginModalVisible"
-            }),
+    },
+    mounted() {
+        if (!this.$store.getters["user/isLoggedIn"]) {
+            this.$router.push("/")
+            this.setLoginModalVisible(true)
+        }
+    },
+    methods: {
+        ...mapActions("user", {
+            setLoginModalVisible: "setLoginModalVisible"
+        }),
         async joinLobby() {
             this.errors = []
+            this.message = ""
 
             if (this.lobbyCode.length !== 4) {
                 this.errors.push("Your lobby code must be 4 characters long!")
@@ -67,8 +70,7 @@ export default {
 
             try {
                 const resp = await LobbyService.joinLobby(this.lobbyCode);
-                this.errors.push("Not an error! Found a lobby!")
-                this.errors.push(resp.data)
+                this.message = JSON.stringify(resp.data);
             } catch (err) {
                 if (err.response.status === 404) {
                     this.errors.push("Unable to find that lobby")

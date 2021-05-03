@@ -59,10 +59,10 @@ namespace Skrabbl.API.Controllers
 
             if (user == null || !string.IsNullOrEmpty(user.GameLobbyId))
                 return Forbid();
-            
+
             try
             {
-                var gameLobby = await _gameLobbyService.AddGameLobby(userId);            
+                var gameLobby = await _gameLobbyService.AddGameLobby(userId);
                 return Ok(gameLobby);
             }
             catch (UserAlreadyHaveALobbyException e)
