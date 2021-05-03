@@ -33,6 +33,8 @@ namespace Skrabbl.API.Controllers
 
             if (user == null)
                 return Unauthorized();
+            if (!user.HasBoughtGame && login.LobbyCreationClient)
+                return Forbid();
 
             var userId = user.Id;
 
@@ -47,6 +49,7 @@ namespace Skrabbl.API.Controllers
                 // TODO: when jwt is implemented, this has to be removed
             });
         }
+
 
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshDto refreshDto)

@@ -106,7 +106,7 @@ export default {
         async register() {
             if (!this.validateInput())
                 return;
-
+            
             this.isLoading = true;
 
             const data = {
