@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Skrabbl.API.Services;
+using Skrabbl.Model.Dto;
 using Skrabbl.Model.Errors;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -53,7 +55,7 @@ namespace Skrabbl.API.Controllers
 
         [HttpPost("create/{userId}")]
         //[Authorize]
-        public async Task<IActionResult> Create(int userId)
+        public async Task<IActionResult> Create([FromBody] List<GameSettingDto> gameSettings, int userId)
         {
             var user = await _userService.GetUser(userId);
 
@@ -62,7 +64,7 @@ namespace Skrabbl.API.Controllers
             
             try
             {
-                var gameLobby = await _gameLobbyService.AddGameLobby(userId);            
+                var gameLobby = await _gameLobbyService.AddGameLobby(userId, gameSettings);            
                 return Ok(gameLobby);
             }
             catch (UserAlreadyHaveALobbyException e)
@@ -73,6 +75,18 @@ namespace Skrabbl.API.Controllers
             {
                 throw e;
             }
+        }
+
+        [HttpPut("update/{userId}")]
+        //[Authorize]
+        public async Task<IActionResult> Update([FromBody] List<GameSettingDto> gameSettings, int userId)
+        {
+
+            var user = _userService.GetUser(userId);
+
+            var gameLobby = await _gameLobbyService.UpdateGameSetting(userId, gameSettings);
+
+            return Ok(gameLobby);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Skrabbl.GameClient.GUI
         //  - Empty settings = fail
         //  -
         private LoginResponseDto _tokens;
-        private string _portOfTheDay = "50916"; //This port number changes!
+        private string _portOfTheDay = "5001"; //This port number changes!
 
         public Login()
         {
@@ -39,7 +39,7 @@ namespace Skrabbl.GameClient.GUI
                     IRestResponse response_POST;
                     RestClient rest_client = new RestClient();
 
-                    string serviceURI = "http://localhost:" + _portOfTheDay + "/api/user/refresh";
+                    string serviceURI = "https://localhost:" + _portOfTheDay + "/api/user/refresh";
                     rest_client.BaseUrl = new Uri(serviceURI);
                     RestRequest request_POST = new RestRequest(serviceURI, Method.POST);
                     RefreshDto refreshToken = new RefreshDto { Token = Properties.Settings.Default.RefreshToken};
@@ -79,7 +79,7 @@ namespace Skrabbl.GameClient.GUI
             txtError.Text = "";
             IRestResponse response_POST;
             RestClient rest_client = new RestClient();
-            string ServiceURI = "http://localhost:" + _portOfTheDay + "/api/user/login";
+            string ServiceURI = "https://localhost:" + _portOfTheDay + "/api/user/login";
             rest_client.BaseUrl = new Uri(ServiceURI);
             RestRequest request_POST = new RestRequest(ServiceURI, Method.POST);
             //Create request body

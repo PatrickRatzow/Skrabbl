@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Skrabbl.Model
+namespace Skrabbl.Model.Dto
 {
-    public class GameSetting
+    public class GameSettingDto
     {
-        public string GameCode { get; set; }
         public string Setting { get; set; }
         public string Value { get; set; }
     }
