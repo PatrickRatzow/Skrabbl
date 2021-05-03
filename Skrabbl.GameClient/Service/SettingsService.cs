@@ -15,7 +15,7 @@ namespace Skrabbl.GameClient.Service
 {
     public class SettingsService
     {
-        static readonly string gameLoginUrl = "https://localhost:5001/api/";
+        static readonly string gameLoginUrl = "http://localhost:50916/api/";
         Dictionary<string, GameSettingDto> gameSettings = new Dictionary<string, GameSettingDto>();
         HubConnection connection;
         readonly HttpClient _httpClient;
@@ -23,7 +23,7 @@ namespace Skrabbl.GameClient.Service
         public SettingsService()
         {
             connection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:5001/ws/game")
+            .WithUrl("http://localhost:50916/ws/game")
             .Build();
 
             _httpClient = new HttpClient();
@@ -38,7 +38,7 @@ namespace Skrabbl.GameClient.Service
         {
             await Task.Run(() =>
             {
-                Post("https://localhost", "5001", $"api/gamelobby/create/{userId}", gameSettings.Values.ToList());
+                Post("http://localhost", "50916", $"api/gamelobby/create/{userId}", gameSettings.Values.ToList());
             });
             // return await _httpClient.PostAsync(gameURI, null);
 
@@ -47,7 +47,7 @@ namespace Skrabbl.GameClient.Service
         {
             return Task.Run(() =>
             {
-                Put("https://localhost", "5001", $"api/gamelobby/update/{userId}", gameSettings.Values.ToList());
+                Put("http://localhost", "50916", $"api/gamelobby/update/{userId}", gameSettings.Values.ToList());
             });
             // return await _httpClient.PostAsync(gameURI, null);
 
@@ -73,7 +73,7 @@ namespace Skrabbl.GameClient.Service
                 };
 
             }
-            //Post("https://localhost", "5001", $"api/gamelobby/update/{userId}", gameSettings);
+            //Post("http://localhost", "50916", $"api/gamelobby/update/{userId}", gameSettings);
             //await connection.InvokeAsync("AddGameSettings", 6, setting, value);
         }
 
