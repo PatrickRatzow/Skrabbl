@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Skrabbl.DataAccess.MsSql.Queries;
@@ -18,11 +19,13 @@ namespace Skrabbl.DataAccess.Test
             var cmd = new CommandText();
 
             _gameLobbyRepository = new GameLobbyRepository(ConfigFixture.Config, cmd);
+            List<GameSetting> gameSettings = new List<GameSetting>();
 
             TestData.GameLobbies.FlorisLobby = new GameLobby()
             {
                 GameCode = "a1b1",
                 LobbyOwnerId = TestData.Users.Floris.Id,
+                GameSettings = gameSettings
             };
         }
 

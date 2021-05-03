@@ -31,7 +31,7 @@ namespace Skrabbl.GameClient
         private Login _loginWindow;
         private SettingsService _settingsService;
         private int userId;
-        private string _portOfTheDay = "50916"; //This port number changes!
+        private string _portOfTheDay = "5001"; //This port number changes!
         private LoginResponseDto _tokens;
 
         public MainWindow(LoginResponseDto JWT, Login loginWindow)
@@ -40,6 +40,8 @@ namespace Skrabbl.GameClient
             _loginWindow = loginWindow;
             _tokens = JWT;
             _settingsService = new SettingsService();
+            userId = JWT.UserId;
+           // userId = JWT.UserId;
             //var id = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
             //userId = id.UserId;
 
@@ -70,7 +72,6 @@ namespace Skrabbl.GameClient
             //Check If user does not already have a lobby
             await _settingsService.CreateLobbyId(userId);
             tbCustomWords.Text = "GameLobby created :)";
-            // Game newgame = new Game(players[comboPlayers.SelectedIndex], comboRounds.SelectedIndex + 1, drawingTime[comboDrawingTime.SelectedIndex]);
         }
 
         private void BtnLogOut_Click(object sender, RoutedEventArgs e)
@@ -91,6 +92,19 @@ namespace Skrabbl.GameClient
             _loginWindow.Visibility = Visibility.Visible;
             _loginWindow.RemoveTokenValues();
             this.Visibility = Visibility.Collapsed;
+        }
+        public void MaxPlayersChanged(object sender, RoutedEventArgs e)
+        {
+            _settingsService.SettingsUpdateOnChange("MaxPlayers", players[comboPlayers.SelectedIndex].ToString(), userId);
+        }
+        public void NoOfRoundsChanged(object sender, RoutedEventArgs e)
+        {
+            int noOfRounds = comboRounds.SelectedIndex + 1;
+            _settingsService.SettingsUpdateOnChange("NoOfRounds", noOfRounds.ToString(), userId);
+        }
+        public void DrawingTimeChanged(object sender, RoutedEventArgs e)
+        {
+            _settingsService.SettingsUpdateOnChange("TurnTime", drawingTime[comboDrawingTime.SelectedIndex].ToString(), userId);
         }
     }
 }

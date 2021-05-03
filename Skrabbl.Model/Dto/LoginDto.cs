@@ -11,5 +11,6 @@ namespace Skrabbl.Model.Dto
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }
+        public bool LobbyCreationClient { get; set; }
     }
 }

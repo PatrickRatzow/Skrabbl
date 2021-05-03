@@ -20,17 +20,12 @@ namespace Skrabbl.GameClient.GUI
 {
     public partial class Login : Window
     {
-        //Issues
-        //  - Empty settings = fail
-        //  -
         private LoginResponseDto _tokens;
-        private string _portOfTheDay = "50916"; //This port number changes!
+        private string _portOfTheDay = "5001"; //This port number changes!
 
         public Login()
         {
             InitializeComponent();
-            Properties.Settings.Default.Reset();
-            Properties.Settings.Default.Save();
             if (Properties.Settings.Default.RefreshToken != null && Properties.Settings.Default.RefreshToken != String.Empty)
             {
                 //check if saved refresh token is still valid otherwise they will have to log in manually
@@ -39,7 +34,7 @@ namespace Skrabbl.GameClient.GUI
                     IRestResponse response_POST;
                     RestClient rest_client = new RestClient();
 
-                    string serviceURI = "http://localhost:" + _portOfTheDay + "/api/user/refresh";
+                    string serviceURI = "https://localhost:" + _portOfTheDay + "/api/user/refresh";
                     rest_client.BaseUrl = new Uri(serviceURI);
                     RestRequest request_POST = new RestRequest(serviceURI, Method.POST);
                     RefreshDto refreshToken = new RefreshDto { Token = Properties.Settings.Default.RefreshToken};
@@ -79,11 +74,11 @@ namespace Skrabbl.GameClient.GUI
             txtError.Text = "";
             IRestResponse response_POST;
             RestClient rest_client = new RestClient();
-            string ServiceURI = "http://localhost:" + _portOfTheDay + "/api/user/login";
+            string ServiceURI = "https://localhost:" + _portOfTheDay + "/api/user/login";
             rest_client.BaseUrl = new Uri(ServiceURI);
             RestRequest request_POST = new RestRequest(ServiceURI, Method.POST);
             //Create request body
-            LoginDto loginData = new LoginDto { Username = txtUsername.Text, Password = txtPassword.Text };
+            LoginDto loginData = new LoginDto { Username = txtUsername.Text, Password = txtPassword.Text, LobbyCreationClient = true };
             request_POST.AddJsonBody(loginData);
             //Execute
             response_POST = rest_client.Execute(request_POST);
@@ -102,6 +97,10 @@ namespace Skrabbl.GameClient.GUI
             {
                 txtError.Text = "Non-valid input";
             }
+            else if (response_POST.StatusCode == HttpStatusCode.Forbidden)
+            {
+                txtError.Text = "Access not granted";
+            }
 
         }
 
@@ -114,7 +113,6 @@ namespace Skrabbl.GameClient.GUI
             Properties.Settings.Default.RefreshExpiresAt = tokens.RefreshToken.ExpiresAt;
 
             Properties.Settings.Default.UserId = tokens.UserId;
-
             Properties.Settings.Default.Save();
         }
 
