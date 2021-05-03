@@ -52,7 +52,7 @@ namespace Skrabbl.API.Controllers
         }
 
         [HttpPost("create/{userId}")]
-        //[Authorize]
+        [Authorize(Policy = "EmployeeOnly")]
         public async Task<IActionResult> Create(int userId)
         {
             var user = await _userService.GetUser(userId);
