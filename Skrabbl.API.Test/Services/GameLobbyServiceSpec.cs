@@ -1,20 +1,36 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Skrabbl.API.Services;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
+using Skrabbl.Model.Dto;
 using Skrabbl.Model.Errors;
 
 namespace Skrabbl.API.Test.Services
 {
     class GameLobbyServiceSpec
     {
+        private List<GameSettingDto> gameSettingList = new List<GameSettingDto>();
+
+
+        private static readonly GameSettingDto GameSetting = new GameSettingDto
+        {
+            Setting = "MaxPlayers",
+            Value = "4"
+        };
+        
+     
+
         [Test]
         public async Task AddGameLobby_Succeeds_WhenUserIsNotInAnyLobby()
         {
             //Arrange
             int userId = 25;
+            gameSettingList.Add(GameSetting);
+
+
             var mock = new Mock<IGameLobbyRepository>();
             mock.Setup(m => m.AddGameLobby(It.IsAny<GameLobby>()));
             mock.Setup(m => m.GetLobbyByOwnerId(userId))
@@ -23,7 +39,7 @@ namespace Skrabbl.API.Test.Services
             var service = new GameLobbyService(mock.Object);
 
             //Act
-            await service.AddGameLobby(userId);
+            await service.AddGameLobby(userId, gameSettingList);
 
             //Assert
             mock.VerifyAll();
@@ -43,7 +59,7 @@ namespace Skrabbl.API.Test.Services
 
             //Act
             var ex = Assert.ThrowsAsync<UserAlreadyHaveALobbyException>(
-                async () => await service.AddGameLobby(userId));
+                async () => await service.AddGameLobby(userId, gameSettingList));
 
             //Assert            
             Assert.IsNotNull(ex);
@@ -67,7 +83,7 @@ namespace Skrabbl.API.Test.Services
             var service = new GameLobbyService(mock.Object);
 
             //Act
-            await service.AddGameLobby(userId);
+            await service.AddGameLobby(userId, gameSettingList);
 
             //Assert
             mock.Verify(m => m.GetGameLobbyByLobbyCode(It.IsAny<string>()), Times.Exactly(2));

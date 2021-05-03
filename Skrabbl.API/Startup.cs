@@ -51,6 +51,11 @@ namespace Skrabbl.API
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 // Build the service provider
                 .BuildServiceProvider(false);
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("HasBoughtGame", policy => policy.RequireClaim("HasBoughtGame", "True"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -26,7 +26,12 @@ namespace Skrabbl.DataAccess
 
         public async Task AddGameLobby(GameLobby entity)
         {
+            // TODO: Make this a transaction
             await WithConnection(async conn => { await conn.ExecuteAsync(_commandText.AddLobby, entity); });
+            foreach (var setting in entity.GameSettings)
+            {
+                await SetGameSettingsByGameCode(setting);
+            }
         }
 
         public async Task<int> RemoveGameLobby(string ownerId)
@@ -58,25 +63,36 @@ namespace Skrabbl.DataAccess
                     new { LobbyOwnerId = ownerId });
             });
         }
-        public async Task<IEnumerable<GameSetting>> GetGameSettingsByGameId(int gameId)
+        public async Task<IEnumerable<GameSetting>> GetGameSettingsByGameCode(int gameId)
         {
             return await WithConnection(async conn =>
             {
-                return await conn.QueryAsync<GameSetting>(_commandText.GetGameSettingsByGameId,
+                return await conn.QueryAsync<GameSetting>(_commandText.GetGameSettingsByGameCode,
                     new { GameId = gameId });
             });
         }
 
-        public async Task SetGameSettingsByGameId(int gameId, string setting)
+        public async Task SetGameSettingsByGameCode(GameSetting gameSetting)
         {
             await WithConnection(async conn =>
             {
-                return await conn.QueryAsync<GameSetting>(_commandText.SetGameSettingsByGameId,
-                    new
-                    {
-                        GameId = gameId,
-                        Setting = setting
-                    });
+                return await conn.QueryAsync<GameSetting>(_commandText.SetGameSettingsByGameCode, gameSetting);
+            });
+        }
+        public async Task UpdateGameLobbySettings(List<GameSetting> gameSettings, GameLobby entity)
+        {
+            //TODO: make UpdateGameLobby to one whole transaction 
+            foreach (var setting in gameSettings)
+            {
+                await UpdateGameSettingsByGameCode(setting);
+            }
+        }
+        public async Task UpdateGameSettingsByGameCode(GameSetting gameSetting)
+        {
+
+            await WithConnection(async conn =>
+            {
+                return await conn.QueryAsync<GameSetting>(_commandText.UpdateGameSettingsByGameCode, gameSetting);
             });
         }
     }

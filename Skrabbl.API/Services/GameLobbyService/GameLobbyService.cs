@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
+using Skrabbl.Model.Dto;
 using Skrabbl.Model.Errors;
 
 namespace Skrabbl.API.Services
@@ -17,7 +18,7 @@ namespace Skrabbl.API.Services
             _gameLobbyRepository = gameLobbyRepo;
         }
 
-        public async Task<GameLobby> AddGameLobby(int userId)
+        public async Task<GameLobby> AddGameLobby(int userId, List<GameSettingDto>? gameSettings = null)
         {
             var existingLobby = await GetLobbyByOwnerId(userId);
 
@@ -42,7 +43,8 @@ namespace Skrabbl.API.Services
             GameLobby lobby = new GameLobby
             {
                 GameCode = gameCode,
-                LobbyOwnerId = userId
+                LobbyOwnerId = userId,
+                GameSettings = Map(gameSettings ?? new List<GameSettingDto>(), gameCode)
             };
 
             await _gameLobbyRepository.AddGameLobby(lobby);
@@ -81,13 +83,32 @@ namespace Skrabbl.API.Services
 
         public async Task<List<GameSetting>> GetGameSettingsByGameId(int gameId)
         {
-            IEnumerable<GameSetting> gameSettingList = await _gameLobbyRepository.GetGameSettingsByGameId(gameId);
+            IEnumerable<GameSetting> gameSettingList = await _gameLobbyRepository.GetGameSettingsByGameCode(gameId);
 
             return gameSettingList.ToList();
         }
-        public async Task SetGameSettingsByGameId(int gameId, string setting)
+        public async Task SetGameSettingsByGameCode(GameSetting gameSetting)
         {
-            await _gameLobbyRepository.SetGameSettingsByGameId(gameId, setting);
+            await _gameLobbyRepository.SetGameSettingsByGameCode(gameSetting);
+        }
+
+        public async Task<GameLobby> UpdateGameSetting(int userId, List<GameSettingDto> gameSettingList)
+        {
+            var existing = await GetLobbyByOwnerId(userId);
+
+            await _gameLobbyRepository.UpdateGameLobbySettings(Map(gameSettingList, existing.GameCode), existing);
+            return await GetLobbyByOwnerId(userId);
+
+        }
+        private List<GameSetting> Map(List<GameSettingDto> gameSettings, string gameCode)
+        {
+            return gameSettings.ConvertAll(g => new GameSetting
+            {
+                Value = g.Value,
+                Setting = g.Setting,
+                GameCode = gameCode
+            });
+
         }
 
         private string GenerateGameLobbyCode()
@@ -104,6 +125,6 @@ namespace Skrabbl.API.Services
             return new String(stringChars);
         }
 
-
+        
     }
 }

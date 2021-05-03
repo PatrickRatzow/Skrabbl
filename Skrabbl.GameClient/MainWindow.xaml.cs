@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RestSharp;
+using Skrabbl.GameClient.Https;
 
 namespace Skrabbl.GameClient
 {
@@ -31,15 +32,17 @@ namespace Skrabbl.GameClient
         private Login _loginWindow;
         private SettingsService _settingsService;
         private int userId;
-        private string _portOfTheDay = "50916"; //This port number changes!
-        private LoginResponseDto _tokens;
+        private string _portOfTheDay = "5001"; //This port number changes!
+        public static LoginResponseDto Tokens;
 
         public MainWindow(LoginResponseDto JWT, Login loginWindow)
         {
             InitializeComponent();
             _loginWindow = loginWindow;
-            _tokens = JWT;
+            Tokens = JWT;
             _settingsService = new SettingsService();
+            userId = JWT.UserId;
+           // userId = JWT.UserId;
             //var id = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
             //userId = id.UserId;
 
@@ -70,10 +73,9 @@ namespace Skrabbl.GameClient
             //Check If user does not already have a lobby
             await _settingsService.CreateLobbyId(userId);
             tbCustomWords.Text = "GameLobby created :)";
-            // Game newgame = new Game(players[comboPlayers.SelectedIndex], comboRounds.SelectedIndex + 1, drawingTime[comboDrawingTime.SelectedIndex]);
         }
 
-        private void BtnLogOut_Click(object sender, RoutedEventArgs e)
+        private async void BtnLogOut_Click(object sender, RoutedEventArgs e)
         {
             //Make logout request to API so it deletes the tokens
             IRestResponse response_POST;
@@ -85,12 +87,28 @@ namespace Skrabbl.GameClient
             RefreshDto refreshToken = new RefreshDto { Token = Properties.Settings.Default.RefreshToken };
             request_POST.AddJsonBody(refreshToken);
             response_POST = rest_client.Execute(request_POST);
-            _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
+            Tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
 
             //Open up the login window
             _loginWindow.Visibility = Visibility.Visible;
             _loginWindow.RemoveTokenValues();
             this.Visibility = Visibility.Collapsed;
+
+            //var response = await HttpHelper.Post<LoginResponseDto, RefreshDto>("user/logout", refreshToken);
+            //Tokens = response.Result;
+        }
+        public void MaxPlayersChanged(object sender, RoutedEventArgs e)
+        {
+            _settingsService.SettingsUpdateOnChange("MaxPlayers", players[comboPlayers.SelectedIndex].ToString(), userId);
+        }
+        public void NoOfRoundsChanged(object sender, RoutedEventArgs e)
+        {
+            int noOfRounds = comboRounds.SelectedIndex + 1;
+            _settingsService.SettingsUpdateOnChange("NoOfRounds", noOfRounds.ToString(), userId);
+        }
+        public void DrawingTimeChanged(object sender, RoutedEventArgs e)
+        {
+            _settingsService.SettingsUpdateOnChange("TurnTime", drawingTime[comboDrawingTime.SelectedIndex].ToString(), userId);
         }
     }
 }
