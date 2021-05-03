@@ -127,9 +127,8 @@ namespace Skrabbl.GameClient.Service
 
 
             HttpStatusCode statusCode = response_PUT.StatusCode;
-            int integerStatus = (int)statusCode;
 
-            if (integerStatus == 200)
+            if (statusCode == HttpStatusCode.OK)
             {
 
             }
