@@ -55,7 +55,7 @@ namespace Skrabbl.API.Controllers
 
         [HttpPost("create/{userId}")]
         [Authorize(Policy = "HasBoughtGame")]
-        public async Task<IActionResult> Create([FromBody]List<GameSettingDto> gameSettings, int userId)
+        public async Task<IActionResult> Create(int userId, [FromBody] List<GameSettingDto> gameSettings)
 
         {
             var user = await _userService.GetUser(userId);
