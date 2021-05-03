@@ -94,8 +94,8 @@ namespace Skrabbl.GameClient
             _loginWindow.RemoveTokenValues();
             this.Visibility = Visibility.Collapsed;
 
-            var response = await HttpHelper.Post<LoginResponseDto, RefreshDto>("user/logout", refreshToken);
-            _tokens = response.Result;
+            //var response = await HttpHelper.Post<LoginResponseDto, RefreshDto>("user/logout", refreshToken);
+            //Tokens = response.Result;
         }
         public void MaxPlayersChanged(object sender, RoutedEventArgs e)
         {
