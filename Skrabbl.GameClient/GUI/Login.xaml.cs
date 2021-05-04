@@ -1,54 +1,30 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
-using Skrabbl.Model;
-using Skrabbl.Model.Dto;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
+using Skrabbl.GameClient.Service;
 
 namespace Skrabbl.GameClient.GUI
 {
     public partial class Login : Window
     {
-        private LoginResponseDto _tokens;
-        private string _portOfTheDay = "5001"; //This port number changes!
-
         public Login()
         {
             InitializeComponent();
-            if (Properties.Settings.Default.RefreshToken != null && Properties.Settings.Default.RefreshToken != String.Empty)
+            LoginFromCache();
+        }
+
+        public async Task<bool> LoginFromCache()
+        {
+            if (string.IsNullOrEmpty(Properties.Settings.Default.RefreshToken)) return false;
+            if (Properties.Settings.Default.RefreshExpiresAt <= DateTime.UtcNow) return false;
+
+            var refreshed = await UserService.RefreshToken(Properties.Settings.Default.RefreshToken);
+            if (refreshed)
             {
-                //check if saved refresh token is still valid otherwise they will have to log in manually
-                if (Properties.Settings.Default.RefreshExpiresAt > DateTime.UtcNow)
-                {
-                    IRestResponse response_POST;
-                    RestClient rest_client = new RestClient();
-
-                    string serviceURI = "http://localhost:" + _portOfTheDay + "/api/user/refresh";
-                    rest_client.BaseUrl = new Uri(serviceURI);
-                    RestRequest request_POST = new RestRequest(serviceURI, Method.POST);
-                    RefreshDto refreshToken = new RefreshDto { Token = Properties.Settings.Default.RefreshToken};
-                    request_POST.AddJsonBody(refreshToken);
-                    response_POST = rest_client.Execute(request_POST);
-                    _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
-
-                    if(response_POST.StatusCode == HttpStatusCode.OK)
-                    {
-                        SaveTokens(_tokens);
-                        OpenGameWindow(_tokens);
-                    }
-                }
+                GoToMainWindow();
             }
+
+            return refreshed;
         }
 
         public void UsernameTxtFocus(object sender, RoutedEventArgs e)
@@ -59,6 +35,7 @@ namespace Skrabbl.GameClient.GUI
                 txtUsername.Opacity = 1;
             }
         }
+
         public void PasswordTxtFocus(object sender, RoutedEventArgs e)
         {
             if (txtPassword.Text == "Password")
@@ -68,94 +45,28 @@ namespace Skrabbl.GameClient.GUI
             }
         }
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private void GoToMainWindow()
+        {
+            MainWindow gameWindow = new MainWindow(this);
+            gameWindow.Show();
+            Hide();
+        }
+
+        private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             //Setup
             txtError.Text = "";
-            IRestResponse response_POST;
-            RestClient rest_client = new RestClient();
-            string ServiceURI = "http://localhost:" + _portOfTheDay + "/api/user/login";
-            rest_client.BaseUrl = new Uri(ServiceURI);
-            RestRequest request_POST = new RestRequest(ServiceURI, Method.POST);
-            //Create request body
-            LoginDto loginData = new LoginDto { Username = txtUsername.Text, Password = txtPassword.Text, LobbyCreationClient = true };
-            request_POST.AddJsonBody(loginData);
-            //Execute
-            response_POST = rest_client.Execute(request_POST);
-            _tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
 
-            if (response_POST.StatusCode == HttpStatusCode.OK)
+            var loggedIn =
+                await UserService.Login(txtUsername.Text, txtPassword.Text, checkBoxRememberMe.IsChecked!.Value);
+            if (loggedIn)
             {
-                if (checkBoxRememberMe.IsChecked.Value)
-                    SaveTokens(_tokens);
-                else
-                    RemoveTokenValues();
-
-                OpenGameWindow(_tokens);
+                GoToMainWindow();
             }
-            else if (response_POST.StatusCode == HttpStatusCode.Unauthorized)
+            else
             {
-                txtError.Text = "Non-valid input";
+                txtError.Text = "You were not able to login with that username/password combination";
             }
-            else if (response_POST.StatusCode == HttpStatusCode.Forbidden)
-            {
-                txtError.Text = "Access not granted";
-            }
-
-        }
-
-        private void SaveTokens(LoginResponseDto tokens)
-        {
-            Properties.Settings.Default.JWT = tokens.Jwt.Token;
-            Properties.Settings.Default.JWTExpire = tokens.Jwt.ExpiresAt;
-
-            Properties.Settings.Default.RefreshToken = tokens.RefreshToken.Token;
-            Properties.Settings.Default.RefreshExpiresAt = tokens.RefreshToken.ExpiresAt;
-
-            Properties.Settings.Default.UserId = tokens.UserId;
-            Properties.Settings.Default.Save();
-        }
-
-        public void RemoveTokenValues()
-        {
-            Properties.Settings.Default.JWT = String.Empty;
-            Properties.Settings.Default.JWTExpire = DateTime.UtcNow;
-
-            Properties.Settings.Default.RefreshToken = String.Empty;
-            Properties.Settings.Default.RefreshExpiresAt = DateTime.UtcNow;
-
-            Properties.Settings.Default.UserId = 0;
-            Properties.Settings.Default.Save();
-        }
-
-        private LoginResponseDto BuildLoginResponseFromSettings()
-        {
-            //Building the Token structure
-            LoginResponseDto resp = new LoginResponseDto()
-            {
-                Jwt = new Jwt()
-                {
-                    Token = Properties.Settings.Default.JWT,
-                    ExpiresAt = Properties.Settings.Default.JWTExpire
-                },
-                RefreshToken = new RefreshToken()
-                {
-                    Token = Properties.Settings.Default.RefreshToken,
-                    ExpiresAt = Properties.Settings.Default.RefreshExpiresAt
-                    //Dont know if i should get the user here
-                },
-                UserId = Properties.Settings.Default.UserId
-            };
-
-            return resp;
-        }
-
-        private void OpenGameWindow(LoginResponseDto tokens)
-        {
-            LoginResponseDto resp = BuildLoginResponseFromSettings(); //Problemer hvis man ikke gemmer kode
-            MainWindow gameWindow = new MainWindow(tokens, this);
-            gameWindow.Show();
-            this.Visibility = Visibility.Hidden;
         }
     }
 }

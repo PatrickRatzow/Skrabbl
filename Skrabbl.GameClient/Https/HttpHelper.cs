@@ -16,11 +16,11 @@ namespace Skrabbl.GameClient.Https
 
     class HttpHelper
     {
-        private static int port = 50916;
+        private static int port = 5001;
 
         private static HttpClient _client = new HttpClient()
         {
-            BaseAddress = new Uri($"http://localhost:{port}/api/")
+            BaseAddress = new Uri($"https://localhost:{port}/api/")
         };
 
         public static async Task<HttpHelperResponse<TResult>> Post<TResult, TData>(string endpoint, TData data)
