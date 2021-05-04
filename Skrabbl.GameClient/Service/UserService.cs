@@ -60,7 +60,7 @@ namespace Skrabbl.GameClient.Service
             return true;
         }
 
-        private static void SaveTokens(Tokens tokens)
+        public static void SaveTokens(Tokens tokens)
         {
             Properties.Settings.Default.JWT = tokens.Jwt.Token;
             Properties.Settings.Default.JWTExpire = tokens.Jwt.ExpiresAt;

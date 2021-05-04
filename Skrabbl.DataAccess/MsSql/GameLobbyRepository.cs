@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -26,12 +27,30 @@ namespace Skrabbl.DataAccess.MsSql
 
         public async Task AddGameLobby(GameLobby entity)
         {
-            // TODO: Make this a transaction
-            await WithConnection(async conn => { await conn.ExecuteAsync(_commandText.AddLobby, entity); });
-            foreach (var setting in entity.GameSettings)
+            await WithConnection(async conn =>
             {
-                await SetGameSettingsByGameCode(setting);
-            }
+                var parameters = new DynamicParameters();
+                parameters.Add("@GameCode", entity.GameCode);
+                parameters.Add("@LobbyOwnerId", entity.LobbyOwnerId);
+
+                var i = 0;
+                var inserts = string.Join(", ", entity.GameSettings.Select(x =>
+                {
+                    var gameCodeId = ++i;
+                    parameters.Add($@"P{gameCodeId}", x.GameCode);
+                    var settingId = ++i;
+                    parameters.Add($@"P{settingId}", x.Setting);
+                    var valueId = ++i;
+                    parameters.Add($@"P{valueId}", x.Value);
+
+                    return $"(@P{gameCodeId}, @P{settingId}, @P{valueId})";
+                }));
+                var query = $@"{_commandText.AddLobby};
+                INSERT INTO GameSetting(GameCode, Setting, Value)
+                VALUES {inserts}";
+
+                await conn.ExecuteAsync(query, parameters);
+            });
         }
 
         public async Task<int> RemoveGameLobby(string ownerId)
