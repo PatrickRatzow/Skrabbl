@@ -32,17 +32,14 @@ namespace Skrabbl.GameClient
         private Login _loginWindow;
         private SettingsService _settingsService;
         private int userId;
-        private string _portOfTheDay = "5001"; //This port number changes!
-        public static LoginResponseDto Tokens;
 
-        public MainWindow(LoginResponseDto JWT, Login loginWindow)
+
+        public MainWindow(Tokens JWT, Login loginWindow)
         {
             InitializeComponent();
             _loginWindow = loginWindow;
-            Tokens = JWT;
             _settingsService = new SettingsService();
-            userId = JWT.UserId;
-           // userId = JWT.UserId;
+            // userId = JWT.UserId;
             //var id = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
             //userId = id.UserId;
 
@@ -78,24 +75,27 @@ namespace Skrabbl.GameClient
         private async void BtnLogOut_Click(object sender, RoutedEventArgs e)
         {
             //Make logout request to API so it deletes the tokens
-            IRestResponse response_POST;
-            RestClient rest_client = new RestClient();
+            //IRestResponse response_POST;
+            //RestClient rest_client = new RestClient();
 
-            string serviceURI = "http://localhost:" + _portOfTheDay + "/api/user/logout";
-            rest_client.BaseUrl = new Uri(serviceURI);
-            RestRequest request_POST = new RestRequest(serviceURI, Method.POST);
+            //string serviceURI = "http://localhost:" + _portOfTheDay + "/api/user/logout";
+            //rest_client.BaseUrl = new Uri(serviceURI);
+            //RestRequest request_POST = new RestRequest(serviceURI, Method.POST);
+
+            //request_POST.AddJsonBody(refreshToken);
+
+            //response_POST = rest_client.Execute(request_POST);
+            //Tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
+
             RefreshDto refreshToken = new RefreshDto { Token = Properties.Settings.Default.RefreshToken };
-            request_POST.AddJsonBody(refreshToken);
-            response_POST = rest_client.Execute(request_POST);
-            Tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
+
+            var response = await HttpHelper.Post<LoginResponseDto, RefreshDto>("user/logout", refreshToken);
+            DataContainer.Tokens = null;
 
             //Open up the login window
             _loginWindow.Visibility = Visibility.Visible;
             _loginWindow.RemoveTokenValues();
             this.Visibility = Visibility.Collapsed;
-
-            //var response = await HttpHelper.Post<LoginResponseDto, RefreshDto>("user/logout", refreshToken);
-            //Tokens = response.Result;
         }
         public void MaxPlayersChanged(object sender, RoutedEventArgs e)
         {

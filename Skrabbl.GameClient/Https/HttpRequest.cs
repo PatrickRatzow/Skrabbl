@@ -25,7 +25,7 @@ namespace Skrabbl.GameClient.Https
             string ServiceURI = baseUrl + ":" + port + "/" + postGameLobbyUrl + userId;
 
             rest_client.BaseUrl = new Uri(ServiceURI);
-            rest_client.Authenticator = new JwtAuthenticator(MainWindow.Tokens.Jwt.Token);
+            rest_client.Authenticator = new JwtAuthenticator(DataContainer.Tokens.Jwt.Token);
             RestRequest request_POST = new RestRequest(ServiceURI, Method.POST);
             request_POST.AddJsonBody(gameSettings);
             

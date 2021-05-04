@@ -14,19 +14,50 @@ namespace Skrabbl.GameClient.Https
         public HttpStatusCode StatusCode { get; set; }
     }
 
-    class HttpHelper
+    public class HttpHelper
     {
         private static int port = 50916;
         private static HttpClient _client = new HttpClient() {
-            BaseAddress = new Uri($"http://localhost:{port}/api/")
+            BaseAddress = new Uri($"https://localhost:{port}/api/")
         };
 
         public static async Task<HttpHelperResponse<TResult>> Post<TResult, TData>(string endpoint, TData data)
         {
             var serialize = JsonConvert.SerializeObject(data);
             var httpContent = new StringContent(serialize, Encoding.UTF8, "application/json");
+            HttpResponseMessage resp = null;
+            try
+            {
+                _client.Timeout = TimeSpan.FromSeconds(10);
+                resp = await _client.PostAsync(endpoint, httpContent);
 
-            HttpResponseMessage resp = await _client.PostAsync(endpoint, httpContent);
+            } catch (Exception e)
+            {
+
+            }
+            string responseContent = await resp.Content.ReadAsStringAsync();
+
+            TResult resultObject = default;
+
+            try
+            {
+                resultObject = JsonConvert.DeserializeObject<TResult>(responseContent);
+            } catch { 
+            }
+
+            return new HttpHelperResponse<TResult>() {
+                Response = resp,
+                Result = resultObject,
+                StatusCode = resp.StatusCode
+            };
+        }
+
+        public static async Task<HttpHelperResponse<TResult>> Put<TResult, TData>(string endpoint, TData data)
+        {
+            var serialize = JsonConvert.SerializeObject(data);
+            var httpContent = new StringContent(serialize, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage resp = await _client.PutAsync(endpoint, httpContent);
 
             string responseContent = await resp.Content.ReadAsStringAsync();
 
@@ -35,11 +66,13 @@ namespace Skrabbl.GameClient.Https
             try
             {
                 resultObject = JsonConvert.DeserializeObject<TResult>(responseContent);
-
-            } catch { 
+            }
+            catch
+            {
             }
 
-            return new HttpHelperResponse<TResult>() {
+            return new HttpHelperResponse<TResult>()
+            {
                 Response = resp,
                 Result = resultObject,
                 StatusCode = resp.StatusCode

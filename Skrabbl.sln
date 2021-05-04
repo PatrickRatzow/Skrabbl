@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skrabbl.GameClient.Test", "Skrabbl.GameClient.Test\Skrabbl.GameClient.Test.csproj", "{DF1ED229-849C-4141-BFFC-47D8C6BBFD32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{75A5CA07-F415-4BA4-937C-5D7C62D05EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75A5CA07-F415-4BA4-937C-5D7C62D05EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75A5CA07-F415-4BA4-937C-5D7C62D05EBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF1ED229-849C-4141-BFFC-47D8C6BBFD32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF1ED229-849C-4141-BFFC-47D8C6BBFD32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF1ED229-849C-4141-BFFC-47D8C6BBFD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF1ED229-849C-4141-BFFC-47D8C6BBFD32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{2FC2BFAD-D7F3-4784-A9F7-58399CF9A58E} = {029D96F8-2C97-4D7B-B48C-A80DA0283BF4}
 		{97B4614C-FB88-48D2-A5D7-865E8CBAC97B} = {00C5C57F-D9C1-423D-BBC8-E1D082AD572D}
 		{75A5CA07-F415-4BA4-937C-5D7C62D05EBB} = {00C5C57F-D9C1-423D-BBC8-E1D082AD572D}
+		{DF1ED229-849C-4141-BFFC-47D8C6BBFD32} = {00C5C57F-D9C1-423D-BBC8-E1D082AD572D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95C9D806-06AB-4AE8-8284-1BF5DD914CDA}
