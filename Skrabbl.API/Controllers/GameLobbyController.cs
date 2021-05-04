@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -73,21 +72,6 @@ namespace Skrabbl.API.Controllers
             {
                 return Forbid();
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
-        [HttpPut("update/{userId}")]
-        [Authorize(Policy = "HasBoughtGame")]
-        public async Task<IActionResult> Update([FromBody] List<GameSettingDto> gameSettings, int userId)
-        {
-            var user = _userService.GetUser(userId);
-
-            var gameLobby = await _gameLobbyService.UpdateGameSetting(userId, gameSettings);
-
-            return Ok(gameLobby);
         }
     }
 }

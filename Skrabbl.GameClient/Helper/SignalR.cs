@@ -4,10 +4,10 @@ using Skrabbl.GameClient.Service;
 
 namespace Skrabbl.GameClient.Helper
 {
-    public static class SignalRHelper
+    public static class SignalR
     {
         public static readonly HubConnection Connection = new HubConnectionBuilder()
-            .WithUrl(HttpHelper.Url, options => { options.AccessTokenProvider = AccessToken; })
+            .WithUrl($"{HttpHelper.Url}/ws/game", options => { options.AccessTokenProvider = AccessToken; })
             .WithAutomaticReconnect()
             .Build();
 

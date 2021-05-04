@@ -1,9 +1,7 @@
-﻿using Skrabbl.Model;
-using Skrabbl.Model.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Skrabbl.Model;
+using Skrabbl.Model.Dto;
 
 namespace Skrabbl.API.Services
 {
@@ -15,8 +13,6 @@ namespace Skrabbl.API.Services
         Task<IEnumerable<GameLobby>> GetAllGameLobbies();
         Task<GameLobby> GetLobbyByOwnerId(int ownerId);
         Task<List<GameSetting>> GetGameSettingsByGameId(int gameId);
-        Task SetGameSettingsByGameCode(GameSetting gameSetting);
-        Task<GameLobby> UpdateGameSetting(int userId, List<GameSettingDto> gameSettingList);
-
+        Task UpdateGameSetting(GameSetting gameSetting, int lobbyOwnerId);
     }
 }

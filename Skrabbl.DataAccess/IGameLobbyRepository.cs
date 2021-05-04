@@ -1,8 +1,6 @@
-﻿using Skrabbl.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Skrabbl.Model;
 
 namespace Skrabbl.DataAccess
 {
@@ -15,7 +13,6 @@ namespace Skrabbl.DataAccess
         Task RemoveAllGameLobbies();
         Task<GameLobby> GetLobbyByOwnerId(int ownerId);
         Task<IEnumerable<GameSetting>> GetGameSettingsByGameCode(int gameId);
-        Task SetGameSettingsByGameCode(GameSetting gameSetting);
-        Task UpdateGameLobbySettings(List<GameSetting> gameSettings, GameLobby entity);
+        Task UpdateGameLobbySetting(GameSetting gameSetting, int lobbyOwnerId);
     }
 }

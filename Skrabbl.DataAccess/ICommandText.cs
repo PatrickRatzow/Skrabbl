@@ -29,9 +29,7 @@ namespace Skrabbl.DataAccess
         string GetCurrentTurnByUserIfIdUserHasGuessedWord { get; }
         string GetRoundStatusForGame { get; }
         string SetRoundNumberForGame { get; }
-        string AddRound { get; }
         string GetGameSettingsByGameCode { get; }
-        string SetGameSettingsByGameCode { get; }
-        string UpdateGameSettingsByGameCode { get; }
+        string UpdateGameSetting { get; }
     }
 }

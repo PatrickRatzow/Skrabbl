@@ -11,5 +11,6 @@ namespace Skrabbl.API.Hubs
         Task GameLobbyDisconnected(string lobbyId);
         Task SendRoundStatus();
         Task SendGameIsOver();
+        Task SendSettingChanged(string key, string value);
     }
 }

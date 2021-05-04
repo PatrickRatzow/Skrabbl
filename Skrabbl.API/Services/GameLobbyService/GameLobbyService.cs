@@ -87,19 +87,17 @@ namespace Skrabbl.API.Services
 
             return gameSettingList.ToList();
         }
-        public async Task SetGameSettingsByGameCode(GameSetting gameSetting)
+
+        public Task<GameLobby> UpdateGameSetting(GameSetting gameSetting)
         {
-            await _gameLobbyRepository.SetGameSettingsByGameCode(gameSetting);
+            throw new NotImplementedException();
         }
 
-        public async Task<GameLobby> UpdateGameSetting(int userId, List<GameSettingDto> gameSettingList)
+        public async Task UpdateGameSetting(GameSetting gameSetting, int lobbyOwnerId)
         {
-            var existing = await GetLobbyByOwnerId(userId);
-
-            await _gameLobbyRepository.UpdateGameLobbySettings(Map(gameSettingList, existing.GameCode), existing);
-            return await GetLobbyByOwnerId(userId);
-
+            await _gameLobbyRepository.UpdateGameLobbySetting(gameSetting, lobbyOwnerId);
         }
+
         private List<GameSetting> Map(List<GameSettingDto> gameSettings, string gameCode)
         {
             return gameSettings.ConvertAll(g => new GameSetting
@@ -108,7 +106,6 @@ namespace Skrabbl.API.Services
                 Setting = g.Setting,
                 GameCode = gameCode
             });
-
         }
 
         private string GenerateGameLobbyCode()
@@ -124,7 +121,5 @@ namespace Skrabbl.API.Services
 
             return new String(stringChars);
         }
-
-        
     }
 }

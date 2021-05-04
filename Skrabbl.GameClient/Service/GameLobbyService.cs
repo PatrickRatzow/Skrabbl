@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR.Client;
 using Skrabbl.GameClient.Helper;
 using Skrabbl.Model;
 using Skrabbl.Model.Dto;
@@ -15,11 +16,20 @@ namespace Skrabbl.GameClient.Service
             var gameSettings = ModelMapper.Mapper.Map<List<GameSettingDto>>(GameSettings.Values);
             var response = await HttpHelper.Post<string, List<GameSettingDto>>("gamelobby", gameSettings);
 
-            return response.Response.IsSuccessStatusCode;
+            if (response.Response.IsSuccessStatusCode)
+            {
+                DataContainer.GameLobby = new GameLobby(); // TODO: Retrieve actual object
+                await SignalR.Connect();
+
+                return true;
+            }
+
+            return false;
         }
 
         public static void SettingChanged(string setting, string value)
         {
+            var contained = GameSettings.ContainsKey(setting);
             var gameSetting = new GameSetting()
             {
                 Setting = setting,
@@ -27,14 +37,14 @@ namespace Skrabbl.GameClient.Service
             };
             GameSettings[setting] = gameSetting;
 
-            if (DataContainer.GameLobby == null) return;
+            if (DataContainer.GameLobby == null || !contained) return;
 
             UpdateSetting(gameSetting);
         }
 
         private static Task UpdateSetting(GameSetting gameSetting)
         {
-            return Task.CompletedTask;
+            return SignalR.Connection.SendAsync("GameLobbySettingChanged", gameSetting.Setting, gameSetting.Value);
         }
     }
 }

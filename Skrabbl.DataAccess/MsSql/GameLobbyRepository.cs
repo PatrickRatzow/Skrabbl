@@ -97,28 +97,16 @@ namespace Skrabbl.DataAccess.MsSql
             });
         }
 
-        public async Task SetGameSettingsByGameCode(GameSetting gameSetting)
+        public async Task UpdateGameLobbySetting(GameSetting gameSetting, int lobbyOwnerId)
         {
-            await WithConnection(async conn =>
+            await WithConnection(conn =>
             {
-                return await conn.QueryAsync<GameSetting>(_commandText.SetGameSettingsByGameCode, gameSetting);
-            });
-        }
-
-        public async Task UpdateGameLobbySettings(List<GameSetting> gameSettings, GameLobby entity)
-        {
-            //TODO: make UpdateGameLobby to one whole transaction 
-            foreach (var setting in gameSettings)
-            {
-                await UpdateGameSettingsByGameCode(setting);
-            }
-        }
-
-        public async Task UpdateGameSettingsByGameCode(GameSetting gameSetting)
-        {
-            await WithConnection(async conn =>
-            {
-                return await conn.QueryAsync<GameSetting>(_commandText.UpdateGameSettingsByGameCode, gameSetting);
+                return conn.ExecuteAsync(_commandText.UpdateGameSetting, new
+                {
+                    Value = gameSetting.Value,
+                    Setting = gameSetting.Setting,
+                    LobbyOwnerId = lobbyOwnerId
+                });
             });
         }
     }
