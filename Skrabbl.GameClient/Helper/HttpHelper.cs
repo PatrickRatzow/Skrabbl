@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using Skrabbl.GameClient.Service;
 using Skrabbl.Model.Dto;
 
-namespace Skrabbl.GameClient.Https
+namespace Skrabbl.GameClient.Helper
 {
     public class HttpHelperResponse<TResult>
     {
@@ -85,11 +85,12 @@ namespace Skrabbl.GameClient.Https
 
     public static class HttpHelper
     {
+        public static string Url = $"https://localhost:{Port}/api";
         private static readonly int Port = 5001; //5001;
 
         private static readonly HttpClient Client = new HttpClient(new HttpHelperHandler())
         {
-            BaseAddress = new Uri($"https://localhost:{Port}/api/")
+            BaseAddress = new Uri(Url)
         };
 
         public static async Task<HttpHelperResponse<TResult>> Post<TResult, TData>(string endpoint, TData data)

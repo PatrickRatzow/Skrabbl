@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Skrabbl.GameClient.Https;
+using Skrabbl.GameClient.Helper;
 using Skrabbl.Model;
 using Skrabbl.Model.Dto;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Skrabbl.GameClient.Https;
+using Skrabbl.GameClient.Helper;
 using Skrabbl.Model.Dto;
 
 namespace Skrabbl.GameClient.Service
@@ -16,7 +16,7 @@ namespace Skrabbl.GameClient.Service
                 Password = password,
                 LobbyCreationClient = true
             };
-            var response = await Task.Run(() => HttpHelper.Post<LoginResponseDto, LoginDto>("user/login", data));
+            var response = await HttpHelper.Post<LoginResponseDto, LoginDto>("user/login", data);
             if (response.StatusCode != HttpStatusCode.OK)
                 return false;
 
@@ -44,7 +44,7 @@ namespace Skrabbl.GameClient.Service
             {
                 Token = Properties.Settings.Default.RefreshToken
             };
-            var response = await Task.Run(() => HttpHelper.Post<LoginResponseDto, RefreshDto>("user/refresh", data));
+            var response = await HttpHelper.Post<LoginResponseDto, RefreshDto>("user/refresh", data);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 RemoveTokenValues();
@@ -56,6 +56,22 @@ namespace Skrabbl.GameClient.Service
             DataContainer.Tokens = result;
 
             SaveTokens(DataContainer.Tokens);
+
+            return true;
+        }
+
+        public static async Task<bool> Logout()
+        {
+            if (DataContainer.Tokens == null) return false;
+
+            var refreshToken = new RefreshDto
+            {
+                Token = DataContainer.Tokens.RefreshToken.Token
+            };
+
+            await HttpHelper.Post<LoginResponseDto, RefreshDto>("user/logout", refreshToken);
+            RemoveTokenValues();
+            DataContainer.Tokens = null;
 
             return true;
         }

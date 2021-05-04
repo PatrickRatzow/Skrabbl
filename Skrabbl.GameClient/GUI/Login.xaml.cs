@@ -1,13 +1,4 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
-using Skrabbl.GameClient.Https;
-using Skrabbl.Model;
-using Skrabbl.Model.Dto;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using Skrabbl.GameClient.Service;
 

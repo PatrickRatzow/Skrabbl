@@ -1,8 +1,6 @@
 using System.Windows;
 using Skrabbl.GameClient.GUI;
-using Skrabbl.GameClient.Https;
 using Skrabbl.GameClient.Service;
-using Skrabbl.Model.Dto;
 
 namespace Skrabbl.GameClient
 {
@@ -59,15 +57,11 @@ namespace Skrabbl.GameClient
             //response_POST = rest_client.Execute(request_POST);
             //Tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
 
-            RefreshDto refreshToken = new RefreshDto {Token = Properties.Settings.Default.RefreshToken};
-
-            var response = await HttpHelper.Post<LoginResponseDto, RefreshDto>("user/logout", refreshToken);
-            DataContainer.Tokens = null;
+            await UserService.Logout();
 
             //Open up the login window
             _loginWindow.Visibility = Visibility.Visible;
-            UserService.RemoveTokenValues();
-            this.Visibility = Visibility.Collapsed;
+            Visibility = Visibility.Collapsed;
         }
 
         public void MaxPlayersChanged(object sender, RoutedEventArgs e)
