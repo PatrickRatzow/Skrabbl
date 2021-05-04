@@ -53,10 +53,11 @@ namespace Skrabbl.API.Controllers
             return Ok(gameLobby.Result);
         }
 
-        [HttpPost("create/{userId}")]
+        [HttpPost]
         [Authorize(Policy = "HasBoughtGame")]
-        public async Task<IActionResult> Create(int userId, [FromBody] List<GameSettingDto> gameSettings)
+        public async Task<IActionResult> Create([FromBody] List<GameSettingDto> gameSettings)
         {
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
             var user = await _userService.GetUser(userId);
 
             if (user == null || !string.IsNullOrEmpty(user.GameLobbyId))
@@ -82,7 +83,6 @@ namespace Skrabbl.API.Controllers
         [Authorize(Policy = "HasBoughtGame")]
         public async Task<IActionResult> Update([FromBody] List<GameSettingDto> gameSettings, int userId)
         {
-
             var user = _userService.GetUser(userId);
 
             var gameLobby = await _gameLobbyService.UpdateGameSetting(userId, gameSettings);

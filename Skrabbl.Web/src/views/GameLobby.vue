@@ -1,6 +1,5 @@
 <template>
     <div class="main is-flex is-justify-content-center is-align-items-center">
-        <div>Is connected {{ isConnected ? 'Yes' : 'False' }}</div>
         <section class="box">
             <section class="title has-text-centered">
                 <div class="content">
@@ -25,11 +24,11 @@
 </template>
 
 <script>
-    import { mapState } from "vuex"
-    import PlayerList from "@/components/player/PlayerList";
-    import SettingList from "@/components/setting/SettingList";
+import { mapState } from "vuex"
+import PlayerList from "@/components/player/PlayerList";
+import SettingList from "@/components/setting/SettingList";
 
-    export default {
+export default {
         name: "GameLobby",
         computed: {
             ...mapState("game", {

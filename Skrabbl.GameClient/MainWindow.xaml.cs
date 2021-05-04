@@ -1,24 +1,10 @@
-using Skrabbl.GameClient.GUI;
+using System;
+using System.Windows;
 using Newtonsoft.Json;
+using RestSharp;
+using Skrabbl.GameClient.GUI;
 using Skrabbl.GameClient.Service;
 using Skrabbl.Model.Dto;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using RestSharp;
-using Skrabbl.GameClient.Https;
 
 namespace Skrabbl.GameClient
 {
@@ -27,14 +13,13 @@ namespace Skrabbl.GameClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        int[] players = { 2, 3, 5, 8, 13, 21 };
-        int[] drawingTime = { 30, 45, 60, 75, 90, 105, 120 };
+        int[] players = {2, 3, 5, 8, 13, 21};
+        int[] drawingTime = {30, 45, 60, 75, 90, 105, 120};
         private Login _loginWindow;
         private SettingsService _settingsService;
         private int userId;
 
-
-        public MainWindow(Tokens JWT, Login loginWindow)
+        public MainWindow(Login loginWindow)
         {
             InitializeComponent();
             _loginWindow = loginWindow;
@@ -94,21 +79,26 @@ namespace Skrabbl.GameClient
 
             //Open up the login window
             _loginWindow.Visibility = Visibility.Visible;
-            _loginWindow.RemoveTokenValues();
+            UserService.RemoveTokenValues();
             this.Visibility = Visibility.Collapsed;
         }
+
         public void MaxPlayersChanged(object sender, RoutedEventArgs e)
         {
-            _settingsService.SettingsUpdateOnChange("MaxPlayers", players[comboPlayers.SelectedIndex].ToString(), userId);
+            _settingsService.SettingsUpdateOnChange("MaxPlayers", players[comboPlayers.SelectedIndex].ToString(),
+                userId);
         }
+
         public void NoOfRoundsChanged(object sender, RoutedEventArgs e)
         {
             int noOfRounds = comboRounds.SelectedIndex + 1;
             _settingsService.SettingsUpdateOnChange("NoOfRounds", noOfRounds.ToString(), userId);
         }
+
         public void DrawingTimeChanged(object sender, RoutedEventArgs e)
         {
-            _settingsService.SettingsUpdateOnChange("TurnTime", drawingTime[comboDrawingTime.SelectedIndex].ToString(), userId);
+            _settingsService.SettingsUpdateOnChange("TurnTime", drawingTime[comboDrawingTime.SelectedIndex].ToString(),
+                userId);
         }
     }
 }

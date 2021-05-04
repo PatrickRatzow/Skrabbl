@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Skrabbl.DataAccess.MsSql;
 using Skrabbl.DataAccess.MsSql.Queries;
 using Skrabbl.DataAccess.Test.Util;
 using Skrabbl.Model;
