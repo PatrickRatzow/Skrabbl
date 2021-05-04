@@ -35,11 +35,14 @@ namespace Skrabbl.GameClient.Service
             return true;
         }
 
-        public static async Task<bool> RefreshToken(string refreshToken)
+        public static async Task<bool> RefreshToken()
         {
+            if (string.IsNullOrEmpty(Properties.Settings.Default.RefreshToken)) return false;
+            if (Properties.Settings.Default.RefreshExpiresAt <= DateTime.UtcNow) return false;
+
             var data = new RefreshDto()
             {
-                Token = refreshToken
+                Token = Properties.Settings.Default.RefreshToken
             };
             var response = await Task.Run(() => HttpHelper.Post<LoginResponseDto, RefreshDto>("user/refresh", data));
             if (response.StatusCode != HttpStatusCode.OK)

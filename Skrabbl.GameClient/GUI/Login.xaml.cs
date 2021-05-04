@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using Skrabbl.GameClient.Service;
 
@@ -15,11 +14,9 @@ namespace Skrabbl.GameClient.GUI
 
         private async Task LoginFromCache()
         {
-            if (string.IsNullOrEmpty(Properties.Settings.Default.RefreshToken)) return;
-            if (Properties.Settings.Default.RefreshExpiresAt <= DateTime.UtcNow) return;
-
             Hide();
-            var refreshed = await UserService.RefreshToken(Properties.Settings.Default.RefreshToken);
+
+            var refreshed = await UserService.RefreshToken();
             if (refreshed)
             {
                 GoToMainWindow();
