@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -7,9 +10,6 @@ using Skrabbl.API.Services;
 using Skrabbl.Model;
 using Skrabbl.Model.Dto;
 using Skrabbl.Model.Errors;
-using System.Security.Claims;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Skrabbl.API.Test.Controllers
 {
@@ -44,8 +44,6 @@ namespace Skrabbl.API.Test.Controllers
         private static readonly GameLobby GameLobby = new GameLobby
         {
             GameCode = "hGhG",
-
-
         };
 
         private (GameLobbyController, Mock<IUserService>, Mock<IGameLobbyService>) TestObjects()
@@ -53,6 +51,14 @@ namespace Skrabbl.API.Test.Controllers
             var userService = new Mock<IUserService>();
             var gameLobbyService = new Mock<IGameLobbyService>();
             var gameLobbyController = new GameLobbyController(gameLobbyService.Object, userService.Object);
+            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }));
+            gameLobbyController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() {User = claimsUser}
+            };
 
             return (gameLobbyController, userService, gameLobbyService);
         }
@@ -62,6 +68,14 @@ namespace Skrabbl.API.Test.Controllers
         {
             //Arrange
             var (gameLobbyController, userService, gameLobbyService) = TestObjects();
+            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, User.Id.ToString())
+            }));
+            gameLobbyController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() {User = claimsUser}
+            };
             userService.Setup(m => m.GetUser(User.Id))
                 .ReturnsAsync(() => User);
             gameLobbyService.Setup(m => m.AddGameLobby(It.IsAny<int>(), gameSettingList))
@@ -83,6 +97,14 @@ namespace Skrabbl.API.Test.Controllers
             var (gameLobbyController, userService, gameLobbyService) = TestObjects();
             userService.Setup(m => m.GetUser(User.Id))
                 .ReturnsAsync(() => User);
+            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, User.Id.ToString())
+            }));
+            gameLobbyController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() {User = claimsUser}
+            };
             gameLobbyService.Setup(m => m.AddGameLobby(It.IsAny<int>(), gameSettingList))
                 .ReturnsAsync(() => GameLobby);
 
@@ -111,6 +133,14 @@ namespace Skrabbl.API.Test.Controllers
             };
 
             var (gameLobbyController, userService, _) = TestObjects();
+            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, User.Id.ToString())
+            }));
+            gameLobbyController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() {User = claimsUser}
+            };
             userService.Setup(m => m.GetUser(user.Id))
                 .ReturnsAsync(() => user);
 
@@ -138,9 +168,9 @@ namespace Skrabbl.API.Test.Controllers
             };
 
             var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-                }));
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            }));
 
             var (gameLobbyController, userService, gameLobbyService) = TestObjects();
             userService.Setup(m => m.GetUser(user.Id))
@@ -154,7 +184,7 @@ namespace Skrabbl.API.Test.Controllers
 
             gameLobbyController.ControllerContext = new ControllerContext()
             {
-                HttpContext = new DefaultHttpContext() { User = claimsUser }
+                HttpContext = new DefaultHttpContext() {User = claimsUser}
             };
 
             //Act
@@ -173,13 +203,13 @@ namespace Skrabbl.API.Test.Controllers
             //Arrange
             string gameLobbyCode = "GhhG";
 
-            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {}));
+            var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] { }));
 
             var (gameLobbyController, _, _) = TestObjects();
 
             gameLobbyController.ControllerContext = new ControllerContext()
             {
-                HttpContext = new DefaultHttpContext() { User = claimsUser }
+                HttpContext = new DefaultHttpContext() {User = claimsUser}
             };
 
             //Act
@@ -187,7 +217,6 @@ namespace Skrabbl.API.Test.Controllers
 
             //Assert
             Assert.IsInstanceOf<UnauthorizedResult>(result);
-
         }
 
         [Test]
@@ -204,18 +233,13 @@ namespace Skrabbl.API.Test.Controllers
             };
 
             var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-                }));
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            }));
 
             var (gameLobbyController, userService, _) = TestObjects();
             userService.Setup(m => m.GetUser(user.Id))
                 .ReturnsAsync(() => user);
-
-            gameLobbyController.ControllerContext = new ControllerContext()
-            {
-                HttpContext = new DefaultHttpContext() { User = claimsUser }
-            };
 
             //Act
             var result = await gameLobbyController.Join("HHgg");
@@ -238,14 +262,12 @@ namespace Skrabbl.API.Test.Controllers
                 Salt = "2retnut",
                 Username = "UserMAN",
             };
-
             var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-                }));
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            }));
 
             var (gameLobbyController, userService, gameLobbyService) = TestObjects();
-
             gameLobbyService.Setup(m => m.GetGameLobbyById(gameLobbyCode))
                 .ReturnsAsync(() => new GameLobby()
                 {
@@ -254,7 +276,7 @@ namespace Skrabbl.API.Test.Controllers
 
             gameLobbyController.ControllerContext = new ControllerContext()
             {
-                HttpContext = new DefaultHttpContext() { User = claimsUser }
+                HttpContext = new DefaultHttpContext() {User = claimsUser}
             };
 
             //Act
@@ -281,9 +303,9 @@ namespace Skrabbl.API.Test.Controllers
             };
 
             var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-                }));
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            }));
 
             var (gameLobbyController, userService, gameLobbyService) = TestObjects();
             userService.Setup(m => m.GetUser(user.Id))
@@ -296,7 +318,7 @@ namespace Skrabbl.API.Test.Controllers
 
             gameLobbyController.ControllerContext = new ControllerContext()
             {
-                HttpContext = new DefaultHttpContext() { User = claimsUser }
+                HttpContext = new DefaultHttpContext() {User = claimsUser}
             };
 
             //Act

@@ -45,9 +45,14 @@ namespace Skrabbl.DataAccess.MsSql
 
                     return $"(@P{gameCodeId}, @P{settingId}, @P{valueId})";
                 }));
-                var query = $@"{_commandText.AddLobby};
-                INSERT INTO GameSetting(GameCode, Setting, Value)
-                VALUES {inserts}";
+                var query = $@"{_commandText.AddLobby}";
+
+                if (!string.IsNullOrEmpty(inserts))
+                {
+                    query += @";
+                        INSERT INTO GameSetting(GameCode, Setting, Value)
+                        VALUES {inserts}";
+                }
 
                 await conn.ExecuteAsync(query, parameters);
             });
