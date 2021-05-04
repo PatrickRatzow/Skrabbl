@@ -3,13 +3,13 @@ using Skrabbl.Model.Dto;
 
 namespace Skrabbl.GameClient
 {
-    public class ModelMapper
+    public static class ModelMapper
     {
-        private static MapperConfiguration _config = new MapperConfiguration(cfg =>
+        private static readonly MapperConfiguration Config = new MapperConfiguration(cfg =>
         {
             cfg.CreateMap<LoginResponseDto, Tokens>();
         });
 
-        public static IMapper Mapper = new Mapper(_config);
+        public static readonly IMapper Mapper = new Mapper(Config);
     }
 }
