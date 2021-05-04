@@ -85,11 +85,11 @@ namespace Skrabbl.GameClient.Https
 
     public static class HttpHelper
     {
-        private static readonly int Port = 5001;
+        private static readonly int Port = 50916; //5001;
 
         private static readonly HttpClient Client = new HttpClient(new HttpHelperHandler())
         {
-            BaseAddress = new Uri($"https://localhost:{Port}/api/")
+            BaseAddress = new Uri($"http://localhost:{Port}/api/")
         };
 
         public static async Task<HttpHelperResponse<TResult>> Post<TResult, TData>(string endpoint, TData data)
@@ -152,7 +152,7 @@ namespace Skrabbl.GameClient.Https
             var serialize = JsonConvert.SerializeObject(data);
             var httpContent = new StringContent(serialize, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage resp = await _client.PutAsync(endpoint, httpContent);
+            HttpResponseMessage resp = await Client.PutAsync(endpoint, httpContent);
 
             string responseContent = await resp.Content.ReadAsStringAsync();
 

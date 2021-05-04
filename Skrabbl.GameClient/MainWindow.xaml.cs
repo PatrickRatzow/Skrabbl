@@ -3,6 +3,7 @@ using System.Windows;
 using Newtonsoft.Json;
 using RestSharp;
 using Skrabbl.GameClient.GUI;
+using Skrabbl.GameClient.Https;
 using Skrabbl.GameClient.Service;
 using Skrabbl.Model.Dto;
 
