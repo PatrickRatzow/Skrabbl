@@ -85,59 +85,61 @@ namespace Skrabbl.GameClient.Https
 
     public static class HttpHelper
     {
-        private static readonly int Port = 50916; //5001;
+        private static readonly int Port = 5001; //5001;
 
         private static readonly HttpClient Client = new HttpClient(new HttpHelperHandler())
         {
-            BaseAddress = new Uri($"http://localhost:{Port}/api/")
+            BaseAddress = new Uri($"https://localhost:{Port}/api/")
         };
 
         public static async Task<HttpHelperResponse<TResult>> Post<TResult, TData>(string endpoint, TData data)
         {
-            var serialize = JsonConvert.SerializeObject(data);
-            var httpContent = new StringContent(serialize, Encoding.UTF8, "application/json");
-
+            var httpContent = Serialize(data);
             HttpResponseMessage resp = await Client.PostAsync(endpoint, httpContent);
-            string responseContent = await resp.Content.ReadAsStringAsync();
-            TResult resultObject = default;
 
-            if (data != null)
-            {
-                try
-                {
-                    resultObject = JsonConvert.DeserializeObject<TResult>(responseContent);
-                }
-                catch
-                {
-                }
-            }
-
-            return new HttpHelperResponse<TResult>()
-            {
-                Response = resp,
-                Result = resultObject,
-                StatusCode = resp.StatusCode
-            };
-        }
-
-        public static Task<HttpHelperResponse<TResult>> Post<TResult>(string endpoint)
-        {
-            return Post<TResult, object>(endpoint, null);
+            return await ParseResponse<TResult>(resp);
         }
 
         public static async Task<HttpHelperResponse<TResult>> Get<TResult>(string endpoint)
         {
             HttpResponseMessage resp = await Client.GetAsync(endpoint);
-            string content = await resp.Content.ReadAsStringAsync();
-            TResult result = default(TResult);
 
+            return await ParseResponse<TResult>(resp);
+        }
+
+        public static async Task<HttpHelperResponse<TResult>> Put<TResult, TData>(string endpoint, TData data)
+        {
+            var httpContent = Serialize(data);
+            HttpResponseMessage resp = await Client.PutAsync(endpoint, httpContent);
+
+            return await ParseResponse<TResult>(resp);
+        }
+
+
+        private static TResult Deserialize<TResult>(string data)
+        {
+            if (!typeof(TResult).IsClass || typeof(TResult) == typeof(string))
+            {
+                return (TResult) (object) data;
+            }
+
+            var result = default(TResult);
             try
             {
-                result = JsonConvert.DeserializeObject<TResult>(content);
+                result = JsonConvert.DeserializeObject<TResult>(data);
             }
             catch
             {
+                // Ignored
             }
+
+            return result;
+        }
+
+        private static async Task<HttpHelperResponse<TResult>> ParseResponse<TResult>(HttpResponseMessage resp)
+        {
+            var content = await resp.Content.ReadAsStringAsync();
+            var result = Deserialize<TResult>(content);
 
             return new HttpHelperResponse<TResult>()
             {
@@ -145,33 +147,14 @@ namespace Skrabbl.GameClient.Https
                 Result = result,
                 StatusCode = resp.StatusCode
             };
-          }
-                // Ignored
-        public static async Task<HttpHelperResponse<TResult>> Put<TResult, TData>(string endpoint, TData data)
+        }
+
+        private static StringContent Serialize<TData>(TData data)
         {
             var serialize = JsonConvert.SerializeObject(data);
             var httpContent = new StringContent(serialize, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage resp = await Client.PutAsync(endpoint, httpContent);
-
-            string responseContent = await resp.Content.ReadAsStringAsync();
-
-            TResult resultObject = default;
-
-            try
-            {
-                resultObject = JsonConvert.DeserializeObject<TResult>(responseContent);
-            }
-            catch
-            {
-            }
-
-            return new HttpHelperResponse<TResult>()
-            {
-                Response = resp,
-                Result = resultObject,
-                StatusCode = resp.StatusCode
-            };
+            return httpContent;
         }
     }
 }

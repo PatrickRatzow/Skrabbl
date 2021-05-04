@@ -1,7 +1,4 @@
-using System;
 using System.Windows;
-using Newtonsoft.Json;
-using RestSharp;
 using Skrabbl.GameClient.GUI;
 using Skrabbl.GameClient.Https;
 using Skrabbl.GameClient.Service;
@@ -17,20 +14,11 @@ namespace Skrabbl.GameClient
         int[] players = {2, 3, 5, 8, 13, 21};
         int[] drawingTime = {30, 45, 60, 75, 90, 105, 120};
         private Login _loginWindow;
-        private SettingsService _settingsService;
-        private int userId;
 
         public MainWindow(Login loginWindow)
         {
             InitializeComponent();
             _loginWindow = loginWindow;
-            _settingsService = new SettingsService();
-            // userId = JWT.UserId;
-            //var id = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
-            //userId = id.UserId;
-
-            //var gotJwt = JsonConvert.DeserializeObject<LoginResponseDto>(JWT);
-            //JWT = gotJwt.JWT
 
             foreach (int i in players)
             {
@@ -53,9 +41,7 @@ namespace Skrabbl.GameClient
 
         public async void StartGame(object sender, RoutedEventArgs e)
         {
-            //Check If user does not already have a lobby
-            await _settingsService.CreateLobbyId(userId);
-            tbCustomWords.Text = "GameLobby created :)";
+            await GameLobbyService.CreateGameLobby();
         }
 
         private async void BtnLogOut_Click(object sender, RoutedEventArgs e)
@@ -73,7 +59,7 @@ namespace Skrabbl.GameClient
             //response_POST = rest_client.Execute(request_POST);
             //Tokens = JsonConvert.DeserializeObject<LoginResponseDto>(response_POST.Content);
 
-            RefreshDto refreshToken = new RefreshDto { Token = Properties.Settings.Default.RefreshToken };
+            RefreshDto refreshToken = new RefreshDto {Token = Properties.Settings.Default.RefreshToken};
 
             var response = await HttpHelper.Post<LoginResponseDto, RefreshDto>("user/logout", refreshToken);
             DataContainer.Tokens = null;
@@ -86,20 +72,18 @@ namespace Skrabbl.GameClient
 
         public void MaxPlayersChanged(object sender, RoutedEventArgs e)
         {
-            _settingsService.SettingsUpdateOnChange("MaxPlayers", players[comboPlayers.SelectedIndex].ToString(),
-                userId);
+            GameLobbyService.SettingChanged("MaxPlayers", players[comboPlayers.SelectedIndex].ToString());
         }
 
         public void NoOfRoundsChanged(object sender, RoutedEventArgs e)
         {
             int noOfRounds = comboRounds.SelectedIndex + 1;
-            _settingsService.SettingsUpdateOnChange("NoOfRounds", noOfRounds.ToString(), userId);
+            GameLobbyService.SettingChanged("NoOfRounds", noOfRounds.ToString());
         }
 
         public void DrawingTimeChanged(object sender, RoutedEventArgs e)
         {
-            _settingsService.SettingsUpdateOnChange("TurnTime", drawingTime[comboDrawingTime.SelectedIndex].ToString(),
-                userId);
+            GameLobbyService.SettingChanged("TurnTime", drawingTime[comboDrawingTime.SelectedIndex].ToString());
         }
     }
 }

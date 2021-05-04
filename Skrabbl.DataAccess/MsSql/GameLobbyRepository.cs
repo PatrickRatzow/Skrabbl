@@ -49,7 +49,7 @@ namespace Skrabbl.DataAccess.MsSql
 
                 if (!string.IsNullOrEmpty(inserts))
                 {
-                    query += @";
+                    query += $@";
                         INSERT INTO GameSetting(GameCode, Setting, Value)
                         VALUES {inserts}";
                 }
