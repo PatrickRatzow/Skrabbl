@@ -2,7 +2,7 @@ using AutoMapper;
 using Skrabbl.Model;
 using Skrabbl.Model.Dto;
 
-namespace Skrabbl.GameClient
+namespace Skrabbl.GameClient.Helper
 {
     public static class ModelMapper
     {
