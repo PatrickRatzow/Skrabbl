@@ -13,18 +13,21 @@ namespace Skrabbl.GameClient.GUI
             LoginFromCache();
         }
 
-        public async Task<bool> LoginFromCache()
+        private async Task LoginFromCache()
         {
-            if (string.IsNullOrEmpty(Properties.Settings.Default.RefreshToken)) return false;
-            if (Properties.Settings.Default.RefreshExpiresAt <= DateTime.UtcNow) return false;
+            if (string.IsNullOrEmpty(Properties.Settings.Default.RefreshToken)) return;
+            if (Properties.Settings.Default.RefreshExpiresAt <= DateTime.UtcNow) return;
 
+            Hide();
             var refreshed = await UserService.RefreshToken(Properties.Settings.Default.RefreshToken);
             if (refreshed)
             {
                 GoToMainWindow();
             }
-
-            return refreshed;
+            else
+            {
+                Show();
+            }
         }
 
         public void UsernameTxtFocus(object sender, RoutedEventArgs e)
