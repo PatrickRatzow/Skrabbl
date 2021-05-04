@@ -4,7 +4,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Skrabbl.Model;
 
-namespace Skrabbl.DataAccess
+namespace Skrabbl.DataAccess.MsSql
 {
     public class GameLobbyRepository : BaseRepository, IGameLobbyRepository
     {
@@ -20,7 +20,7 @@ namespace Skrabbl.DataAccess
             return await WithConnection(async conn =>
             {
                 return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyByLobbyCode,
-                    new { GameCode = lobbyCode });
+                    new {GameCode = lobbyCode});
             });
         }
 
@@ -38,7 +38,7 @@ namespace Skrabbl.DataAccess
         {
             return await WithConnection(async conn =>
             {
-                return await conn.ExecuteAsync(_commandText.RemoveLobbyById, new { GameCode = ownerId });
+                return await conn.ExecuteAsync(_commandText.RemoveLobbyById, new {GameCode = ownerId});
             });
         }
 
@@ -60,15 +60,16 @@ namespace Skrabbl.DataAccess
             return await WithConnection(async conn =>
             {
                 return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyByOwnerId,
-                    new { LobbyOwnerId = ownerId });
+                    new {LobbyOwnerId = ownerId});
             });
         }
+
         public async Task<IEnumerable<GameSetting>> GetGameSettingsByGameCode(int gameId)
         {
             return await WithConnection(async conn =>
             {
                 return await conn.QueryAsync<GameSetting>(_commandText.GetGameSettingsByGameCode,
-                    new { GameId = gameId });
+                    new {GameId = gameId});
             });
         }
 
@@ -79,6 +80,7 @@ namespace Skrabbl.DataAccess
                 return await conn.QueryAsync<GameSetting>(_commandText.SetGameSettingsByGameCode, gameSetting);
             });
         }
+
         public async Task UpdateGameLobbySettings(List<GameSetting> gameSettings, GameLobby entity)
         {
             //TODO: make UpdateGameLobby to one whole transaction 
@@ -87,9 +89,9 @@ namespace Skrabbl.DataAccess
                 await UpdateGameSettingsByGameCode(setting);
             }
         }
+
         public async Task UpdateGameSettingsByGameCode(GameSetting gameSetting)
         {
-
             await WithConnection(async conn =>
             {
                 return await conn.QueryAsync<GameSetting>(_commandText.UpdateGameSettingsByGameCode, gameSetting);
