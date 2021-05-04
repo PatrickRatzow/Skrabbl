@@ -21,7 +21,7 @@ namespace Skrabbl.GameClient.GUI
     public partial class Login : Window
     {
         private LoginResponseDto _tokens;
-        private string _portOfTheDay = "50916"; //This port number changes!
+        private string _portOfTheDay = "5001"; //This port number changes!
 
         public Login()
         {
