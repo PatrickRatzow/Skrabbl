@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Skrabbl.GameClient.Service;
+using Skrabbl.Model;
 using Skrabbl.Model.Dto;
 
 namespace Skrabbl.GameClient.Helper

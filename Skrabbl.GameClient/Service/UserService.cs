@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Skrabbl.GameClient.Helper;
+using Skrabbl.Model;
 using Skrabbl.Model.Dto;
 
 namespace Skrabbl.GameClient.Service

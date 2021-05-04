@@ -1,6 +1,4 @@
-using Skrabbl.Model;
-
-namespace Skrabbl.GameClient
+namespace Skrabbl.Model
 {
     public class Tokens
     {
