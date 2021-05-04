@@ -36,8 +36,6 @@ namespace Skrabbl.API.Controllers
             if (!user.HasBoughtGame && login.LobbyCreationClient)
                 return Forbid();
 
-            var userId = user.Id;
-
             var jwt = _jwtService.GenerateSecurityToken(user);
             var refreshToken = await _jwtService.GenerateRefreshToken(user);
 
@@ -45,8 +43,6 @@ namespace Skrabbl.API.Controllers
             {
                 Jwt = jwt,
                 RefreshToken = refreshToken,
-                UserId = userId
-                // TODO: when jwt is implemented, this has to be removed
             });
         }
 
@@ -66,8 +62,7 @@ namespace Skrabbl.API.Controllers
             return Ok(new LoginResponseDto
             {
                 Jwt = jwt,
-                RefreshToken = refreshToken,
-                UserId = user.Id
+                RefreshToken = refreshToken
             });
         }
 
