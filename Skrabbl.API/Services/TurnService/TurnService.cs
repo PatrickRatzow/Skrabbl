@@ -120,27 +120,9 @@ namespace Skrabbl.API.Services.TurnService
             return timer;
         }
 
-        public void RemoveTurnTimer(int gameId)
+        public bool RemoveTurnTimer(int gameId)
         {
-            _timers.TryRemove(gameId, out var timer);
-        }
-
-        //TODO delete.
-        public void DetermineChance(int gameId, int userId)
-        {
-            //Based of the length of a word we want to send a letter. 
-            bool success = _timers.TryGetValue(gameId, out var timer);
-            var word = CurrentWord(userId);
-            if (!success)
-                return;
-
-            timer.Start();
-        }
-
-        private async Task<string> CurrentWord(int userId)
-        {
-            var turn = await _gameRepository.GetCurrentTurn(userId);
-            return turn.Word;
+            return _timers.TryRemove(gameId, out var timer);
         }
     }
 }

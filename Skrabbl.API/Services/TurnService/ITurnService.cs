@@ -7,6 +7,6 @@ namespace Skrabbl.API.Services.TurnService
     {
         TurnTimer CreateTurnTimer(int gameId, string currentWord, int turnInterval, int letterInterval);
         TurnTimer GetTurnTimer(int gameId);
-        void RemoveTurnTimer(int gameId);
+        bool RemoveTurnTimer(int gameId);
     }
 }
