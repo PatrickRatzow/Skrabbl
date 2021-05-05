@@ -42,6 +42,9 @@
     <Content Include="src\components\chatbox\ChatboxList.vue">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\components\Turn.vue">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\components\PointList.vue">
       <SubType>Code</SubType>
     </Content>
