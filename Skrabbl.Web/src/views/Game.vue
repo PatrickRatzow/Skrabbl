@@ -4,6 +4,7 @@
         <div class="is-flex is-justify-content-center is-align-items-center">
             <div class="columns mt-6 mb-6">
                 <div v-if="true" class="column box pr-1 pl-1 mr-4">
+                    <turn class="Turn"></turn>
                     <h2 class="subtitle">Players</h2>
                     <PointList class=" PointList" />
                 </div>
@@ -26,6 +27,7 @@ import Canvas from "@/components/canvas/Canvas";
 import ChatboxList from "@/components/chatbox/ChatboxList";
 import PointList from "@/components/PointList";
 import ConnectionModal from "@/components/modals/ConnectionModal";
+import Turn from "@/components/Turn";
 import { mapGetters, mapState } from "vuex"
 
 
@@ -35,7 +37,8 @@ export default {
             ConnectionModal,
             Canvas,
             ChatboxList,
-            PointList
+            PointList,
+            Turn
         },
         computed: {
             ...mapState({
