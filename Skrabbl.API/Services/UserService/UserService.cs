@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
+using System.Linq;
+using System.Threading;
+using Skrabbl.Model.Errors;
 
 namespace Skrabbl.API.Services
 {
@@ -9,11 +14,15 @@ namespace Skrabbl.API.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly ICryptographyService _cryptographyService;
+        private readonly IGameLobbyRepository _gameLobbyRepository;
 
-        public UserService(IUserRepository userRepo, ICryptographyService cryptographyService)
+        private readonly static SemaphoreSlim _addingUserToLobbySemaphore = new SemaphoreSlim(1, 1);
+
+        public UserService(IUserRepository userRepo, ICryptographyService cryptographyService, IGameLobbyRepository gameLobbyRepository)
         {
             _userRepository = userRepo;
             _cryptographyService = cryptographyService;
+            _gameLobbyRepository = gameLobbyRepository;
         }
 
 
@@ -57,9 +66,21 @@ namespace Skrabbl.API.Services
             return await _userRepository.GetUserById(id);
         }
 
-        public Task AddToLobby(int userId, string gameCode)
+        public async Task AddToLobby(int userId, string gameCode)
         {
-            return _userRepository.AddUserToLobby(userId, gameCode);
+            await _addingUserToLobbySemaphore.WaitAsync();
+            var users = await _userRepository.GetUsersByGameCode(gameCode);
+            int numberOfUsers = users.ToList().Count();
+            var gameSettings = await _gameLobbyRepository.GetGameSettingsByGameCode(gameCode);
+            int maxPlayers = Convert.ToInt32(gameSettings.ToList().Find(s => s.Setting.Equals("MaxPlayers")).Value);
+            ;
+            if (numberOfUsers >= maxPlayers)
+            {
+                throw new LobbyIsFullException("Too many players");
+            }
+
+            await _userRepository.AddUserToLobby(userId, gameCode);
+            _addingUserToLobbySemaphore.Release();
         }
     }
 }

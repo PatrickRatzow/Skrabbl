@@ -81,9 +81,9 @@ namespace Skrabbl.API.Services
             return await _gameLobbyRepository.GetLobbyByOwnerId(ownerId);
         }
 
-        public async Task<List<GameSetting>> GetGameSettingsByGameId(int gameId)
+        public async Task<List<GameSetting>> GetGameSettingsByGameId(string gameCode)
         {
-            IEnumerable<GameSetting> gameSettingList = await _gameLobbyRepository.GetGameSettingsByGameCode(gameId);
+            IEnumerable<GameSetting> gameSettingList = await _gameLobbyRepository.GetGameSettingsByGameCode(gameCode);
 
             return gameSettingList.ToList();
         }

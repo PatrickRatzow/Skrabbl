@@ -88,12 +88,12 @@ namespace Skrabbl.DataAccess.MsSql
             });
         }
 
-        public async Task<IEnumerable<GameSetting>> GetGameSettingsByGameCode(int gameId)
+        public async Task<IEnumerable<GameSetting>> GetGameSettingsByGameCode(string gameCode)
         {
             return await WithConnection(async conn =>
             {
                 return await conn.QueryAsync<GameSetting>(_commandText.GetGameSettingsByGameCode,
-                    new {GameId = gameId});
+                    new {GameCode = gameCode});
             });
         }
 

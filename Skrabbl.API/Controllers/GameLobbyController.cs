@@ -26,7 +26,7 @@ namespace Skrabbl.API.Controllers
         }
 
         [HttpPost("join/{lobbyCode}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Join(string lobbyCode)
         {
             var claimUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
@@ -47,8 +47,14 @@ namespace Skrabbl.API.Controllers
                 return Forbid();
 
             //Go to database and change the players connected to lobby + player connected lobby
-            await _userService.AddToLobby(user.Result.Id, gameLobby.Result.GameCode);
-
+            try
+            {
+                await _userService.AddToLobby(user.Result.Id, gameLobby.Result.GameCode);
+            }
+            catch (LobbyIsFullException e) 
+            {
+                return Forbid();
+            }
             return Ok(gameLobby.Result);
         }
 

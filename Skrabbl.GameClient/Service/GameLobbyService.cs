@@ -23,6 +23,7 @@ namespace Skrabbl.GameClient.Service
 
                 return true;
             }
+            
 
             return false;
         }

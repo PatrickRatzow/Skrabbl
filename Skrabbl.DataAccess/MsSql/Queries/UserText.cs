@@ -18,5 +18,6 @@ namespace Skrabbl.DataAccess.MsSql.Queries
 
         public string RemoveUserById => "DELETE FROM Users WHERE id = @Id";
         public string AddUserToLobby => "UPDATE Users SET GameLobbyId = @GameLobbyId WHERE Id = @Id";
+        public string GetUsersByGameCode => "SELECT GameLobbyId from Users WHERE GameLobbyId = @GameLobbyid";
     }
 }

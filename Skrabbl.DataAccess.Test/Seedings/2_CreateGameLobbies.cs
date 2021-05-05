@@ -27,6 +27,7 @@ namespace Skrabbl.DataAccess.Test
 
         public override Task Down()
         {
+            return Execute("DELETE FROM GameSetting");
             return Execute("DELETE FROM GameLobby");
         }
     }

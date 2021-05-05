@@ -66,7 +66,7 @@ namespace Skrabbl.GameClient
 
         public void MaxPlayersChanged(object sender, RoutedEventArgs e)
         {
-            GameLobbyService.SettingChanged("MaxPlayers", players[comboPlayers.SelectedIndex].ToString());
+            GameLobbyService.SettingChanged(MaxPlayers.Name, players[comboPlayers.SelectedIndex].ToString());
         }
 
         public void NoOfRoundsChanged(object sender, RoutedEventArgs e)

@@ -12,7 +12,7 @@ namespace Skrabbl.DataAccess
         Task<IEnumerable<GameLobby>> GetAllGameLobbies();
         Task RemoveAllGameLobbies();
         Task<GameLobby> GetLobbyByOwnerId(int ownerId);
-        Task<IEnumerable<GameSetting>> GetGameSettingsByGameCode(int gameId);
+        Task<IEnumerable<GameSetting>> GetGameSettingsByGameCode(string gameCode);
         Task UpdateGameLobbySetting(GameSetting gameSetting, int lobbyOwnerId);
     }
 }
