@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +15,7 @@ using Skrabbl.DataAccess.MsSql.Queries;
 
 namespace Skrabbl.API
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
