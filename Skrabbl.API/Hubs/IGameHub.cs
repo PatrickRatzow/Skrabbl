@@ -12,5 +12,6 @@ namespace Skrabbl.API.Hubs
         Task SendRoundStatus();
         Task SendGameIsOver();
         Task SendSettingChanged(string key, string value);
+        Task ConfirmControlTakeOver();
     }
 }
