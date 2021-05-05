@@ -10,12 +10,10 @@ const state = () => ({
     chosenWord: "",
     wordList: [],
     roundOverview: null,
-
     settings: [
-        { name: "Max players", value: "12" },
-        { name: "Max rounds", value: "10" },
-        { name: "Min rounds", value: "17" },
-        { name: "Turn time", value: "10000 fisk" }
+        { id: "MaxPlayers", name: "Max players", value: "12" },
+        { id: "NoOfRounds", name: "Rounds", value: "8" },
+        { id: "TurnTime", name: "Turn time", value: "75" }
     ]
 })
 
@@ -35,12 +33,15 @@ const actions = {
         commit("setChosenWord", msg);
         commit("setWords", []);
         //ws.invoke("setChosenWord", msg)
-    }, 
+    },
     setWords({ commit }, words) {
         commit("setWords", words);
     },
     roundOver({ commit }, status) {
         commit("setRoundOverview", status);
+    },
+    updateSetting({ commit }, update) {
+        commit("setSetting", update)
     }
 }
 
@@ -53,6 +54,14 @@ const mutations = {
     },
     setRoundOverview(state, status) {
         state.roundOverview = status
+    },
+    setSetting(state, { setting: key, value }) {
+        const settings = []
+        for (const setting of state.settings) {
+            settings.push(setting.id === key ? { ...setting, value } : setting);
+        }
+
+        state.settings = settings;
     }
 }
 
@@ -67,6 +76,15 @@ const store = {
 export default store
 
 export function setupSignalR(ws, store) {
-    ws.on("roundStart", () => { });
-    
+    ws.on("roundStart", () => {
+    });
+
+    console.log("startup", ws, store)
+    ws.on("SendSettingChanged", (key, value) => {
+        console.log("changed something", key, value)
+        store.dispatch("game/updateSetting", {
+            setting: key,
+            value
+        })
+    });
 }

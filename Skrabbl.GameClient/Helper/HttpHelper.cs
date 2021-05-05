@@ -117,7 +117,6 @@ namespace Skrabbl.GameClient.Helper
             return await ParseResponse<TResult>(resp);
         }
 
-
         private static TResult Deserialize<TResult>(string data)
         {
             if (!typeof(TResult).IsClass || typeof(TResult) == typeof(string))

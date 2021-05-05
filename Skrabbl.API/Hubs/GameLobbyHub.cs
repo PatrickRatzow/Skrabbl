@@ -44,7 +44,7 @@ namespace Skrabbl.API.Hubs
             };
             await _gameLobbyService.UpdateGameSetting(gameSetting, lobbyOwnerId);
 
-            await Clients.Others.SendSettingChanged(key, value);
+            await Clients.All.SendSettingChanged(key, value);
         }
     }
 }
