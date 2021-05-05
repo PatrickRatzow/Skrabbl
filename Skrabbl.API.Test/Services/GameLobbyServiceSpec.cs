@@ -20,8 +20,6 @@ namespace Skrabbl.API.Test.Services
             Setting = "MaxPlayers",
             Value = "4"
         };
-        
-     
 
         [Test]
         public async Task AddGameLobby_Succeeds_WhenUserIsNotInAnyLobby()
@@ -46,7 +44,7 @@ namespace Skrabbl.API.Test.Services
         }
 
         [Test]
-        public async Task AddGameLobby_ThrowsAUserInLobbyException_WhenUserIsInLobby()
+        public void AddGameLobby_ThrowsAUserInLobbyException_WhenUserIsInLobby()
         {
             //Arrange
             int userId = 25;
@@ -63,7 +61,7 @@ namespace Skrabbl.API.Test.Services
 
             //Assert            
             Assert.IsNotNull(ex);
-            mock.VerifyAll();
+            mock.Verify(m => m.GetLobbyByOwnerId(userId), Times.Once);
         }
 
         [Test]
