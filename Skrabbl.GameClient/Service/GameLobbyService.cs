@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -10,23 +11,36 @@ namespace Skrabbl.GameClient.Service
     public static class GameLobbyService
     {
         private static readonly Dictionary<string, GameSetting> GameSettings = new Dictionary<string, GameSetting>();
+        public static EventHandler<EventArgs> ConfirmControlTakeOver;
+
+        static GameLobbyService()
+        {
+            SignalR.Connection.On("ConfirmControlTakeOver", () => {
+                ConfirmControlTakeOver?.Invoke(null, EventArgs.Empty);
+            });
+        }
+
 
         public static async Task<bool> CreateGameLobby()
         {
             var gameSettings = ModelMapper.Mapper.Map<List<GameSettingDto>>(GameSettings.Values);
-            var response = await HttpHelper.Post<string, List<GameSettingDto>>("gamelobby", gameSettings);
+            var response = await HttpHelper.Post<GameLobby, List<GameSettingDto>>("gamelobby", gameSettings);
 
             if (response.Response.IsSuccessStatusCode)
             {
-                DataContainer.GameLobby = new GameLobby(); // TODO: Retrieve actual object
+                DataContainer.GameLobby = response.Result;
                 await SignalR.Connect();
-
+                //send request that creater is the lobby owner
+                await SignalR.Connection.InvokeAsync("AssumeControlOfLobby", DataContainer.GameLobby.GameCode);
+                
                 return true;
             }
             
 
             return false;
         }
+
+
 
         public static void SettingChanged(string setting, string value)
         {
