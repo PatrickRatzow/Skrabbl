@@ -9,13 +9,17 @@ namespace Skrabbl.API.Test.Services
     {
         private int _turnInterval = 500;
         private int _letterInterval = 10;
-
+        private TurnService service;
+        private int userId = 5;
+        
+        //20% of this one is not covered.
         private TurnTimer Timer(int gameId = 5, string word = "Cake", int turnInterval = 0, int letterInterval = 0)
         {
+            //Tests are not covered 100% because we never hit these two fields.
             turnInterval = turnInterval <= 0 ? _turnInterval : turnInterval;
             letterInterval = letterInterval <= 0 ? _letterInterval : letterInterval;
 
-            var service = new TurnService(null);
+            service = new TurnService(null);
             return service.CreateTurnTimer(gameId, word, turnInterval, letterInterval);
         }
 
@@ -143,6 +147,49 @@ namespace Skrabbl.API.Test.Services
 
             //Assert
             Assert.True(hasSendLetter);
+        }
+
+        [Test]
+        public void GetTurnTimer_Success()
+        {
+            //Arrange 
+            var timer = Timer();
+
+            //Act
+            timer.Start();
+            var getTimer = service.GetTurnTimer(5);
+
+            //Assert
+            System.Console.WriteLine(getTimer);
+            Assert.True(getTimer != null);
+        }
+
+        [Test]
+        public void GetTurnTimer_Fails()
+        {
+            //Arrange 
+            var timer = Timer();
+
+            //Act
+            timer.Start();
+            var getTimer = service.GetTurnTimer(6);
+
+            //Assert
+            System.Console.WriteLine(getTimer);
+            Assert.True(getTimer == null);
+        }
+
+        [Test]
+        public void RemoveTurnTimer_Success()
+        {
+            //Arrange 
+            var timer = Timer();
+
+            //Act
+            var removedTimer = service.RemoveTurnTimer(5);
+
+            //Assert
+            Assert.True(removedTimer);
         }
     }
 }
