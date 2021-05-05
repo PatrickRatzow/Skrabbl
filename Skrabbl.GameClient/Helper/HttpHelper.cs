@@ -86,7 +86,7 @@ namespace Skrabbl.GameClient.Helper
 
     public static class HttpHelper
     {
-        public static readonly int Port = 5001; //5001;
+        public static readonly int Port = 44375; //5001; //44375 - Nikolaj SSL port.
         public static readonly string Url = $"https://localhost:{Port}";
 
         private static readonly HttpClient Client = new HttpClient(new HttpHelperHandler())
