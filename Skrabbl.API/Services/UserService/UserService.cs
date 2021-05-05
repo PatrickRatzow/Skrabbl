@@ -68,19 +68,24 @@ namespace Skrabbl.API.Services
 
         public async Task AddToLobby(int userId, string gameCode)
         {
-            await _addingUserToLobbySemaphore.WaitAsync();
-            var users = await _userRepository.GetUsersByGameCode(gameCode);
-            int numberOfUsers = users.ToList().Count();
-            var gameSettings = await _gameLobbyRepository.GetGameSettingsByGameCode(gameCode);
-            int maxPlayers = Convert.ToInt32(gameSettings.ToList().Find(s => s.Setting.Equals("MaxPlayers")).Value);
-            ;
-            if (numberOfUsers >= maxPlayers)
+            try
             {
-                throw new LobbyIsFullException("Too many players");
-            }
+                await _addingUserToLobbySemaphore.WaitAsync();
+                var users = await _userRepository.GetUsersByGameCode(gameCode);
+                int numberOfUsers = users.ToList().Count();
+                var gameSettings = await _gameLobbyRepository.GetGameSettingsByGameCode(gameCode);
+                int maxPlayers = Convert.ToInt32(gameSettings.ToList().Find(s => s.Setting.Equals("MaxPlayers")).Value);
 
-            await _userRepository.AddUserToLobby(userId, gameCode);
-            _addingUserToLobbySemaphore.Release();
+                if (numberOfUsers >= maxPlayers)
+                {
+                    throw new LobbyIsFullException("Too many players");
+                }
+                await _userRepository.AddUserToLobby(userId, gameCode);
+            }
+            finally
+            {
+                _addingUserToLobbySemaphore.Release();
+            }
         }
     }
 }

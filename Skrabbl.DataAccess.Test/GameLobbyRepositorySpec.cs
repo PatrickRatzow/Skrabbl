@@ -66,7 +66,7 @@ namespace Skrabbl.DataAccess.Test
             Assert.AreEqual(2, gameSettingList.Count());
             Assert.AreEqual(gameLobby.GameCode, lobby.GameCode);
             Assert.AreEqual(gameLobby.LobbyOwnerId, lobby.LobbyOwnerId);
-            Assert.AreEqual("4" ,gameSettingList.Find(s => s.Setting.Equals("MaxPlayers")).Value);
+            Assert.AreEqual("4", gameSettingList.Find(s => s.Setting.Equals("MaxPlayers")).Value);
             Assert.AreEqual("10", gameSettingList.Find(s => s.Setting.Equals("NoOfRounds")).Value);
         }
 
@@ -104,10 +104,11 @@ namespace Skrabbl.DataAccess.Test
 
             //Act
             int rowsAffected = await _gameLobbyRepository.RemoveGameLobby(lobbyId);
+            
             TestData.GameLobbies.FlorisLobby = null;
 
             //Assert
-            Assert.AreEqual(rowsAffected, 1);
+            Assert.AreEqual(rowsAffected, 3);
         }
 
         [Test, Order(5)]
