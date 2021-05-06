@@ -61,16 +61,16 @@ namespace Skrabbl.DataAccess.MsSql
         public async Task<int> RemoveGameLobby(string ownerId)
         {
             return await WithConnection(async conn =>
-           {
-               var parameters = new DynamicParameters();
-               parameters.Add("@GameCode", ownerId);
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@GameCode", ownerId);
 
-               var query = "Delete from GameSetting where GameCode = @GameCode;";
+                var query = "Delete from GameSetting where GameCode = @GameCode;";
 
-               query += $@"{_commandText.RemoveLobbyById}";
+                query += $@"{_commandText.RemoveLobbyById}";
 
-              return await conn.ExecuteAsync(query, parameters);
-           });
+                return await conn.ExecuteAsync(query, parameters);
+            });
         }
 
         public async Task RemoveAllGameLobbies()

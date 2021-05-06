@@ -7,17 +7,17 @@ namespace Skrabbl.DataAccess.Migrations
     {
         public override void Up()
         {
-            Alter.Table("Users")
-                .AddColumn("GameLobbyId").AsFixedLengthString(4).Nullable();
+            Alter.Table("User")
+                .AddColumn("LobbyCode").AsFixedLengthString(4).Nullable();
 
             Create.ForeignKey()
-                .FromTable("Users").ForeignColumn("GameLobbyId")
-                .ToTable("GameLobby").PrimaryColumn("GameCode");
+                .FromTable("User").ForeignColumn("LobbyCode")
+                .ToTable("GameLobby").PrimaryColumn("Code");
         }
 
         public override void Down()
         {
-            Delete.Column("GameLobbyId").FromTable("Users");
+            Delete.Column("LobbyCode").FromTable("User");
         }
     }
 }

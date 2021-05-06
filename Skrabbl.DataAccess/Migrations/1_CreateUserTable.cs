@@ -7,7 +7,7 @@ namespace Skrabbl.DataAccess.Migrations
     {
         public override void Up()
         {
-            Create.Table("Users")
+            Create.Table("User")
                 .WithColumn("Id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("Username").AsString(255).NotNullable()
                 .WithColumn("Email").AsString(255).NotNullable();
@@ -15,7 +15,7 @@ namespace Skrabbl.DataAccess.Migrations
 
         public override void Down()
         {
-            Delete.Table("Users");
+            Delete.Table("User");
         }
     }
 }

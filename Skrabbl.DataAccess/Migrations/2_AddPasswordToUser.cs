@@ -7,15 +7,15 @@ namespace Skrabbl.DataAccess.Migrations
     {
         public override void Up()
         {
-            Alter.Table("Users")
+            Alter.Table("User")
                 .AddColumn("Password").AsString(64).NotNullable()
                 .AddColumn("Salt").AsString(16).NotNullable();
         }
 
         public override void Down()
         {
-            Delete.Column("Password").FromTable("Users");
-            Delete.Column("Salt").FromTable("Users");
+            Delete.Column("Password").FromTable("User");
+            Delete.Column("Salt").FromTable("User");
         }
     }
 }

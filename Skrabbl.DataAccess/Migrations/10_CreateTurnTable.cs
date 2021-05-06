@@ -15,11 +15,13 @@ namespace Skrabbl.DataAccess.Migrations
 
             Create.ForeignKey()
                 .FromTable("Turn").ForeignColumn("RoundId")
-                .ToTable("Round").PrimaryColumn("Id");
+                .ToTable("Round").PrimaryColumn("Id")
+                .OnDelete(System.Data.Rule.Cascade);
 
             Create.ForeignKey()
                 .FromTable("Turn").ForeignColumn("UserId")
-                .ToTable("Users").PrimaryColumn("Id");
+                .ToTable("User").PrimaryColumn("Id")
+                .OnDelete(System.Data.Rule.Cascade);
         }
 
         public override void Down()

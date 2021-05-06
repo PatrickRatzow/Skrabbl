@@ -17,7 +17,8 @@ namespace Skrabbl.DataAccess.Migrations
 
             Create.ForeignKey()
                 .FromTable("Round").ForeignColumn("GameId")
-                .ToTable("Game").PrimaryColumn("Id");
+                .ToTable("Game").PrimaryColumn("Id")
+                .OnDelete(System.Data.Rule.Cascade);
         }
 
         public override void Down()

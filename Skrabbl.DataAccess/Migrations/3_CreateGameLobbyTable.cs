@@ -8,12 +8,13 @@ namespace Skrabbl.DataAccess.Migrations
         public override void Up()
         {
             Create.Table("GameLobby")
-                .WithColumn("GameCode").AsFixedLengthString(4).PrimaryKey()
-                .WithColumn("LobbyOwnerId").AsInt32().NotNullable();
+                .WithColumn("Code").AsFixedLengthString(4).PrimaryKey()
+                .WithColumn("LobbyOwnerId").AsInt32().Nullable();
 
             Create.ForeignKey()
                 .FromTable("GameLobby").ForeignColumn("LobbyOwnerId")
-                .ToTable("Users").PrimaryColumn("Id");
+                .ToTable("User").PrimaryColumn("Id")
+                .OnDelete(System.Data.Rule.SetNull);
         }
 
         public override void Down()
