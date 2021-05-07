@@ -17,8 +17,8 @@
             INNER JOIN Round r ON t.Id = r.ActiveTurnId
             INNER JOIN Game g ON r.GameId = g.Id
             INNER JOIN GameLobby gl ON g.Id = gl.GameId
-            INNER JOIN Users u ON u.GameLobbyId = gl.GameCode AND m.UserId = u.Id
-            WHERE gl.GameCode = (
+            INNER JOIN Users u ON u.GameLobbyId = gl.Code AND m.UserId = u.Id
+            WHERE gl.Code = (
                 SELECT u2.GameLobbyId
                 FROM Users u2
                 WHERE u2.Id = @UserId
@@ -38,7 +38,7 @@
                     INNER JOIN Game g ON g.ActiveRoundId = r.Id
                     INNER JOIN GameLobby gl ON gl.GameId = g.Id
                     INNER JOIN Users u ON u.Id = @UserId
-                    WHERE u.GameLobbyId = gl.GameCode
+                    WHERE u.GameLobbyId = gl.Code
                 )
             )";
 

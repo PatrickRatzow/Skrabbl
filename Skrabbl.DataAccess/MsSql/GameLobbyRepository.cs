@@ -50,7 +50,7 @@ namespace Skrabbl.DataAccess.MsSql
                 if (!string.IsNullOrEmpty(inserts))
                 {
                     query += $@";
-                        INSERT INTO GameSetting(GameCode, Setting, Value)
+                        INSERT INTO GameSetting(GameLobbyCode, SettingType, Value)
                         VALUES {inserts}";
                 }
 
@@ -65,7 +65,7 @@ namespace Skrabbl.DataAccess.MsSql
                 var parameters = new DynamicParameters();
                 parameters.Add("@GameCode", ownerId);
 
-                var query = "Delete from GameSetting where GameCode = @GameCode;";
+                var query = "Delete from GameSetting where GameLobbyCode = @GameCode;";
 
                 query += $@"{_commandText.RemoveLobbyById}";
 

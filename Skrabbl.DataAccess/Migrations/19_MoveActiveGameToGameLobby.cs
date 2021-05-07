@@ -1,4 +1,5 @@
 using FluentMigrator;
+using System;
 
 namespace Skrabbl.DataAccess.Migrations
 {
@@ -9,21 +10,24 @@ namespace Skrabbl.DataAccess.Migrations
         {
             Alter.Table("GameLobby")
                 .AddColumn("GameId").AsInt32().Nullable().ForeignKey("Game", "Id").Indexed();
-
-            Delete.ForeignKey("FK_Game_GameLobbyId_GameLobby_GameCode").OnTable("Game");
-            Delete.Column("GameLobbyId").FromTable("Game");
         }
 
         public override void Down()
         {
+            Delete.Index("IX_GameLobby_GameId").OnTable("GameLobby");
+
+            Delete.ForeignKey()
+                .FromTable("GameLobby").ForeignColumn("GameId")
+                .ToTable("Game").PrimaryColumn("Id");
+
+           
+
             Delete.Column("GameId").FromTable("GameLobby");
+        }
 
-            Alter.Table("GameLobby")
-                .AddColumn("GameLobbyId").AsFixedLengthString(4);
-
-            Create.ForeignKey()
-                .FromTable("Game").ForeignColumn("GameLobbyId")
-                .ToTable("GameLobby").PrimaryColumn("GameCode");
+        private void Sql(string v)
+        {
+            throw new NotImplementedException();
         }
     }
 }
