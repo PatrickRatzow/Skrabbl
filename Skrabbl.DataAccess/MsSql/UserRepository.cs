@@ -59,7 +59,7 @@ namespace Skrabbl.DataAccess.MsSql
         {
             await WithConnection(async conn =>
             {
-                await conn.ExecuteAsync(_commandText.AddUserToLobby, new {GameLobbyId = gameCode, Id = userId,});
+                await conn.ExecuteAsync(_commandText.AddUserToLobby, new {LobbyCode = gameCode, Id = userId,});
             });
         }
 

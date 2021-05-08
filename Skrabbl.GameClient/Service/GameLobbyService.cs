@@ -31,7 +31,7 @@ namespace Skrabbl.GameClient.Service
                 DataContainer.GameLobby = response.Result;
                 await SignalR.Connect();
                 //send request that creater is the lobby owner
-                await SignalR.Connection.InvokeAsync("AssumeControlOfLobby", DataContainer.GameLobby.GameCode);
+                await SignalR.Connection.InvokeAsync("AssumeControlOfLobby", DataContainer.GameLobby.Code);
                 
                 return true;
             }
@@ -47,7 +47,7 @@ namespace Skrabbl.GameClient.Service
             var contained = GameSettings.ContainsKey(setting);
             var gameSetting = new GameSetting()
             {
-                Setting = setting,
+                SettingType = setting,
                 Value = value
             };
             GameSettings[setting] = gameSetting;
@@ -59,7 +59,7 @@ namespace Skrabbl.GameClient.Service
 
         private static Task UpdateSetting(GameSetting gameSetting)
         {
-            return SignalR.Connection.SendAsync("GameLobbySettingChanged", gameSetting.Setting, gameSetting.Value);
+            return SignalR.Connection.SendAsync("GameLobbySettingChanged", gameSetting.SettingType, gameSetting.Value);
         }
     }
 }

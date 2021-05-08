@@ -142,7 +142,7 @@ namespace Skrabbl.DataAccess.Test
             User gottenUser = await _userRepository.GetUserById(id);
 
             //Assert
-            Assert.AreEqual(gottenUser.GameLobbyId, lobby);
+            Assert.AreEqual(gottenUser.LobbyCode, lobby);
         }
 
         [TearDown]

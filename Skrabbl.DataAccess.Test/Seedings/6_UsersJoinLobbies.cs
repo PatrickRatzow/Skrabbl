@@ -15,7 +15,7 @@ namespace Skrabbl.DataAccess.Test
                 WHERE Id = @UserId
             ", new
             {
-                LobbyCode = gameLobby.GameCode,
+                LobbyCode = gameLobby.Code,
                 UserId = user.Id
             });
         }

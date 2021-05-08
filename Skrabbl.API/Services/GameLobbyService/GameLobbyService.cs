@@ -42,7 +42,7 @@ namespace Skrabbl.API.Services
 
             GameLobby lobby = new GameLobby
             {
-                GameCode = gameCode,
+                Code = gameCode,
                 LobbyOwnerId = userId,
                 GameSettings = Map(gameSettings ?? new List<GameSettingDto>(), gameCode)
             };
@@ -103,8 +103,8 @@ namespace Skrabbl.API.Services
             return gameSettings.ConvertAll(g => new GameSetting
             {
                 Value = g.Value,
-                Setting = g.Setting,
-                GameCode = gameCode
+                SettingType = g.Setting,
+                GameLobbyCode = gameCode
             });
         }
 

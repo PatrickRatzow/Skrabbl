@@ -179,13 +179,13 @@ namespace Skrabbl.API.Test.Services
             users.Add(expectedUser);
 
             GameSetting gameSettingMaxPlayers = new GameSetting {
-                Setting = "MaxPlayers",
+                SettingType = "MaxPlayers",
                 Value = "4"
             };
 
             GameSetting gameSettingNoOfRounds = new GameSetting
             {
-                Setting = "NoOfRounds",
+                SettingType = "NoOfRounds",
                 Value = "3"
             };
 
@@ -228,13 +228,13 @@ namespace Skrabbl.API.Test.Services
 
             GameSetting gameSettingMaxPlayers = new GameSetting
             {
-                Setting = "MaxPlayers",
+                SettingType = "MaxPlayers",
                 Value = "3"
             };
 
             GameSetting gameSettingNoOfRounds = new GameSetting
             {
-                Setting = "NoOfRounds",
+                SettingType = "NoOfRounds",
                 Value = "4"
             };
 
