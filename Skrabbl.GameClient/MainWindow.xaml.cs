@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using Skrabbl.GameClient.GUI;
 using Skrabbl.GameClient.Service;
@@ -37,10 +40,34 @@ namespace Skrabbl.GameClient
             }
         }
 
+        //
         public async void StartGame(object sender, RoutedEventArgs e)
         {
-            await GameLobbyService.CreateGameLobby();
+            if (DataContainer.GameLobby != null) return;
+            
+            GameLobbyService.ConfirmControlTakeOver += (o, e) =>
+            {
+                Dispatcher.Invoke(() => {
+                    PrintLine("Finished control connection");
+                });
+            };
+
+            bool createdGameLobby = await GameLobbyService.CreateGameLobby();
+            
+            if (createdGameLobby)
+            {
+                PrintLine("Created GameLobby! - initializing control connection");
+            }
+            else {
+                PrintLine("Failed to create Lobby");
+            }
         }
+
+        public void PrintLine(string line)
+        {
+            tbCustomWords.Text += $"{line}\n";
+        }
+
 
         private async void BtnLogOut_Click(object sender, RoutedEventArgs e)
         {
@@ -66,7 +93,7 @@ namespace Skrabbl.GameClient
 
         public void MaxPlayersChanged(object sender, RoutedEventArgs e)
         {
-            GameLobbyService.SettingChanged("MaxPlayers", players[comboPlayers.SelectedIndex].ToString());
+            GameLobbyService.SettingChanged(MaxPlayers.Name, players[comboPlayers.SelectedIndex].ToString());
         }
 
         public void NoOfRoundsChanged(object sender, RoutedEventArgs e)

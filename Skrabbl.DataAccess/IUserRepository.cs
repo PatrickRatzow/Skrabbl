@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Skrabbl.Model;
 
@@ -11,5 +12,6 @@ namespace Skrabbl.DataAccess
         Task<int> AddUser(User entity);
         Task DeleteUserById(int id);
         Task AddUserToLobby(int userId, string gameCode);
+        Task <IEnumerable<User>> GetUsersByGameCode(string gameCode);
     }
 }

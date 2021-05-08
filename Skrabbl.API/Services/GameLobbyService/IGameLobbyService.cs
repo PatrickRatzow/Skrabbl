@@ -12,7 +12,7 @@ namespace Skrabbl.API.Services
         Task<GameLobby> GetGameLobbyById(string lobbyId);
         Task<IEnumerable<GameLobby>> GetAllGameLobbies();
         Task<GameLobby> GetLobbyByOwnerId(int ownerId);
-        Task<List<GameSetting>> GetGameSettingsByGameId(int gameId);
+        Task<List<GameSetting>> GetGameSettingsByGameId(string gameCode);
         Task UpdateGameSetting(GameSetting gameSetting, int lobbyOwnerId);
     }
 }

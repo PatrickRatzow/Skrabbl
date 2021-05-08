@@ -26,7 +26,7 @@ namespace Skrabbl.API.Controllers
         }
 
         [HttpPost("join/{lobbyCode}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Join(string lobbyCode)
         {
             var claimUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
@@ -47,8 +47,14 @@ namespace Skrabbl.API.Controllers
                 return Forbid();
 
             //Go to database and change the players connected to lobby + player connected lobby
-            await _userService.AddToLobby(user.Result.Id, gameLobby.Result.GameCode);
-
+            try
+            {
+                await _userService.AddToLobby(user.Result.Id, gameLobby.Result.GameCode);
+            }
+            catch (LobbyIsFullException e) 
+            {
+                return Forbid();
+            }
             return Ok(gameLobby.Result);
         }
 
@@ -64,6 +70,12 @@ namespace Skrabbl.API.Controllers
 
             try
             {
+                /*
+                 * Because of await, we cannot get result as we do in the Join method
+                 * on user and gameLobby
+                 * await _userService.AddToLobby(user.Id, gameLobby.GameCode);
+                 * Not sure if we should actually call it here, then the owner cannot join later?
+                 */
                 var gameLobby = await _gameLobbyService.AddGameLobby(userId, gameSettings);
 
                 return Ok(gameLobby);

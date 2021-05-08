@@ -25,9 +25,10 @@ namespace Skrabbl.DataAccess.Test
             await CreateGameLobby(TestData.GameLobbies.NikolajLobby, TestData.Users.Nikolaj);
         }
 
-        public override Task Down()
+        public override async Task Down()
         {
-            return Execute("DELETE FROM GameLobby");
+            await Execute("DELETE FROM GameSetting");
+            await Execute("DELETE FROM GameLobby");
         }
     }
 }

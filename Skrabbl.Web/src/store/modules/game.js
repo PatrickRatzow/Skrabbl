@@ -10,6 +10,9 @@ const state = () => ({
     chosenWord: "",
     wordList: [],
     roundOverview: null,
+    currentRound: 2,
+    turnTimeLeft: 15,
+    maxRounds: 5,
     settings: [
         { id: "MaxPlayers", name: "Max players", value: "12" },
         { id: "NoOfRounds", name: "Rounds", value: "8" },

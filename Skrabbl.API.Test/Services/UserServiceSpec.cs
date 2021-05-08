@@ -7,6 +7,7 @@ using Moq;
 using System.Threading.Tasks;
 using Skrabbl.DataAccess;
 using Skrabbl.Model;
+using Skrabbl.Model.Errors;
 
 namespace Skrabbl.API.Test.Services
 {
@@ -19,10 +20,11 @@ namespace Skrabbl.API.Test.Services
             int expectedId = 1;
             var cryptographyMock = new Mock<ICryptographyService>();
             var userRepoMock = new Mock<IUserRepository>();
+            var gameLobbyMock = new Mock<IGameLobbyRepository>();
             cryptographyMock.Setup(m => m.CreateSalt()).Returns(new byte[16]);
             cryptographyMock.Setup(m => m.GenerateHash(It.IsAny<string>(), It.IsAny<Byte[]>())).Returns("");
             userRepoMock.Setup(m => m.AddUser(It.IsAny<User>())).Returns(Task.FromResult(expectedId));
-            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object);
+            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object, gameLobbyMock.Object);
 
             //Act
             var user = await userService.CreateUser("", "", "");
@@ -45,9 +47,10 @@ namespace Skrabbl.API.Test.Services
             expectedUser.Salt = "asdfghjk";
             var cryptographyMock = new Mock<ICryptographyService>();
             var userRepoMock = new Mock<IUserRepository>();
+            var gameLobbyMock = new Mock<IGameLobbyRepository>();
             cryptographyMock.Setup(m => m.AreEqual(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Byte[]>())).Returns(true);
             userRepoMock.Setup(m => m.GetUserByUsername(It.IsAny<string>())).Returns(Task.FromResult<User>(expectedUser));
-            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object);
+            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object, gameLobbyMock.Object);
 
             //Act
             var user = userService.GetUser("Bob", "Alice");
@@ -70,9 +73,10 @@ namespace Skrabbl.API.Test.Services
 
             var cryptographyMock = new Mock<ICryptographyService>();
             var userRepoMock = new Mock<IUserRepository>();
+            var gameLobbyMock = new Mock<IGameLobbyRepository>();
             cryptographyMock.Setup(m => m.AreEqual(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Byte[]>())).Returns(false);
             userRepoMock.Setup(m => m.GetUserByUsername(It.IsAny<string>())).Returns(Task.FromResult<User>(expectedUser));
-            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object);
+            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object, gameLobbyMock.Object);
 
             //Act
             var user = await userService.GetUser("Bob", "Alice");
@@ -90,8 +94,9 @@ namespace Skrabbl.API.Test.Services
             //Arrange
             var cryptographyMock = new Mock<ICryptographyService>();
             var userRepoMock = new Mock<IUserRepository>();
+            var gameLobbyMock = new Mock<IGameLobbyRepository>();
             userRepoMock.Setup(m => m.GetUserByUsername(It.IsAny<string>())).Returns(Task.FromResult<User>(null));
-            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object);
+            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object, gameLobbyMock.Object);
 
             //Act
             var user = await userService.GetUser("Bob", "Alice");
@@ -115,8 +120,9 @@ namespace Skrabbl.API.Test.Services
 
             var cryptographyMock = new Mock<ICryptographyService>();
             var userRepoMock = new Mock<IUserRepository>();
+            var gameLobbyMock = new Mock<IGameLobbyRepository>();
             userRepoMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns(Task.FromResult<User>(expectedUser));
-            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object);
+            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object, gameLobbyMock.Object);
 
             //Act
             var user = await userService.GetUser(expectedUser.Id);
@@ -140,8 +146,9 @@ namespace Skrabbl.API.Test.Services
 
             var cryptographyMock = new Mock<ICryptographyService>();
             var userRepoMock = new Mock<IUserRepository>();
+            var gameLobbyMock = new Mock<IGameLobbyRepository>();
             userRepoMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns(Task.FromResult<User>(null));
-            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object);
+            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object, gameLobbyMock.Object);
 
             //Act
             var user = await userService.GetUser(expectedUser.Id);
@@ -152,27 +159,105 @@ namespace Skrabbl.API.Test.Services
 
         }
 
+      
+        
         [Test]
-        public async Task AddToLobby_Succeds_RunsAddUserToLobby()
+        public async Task AddToLobby_Succeds_RunsAddUserToLobby() 
         {
             //Arrange
+            var gameCode = "Asd2";
+
             var expectedUser = new User();
             expectedUser.Email = "bob@alice.com";
             expectedUser.Password = "";
             expectedUser.Salt = "asdfghjk";
             expectedUser.Id = 3;
 
-            var cryptographyMock = new Mock<ICryptographyService>();
+            List<User> users = new List<User>();
+            users.Add(expectedUser);
+            users.Add(expectedUser);
+            users.Add(expectedUser);
+
+            GameSetting gameSettingMaxPlayers = new GameSetting {
+                Setting = "MaxPlayers",
+                Value = "4"
+            };
+
+            GameSetting gameSettingNoOfRounds = new GameSetting
+            {
+                Setting = "NoOfRounds",
+                Value = "3"
+            };
+
+            List<GameSetting> gameSettings = new List<GameSetting>();
+            gameSettings.Add(gameSettingMaxPlayers);
+            gameSettings.Add(gameSettingNoOfRounds);
+
+
             var userRepoMock = new Mock<IUserRepository>();
-            userRepoMock.Setup(m => m.AddUserToLobby(It.IsAny<int>(), It.IsAny<string>()));
-            var userService = new UserService(userRepoMock.Object, cryptographyMock.Object);
+            var gameLobbyMock = new Mock<IGameLobbyRepository>();
+            userRepoMock.Setup(m => m.AddUserToLobby(expectedUser.Id, gameCode));
+            userRepoMock.Setup(m => m.GetUsersByGameCode(gameCode)).Returns(Task.FromResult<IEnumerable<User>>(users));
+            gameLobbyMock.Setup(s => s.GetGameSettingsByGameCode(gameCode)).Returns(Task.FromResult<IEnumerable<GameSetting>>(gameSettings));
+            var userService = new UserService(userRepoMock.Object, null, gameLobbyMock.Object);
 
             //Act
-            await userService.AddToLobby(expectedUser.Id, "");
+            await userService.AddToLobby(expectedUser.Id, gameCode);
 
             //Assert
+            gameLobbyMock.VerifyAll();
             userRepoMock.VerifyAll();
-
         }
+
+        [Test]
+        public async Task AddToLobby_FailsOnTooManyPlayers()
+        {
+            //Arrange
+            var gameCode = "Asd2";
+
+            var expectedUser = new User();
+            expectedUser.Email = "bob@alice.com";
+            expectedUser.Password = "";
+            expectedUser.Salt = "asdfghjk";
+            expectedUser.Id = 3;
+
+            List<User> users = new List<User>();
+            users.Add(expectedUser);
+            users.Add(expectedUser);
+            users.Add(expectedUser);
+
+            GameSetting gameSettingMaxPlayers = new GameSetting
+            {
+                Setting = "MaxPlayers",
+                Value = "3"
+            };
+
+            GameSetting gameSettingNoOfRounds = new GameSetting
+            {
+                Setting = "NoOfRounds",
+                Value = "4"
+            };
+
+            List<GameSetting> gameSettings = new List<GameSetting>();
+            gameSettings.Add(gameSettingMaxPlayers);
+            gameSettings.Add(gameSettingNoOfRounds);
+
+
+            var userRepoMock = new Mock<IUserRepository>();
+            var gameLobbyMock = new Mock<IGameLobbyRepository>();
+            userRepoMock.Setup(m => m.GetUsersByGameCode(gameCode)).Returns(Task.FromResult<IEnumerable<User>>(users));
+            gameLobbyMock.Setup(s => s.GetGameSettingsByGameCode(gameCode)).Returns(Task.FromResult<IEnumerable<GameSetting>>(gameSettings));
+            var userService = new UserService(userRepoMock.Object, null, gameLobbyMock.Object);
+
+            //Act
+            var ex = Assert.ThrowsAsync<LobbyIsFullException>(
+                async () => await userService.AddToLobby(expectedUser.Id, gameCode));
+
+            //Assert
+            Assert.IsNotNull(ex);
+            gameLobbyMock.VerifyAll();
+            userRepoMock.VerifyAll();
+        }
+
     }
 }

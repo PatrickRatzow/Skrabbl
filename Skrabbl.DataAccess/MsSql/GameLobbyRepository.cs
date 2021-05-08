@@ -21,7 +21,7 @@ namespace Skrabbl.DataAccess.MsSql
             return await WithConnection(async conn =>
             {
                 return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyByLobbyCode,
-                    new {GameCode = lobbyCode});
+                    new { GameCode = lobbyCode });
             });
         }
 
@@ -61,9 +61,16 @@ namespace Skrabbl.DataAccess.MsSql
         public async Task<int> RemoveGameLobby(string ownerId)
         {
             return await WithConnection(async conn =>
-            {
-                return await conn.ExecuteAsync(_commandText.RemoveLobbyById, new {GameCode = ownerId});
-            });
+           {
+               var parameters = new DynamicParameters();
+               parameters.Add("@GameCode", ownerId);
+
+               var query = "Delete from GameSetting where GameCode = @GameCode;";
+
+               query += $@"{_commandText.RemoveLobbyById}";
+
+              return await conn.ExecuteAsync(query, parameters);
+           });
         }
 
         public async Task RemoveAllGameLobbies()
@@ -84,16 +91,16 @@ namespace Skrabbl.DataAccess.MsSql
             return await WithConnection(async conn =>
             {
                 return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyByOwnerId,
-                    new {LobbyOwnerId = ownerId});
+                    new { LobbyOwnerId = ownerId });
             });
         }
 
-        public async Task<IEnumerable<GameSetting>> GetGameSettingsByGameCode(int gameId)
+        public async Task<IEnumerable<GameSetting>> GetGameSettingsByGameCode(string gameCode)
         {
             return await WithConnection(async conn =>
             {
                 return await conn.QueryAsync<GameSetting>(_commandText.GetGameSettingsByGameCode,
-                    new {GameId = gameId});
+                    new { GameCode = gameCode });
             });
         }
 

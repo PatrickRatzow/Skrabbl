@@ -9,5 +9,6 @@ namespace Skrabbl.API.Hubs
         Task GetAllMessages();
         Task SendDrawNode(string color, int size, int x1, int y1, int x2, int y2);
         Task ChooseWord(int gameId, string chosenWord);
+        Task AssumeControlOfLobby(string lobbyCode);
     }
 }

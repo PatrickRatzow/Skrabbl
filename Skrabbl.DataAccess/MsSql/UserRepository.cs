@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -60,6 +61,15 @@ namespace Skrabbl.DataAccess.MsSql
             {
                 await conn.ExecuteAsync(_commandText.AddUserToLobby, new {GameLobbyId = gameCode, Id = userId,});
             });
+        }
+
+        public async Task<IEnumerable<User>> GetUsersByGameCode(string gameCode)
+        {
+            return await WithConnection<IEnumerable<User>>(async conn =>
+            {
+                return await conn.QueryAsync<User>(_commandText.GetUsersByGameCode, new { GameLobbyId = gameCode});
+            });
+
         }
     }
 }

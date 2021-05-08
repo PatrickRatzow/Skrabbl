@@ -21,7 +21,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel HorizontalAlignment="Center" Margin="0,10,0,10">
-                <TextBlock FontSize="18" Margin="2">Max # of Players</TextBlock>
+                <TextBlock x:Name="MaxPlayers" FontSize="18" Margin="2">Max # of Players</TextBlock>
                 <TextBlock FontSize="18" Margin="2"># of Rounds</TextBlock>
                 <TextBlock FontSize="18" Margin="2">Drawing Time</TextBlock>
                 <TextBlock FontSize="18" Margin="2">Only Custom Words</TextBlock>

@@ -31,5 +31,6 @@ namespace Skrabbl.DataAccess
         string SetRoundNumberForGame { get; }
         string GetGameSettingsByGameCode { get; }
         string UpdateGameSetting { get; }
+        string GetUsersByGameCode { get; }
     }
 }

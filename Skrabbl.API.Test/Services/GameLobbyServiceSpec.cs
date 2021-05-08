@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -154,5 +155,6 @@ namespace Skrabbl.API.Test.Services
 
             mock.Verify(m => m.GetLobbyByOwnerId(It.IsAny<int>()), Times.Once());
         }
+
     }
 }
