@@ -5,7 +5,7 @@ class SignalRConnection {
     constructor() {
         this.conn = new HubConnectionBuilder()
             .withUrl("/ws/game", {
-                accessTokenFactory: this.getAccessToken
+                accessTokenFactory: () => store.state.user?.auth?.jwt?.token
             })
             .configureLogging(LogLevel.Information)
             .build()
@@ -17,25 +17,6 @@ class SignalRConnection {
         }
         this.observers = []
     }
-
-    async getAccessToken() {
-        const auth = store.state.user.auth;
-
-        if (auth === null) {
-            return;
-        }
-       
-        const expiresAt = auth.jwt.expiresAt
-        const currentTime = new Date()
-        const hasExpired = currentTime > expiresAt
-
-        if (hasExpired) {
-            await store.dispatch("user/refreshLogin", auth.refreshToken.token)
-        }
-
-        return auth.jwt?.token;
-    }
-
 
     invoke(id, ...args) {
         if (!this.connected) {

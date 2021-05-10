@@ -70,12 +70,6 @@ namespace Skrabbl.API.Controllers
 
             try
             {
-                /*
-                 * Because of await, we cannot get result as we do in the Join method
-                 * on user and gameLobby
-                 * await _userService.AddToLobby(user.Id, gameLobby.GameCode);
-                 * Not sure if we should actually call it here, then the owner cannot join later?
-                 */
                 var gameLobby = await _gameLobbyService.AddGameLobby(userId, gameSettings);
 
                 return Ok(gameLobby);

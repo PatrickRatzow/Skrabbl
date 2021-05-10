@@ -20,6 +20,7 @@ namespace Skrabbl.GameClient.Service
             });
         }
 
+
         public static async Task<bool> CreateGameLobby()
         {
             var gameSettings = ModelMapper.Mapper.Map<List<GameSettingDto>>(GameSettings.Values);
@@ -30,13 +31,16 @@ namespace Skrabbl.GameClient.Service
                 DataContainer.GameLobby = response.Result;
                 await SignalR.Connect();
                 //send request that creater is the lobby owner
-                _ = SignalR.Connection.InvokeAsync("AssumeControlOfLobby", DataContainer.GameLobby.GameCode);
+                await SignalR.Connection.InvokeAsync("AssumeControlOfLobby", DataContainer.GameLobby.GameCode);
                 
                 return true;
             }
+            
 
             return false;
         }
+
+
 
         public static void SettingChanged(string setting, string value)
         {
