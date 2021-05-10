@@ -25,7 +25,7 @@ namespace Skrabbl.API.Hubs
 
             await Task.WhenAll(user, hasGuessedWord);
 
-            if (user.Result.GameLobbyId == null || hasGuessedWord.Result) return;
+            if (user.Result.LobbyCode == null || hasGuessedWord.Result) return;
 
             var guessedWord = _gameService.DidUserGuessWord(userId, message);
 

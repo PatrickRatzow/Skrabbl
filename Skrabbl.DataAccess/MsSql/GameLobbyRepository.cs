@@ -21,7 +21,7 @@ namespace Skrabbl.DataAccess.MsSql
             return await WithConnection(async conn =>
             {
                 return await conn.QuerySingleOrDefaultAsync<GameLobby>(_commandText.GetLobbyByLobbyCode,
-                    new { GameCode = lobbyCode });
+                    new { Code = lobbyCode });
             });
         }
 
@@ -30,16 +30,16 @@ namespace Skrabbl.DataAccess.MsSql
             await WithConnection(async conn =>
             {
                 var parameters = new DynamicParameters();
-                parameters.Add("@GameCode", entity.GameCode);
+                parameters.Add("@Code", entity.Code);
                 parameters.Add("@LobbyOwnerId", entity.LobbyOwnerId);
 
                 var i = 0;
                 var inserts = string.Join(", ", entity.GameSettings.Select(x =>
                 {
                     var gameCodeId = ++i;
-                    parameters.Add($@"P{gameCodeId}", x.GameCode);
+                    parameters.Add($@"P{gameCodeId}", x.GameLobbyCode);
                     var settingId = ++i;
-                    parameters.Add($@"P{settingId}", x.Setting);
+                    parameters.Add($@"P{settingId}", x.SettingType);
                     var valueId = ++i;
                     parameters.Add($@"P{valueId}", x.Value);
 
@@ -50,7 +50,7 @@ namespace Skrabbl.DataAccess.MsSql
                 if (!string.IsNullOrEmpty(inserts))
                 {
                     query += $@";
-                        INSERT INTO GameSetting(GameCode, Setting, Value)
+                        INSERT INTO GameSetting(GameLobbyCode, SettingType, Value)
                         VALUES {inserts}";
                 }
 
@@ -63,9 +63,9 @@ namespace Skrabbl.DataAccess.MsSql
             return await WithConnection(async conn =>
             {
                 var parameters = new DynamicParameters();
-                parameters.Add("@GameCode", ownerId);
+                parameters.Add("@Code", ownerId);
 
-                var query = "Delete from GameSetting where GameCode = @GameCode;";
+                var query = "Delete from GameSetting where GameLobbyCode = @Code;";
 
                 query += $@"{_commandText.RemoveLobbyById}";
 
@@ -100,7 +100,7 @@ namespace Skrabbl.DataAccess.MsSql
             return await WithConnection(async conn =>
             {
                 return await conn.QueryAsync<GameSetting>(_commandText.GetGameSettingsByGameCode,
-                    new { GameCode = gameCode });
+                    new { GameLobbyCode = gameCode });
             });
         }
 
@@ -111,7 +111,7 @@ namespace Skrabbl.DataAccess.MsSql
                 return conn.ExecuteAsync(_commandText.UpdateGameSetting, new
                 {
                     Value = gameSetting.Value,
-                    Setting = gameSetting.Setting,
+                    Setting = gameSetting.SettingType,
                     LobbyOwnerId = lobbyOwnerId
                 });
             });

@@ -74,7 +74,7 @@ namespace Skrabbl.API.Services
                 var users = await _userRepository.GetUsersByGameCode(gameCode);
                 int numberOfUsers = users.Count();
                 var gameSettings = await _gameLobbyRepository.GetGameSettingsByGameCode(gameCode);
-                int maxPlayers = Convert.ToInt32(gameSettings.First(s => s.Setting == "MaxPlayers").Value);
+                int maxPlayers = Convert.ToInt32(gameSettings.First(s => s.SettingType == "MaxPlayers").Value);
 
                 if (numberOfUsers >= maxPlayers)
                 {

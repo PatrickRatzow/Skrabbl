@@ -41,7 +41,7 @@ namespace Skrabbl.API.Hubs
                 int.Parse(Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
             var gameSetting = new GameSetting()
             {
-                Setting = key,
+                SettingType = key,
                 Value = value
             };
             await _gameLobbyService.UpdateGameSetting(gameSetting, lobbyOwnerId);
@@ -60,9 +60,9 @@ namespace Skrabbl.API.Hubs
             var gameLobby = await _gameLobbyService.GetGameLobbyById(gameLobbyCode);
             if (gameLobby?.LobbyOwnerId != lobbyOwnerId) return;
 
-            if (gameLobby?.GameCode != gameLobbyCode) return;
+            if (gameLobby?.Code != gameLobbyCode) return;
 
-            LobbyCodeToUserMap.TryAdd(gameLobby.GameCode, gameLobby.LobbyOwnerId);
+            LobbyCodeToUserMap.TryAdd(gameLobby.Code, gameLobby.LobbyOwnerId);
 
             await Clients.Caller.ConfirmControlTakeOver();
         }

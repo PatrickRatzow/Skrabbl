@@ -22,11 +22,11 @@ namespace Skrabbl.DataAccess.Test
             await Execute(@"
                 UPDATE GameLobby
                 SET GameId = @GameId
-                WHERE GameCode = @GameCode
+                WHERE Code = @Code
             ", new
             {
                 gameLobby.GameId,
-                gameLobby.GameCode
+                gameLobby.Code
             });
         }
 

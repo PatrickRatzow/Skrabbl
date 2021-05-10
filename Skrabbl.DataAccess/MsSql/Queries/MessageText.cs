@@ -5,7 +5,7 @@
         // TODO: Outdated query, game no longer has a GameId column
         public string GetAllMessages => @"
             SELECT * FROM ChatMessage m
-            INNER JOIN Users u ON u.Id = m.UserId
+            INNER JOIN [User] u ON u.Id = m.UserId
             INNER JOIN Game g ON m.GameId = g.Id AND g.Id = @GameId";
 
         public string GetAllMessagesByUserId => @"
@@ -17,10 +17,10 @@
             INNER JOIN Round r ON t.Id = r.ActiveTurnId
             INNER JOIN Game g ON r.GameId = g.Id
             INNER JOIN GameLobby gl ON g.Id = gl.GameId
-            INNER JOIN Users u ON u.GameLobbyId = gl.GameCode AND m.UserId = u.Id
-            WHERE gl.GameCode = (
-                SELECT u2.GameLobbyId
-                FROM Users u2
+            INNER JOIN [User] u ON u.LobbyCode = gl.Code AND m.UserId = u.Id
+            WHERE gl.Code = (
+                SELECT u2.LobbyCode
+                FROM [User] u2
                 WHERE u2.Id = @UserId
             )";
 
@@ -37,8 +37,8 @@
                     INNER JOIN Round r ON r.ActiveTurnId = t.Id
                     INNER JOIN Game g ON g.ActiveRoundId = r.Id
                     INNER JOIN GameLobby gl ON gl.GameId = g.Id
-                    INNER JOIN Users u ON u.Id = @UserId
-                    WHERE u.GameLobbyId = gl.GameCode
+                    INNER JOIN [User] u ON u.Id = @UserId
+                    WHERE u.LobbyCode = gl.Code
                 )
             )";
 

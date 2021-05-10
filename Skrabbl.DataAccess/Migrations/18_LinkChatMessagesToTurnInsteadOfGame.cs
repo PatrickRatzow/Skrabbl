@@ -7,7 +7,9 @@ namespace Skrabbl.DataAccess.Migrations
     {
         public override void Up()
         {
-            Delete.ForeignKey("FK_ChatMessage_GameId_Game_Id").OnTable("ChatMessage");
+            Delete.ForeignKey()
+                .FromTable("ChatMessage").ForeignColumn("GameId")
+                .ToTable("Game").PrimaryColumn("Id");
             Delete.Column("GameId").FromTable("ChatMessage");
 
             Alter.Table("ChatMessage")
@@ -16,7 +18,11 @@ namespace Skrabbl.DataAccess.Migrations
 
         public override void Down()
         {
+            Delete.ForeignKey("FK_ChatMessage_TurnId_Turn_Id").OnTable("ChatMessage");
             Delete.Column("TurnId").FromTable("ChatMessage");
+
+
+            Alter.Table("ChatMessage").AddColumn("GameId").AsInt32().NotNullable();
 
             Create.ForeignKey()
                 .FromTable("ChatMessage").ForeignColumn("GameId")

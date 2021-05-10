@@ -10,12 +10,12 @@ namespace Skrabbl.DataAccess.Test
         private Task JoinLobby(User user, GameLobby gameLobby)
         {
             return Execute(@"
-                UPDATE Users
-                SET GameLobbyId = @LobbyCode
+                UPDATE [User]
+                SET LobbyCode = @LobbyCode
                 WHERE Id = @UserId
             ", new
             {
-                LobbyCode = gameLobby.GameCode,
+                LobbyCode = gameLobby.Code,
                 UserId = user.Id
             });
         }
@@ -29,7 +29,7 @@ namespace Skrabbl.DataAccess.Test
 
         public override Task Down()
         {
-            return Execute("UPDATE Users SET GameLobbyId = NULL");
+            return Execute("UPDATE [User] SET LobbyCode = NULL");
         }
     }
 }

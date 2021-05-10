@@ -10,7 +10,7 @@ namespace Skrabbl.DataAccess.Migrations
             Create.Table("Turn")
                 .WithColumn("Id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("RoundId").AsInt32().NotNullable()
-                .WithColumn("UserId").AsInt32().NotNullable()
+                .WithColumn("UserId").AsInt32().Nullable()
                 .WithColumn("Word").AsString(255);
 
             Create.ForeignKey()
@@ -21,7 +21,7 @@ namespace Skrabbl.DataAccess.Migrations
             Create.ForeignKey()
                 .FromTable("Turn").ForeignColumn("UserId")
                 .ToTable("User").PrimaryColumn("Id")
-                .OnDelete(System.Data.Rule.Cascade);
+                .OnDelete(System.Data.Rule.SetNull);
         }
 
         public override void Down()

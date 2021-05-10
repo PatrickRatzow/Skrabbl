@@ -6,8 +6,8 @@ namespace Skrabbl.Model
 {
     public class GameSetting
     {
-        public string GameCode { get; set; }
-        public string Setting { get; set; }
+        public string GameLobbyCode { get; set; }
+        public string SettingType { get; set; }
         public string Value { get; set; }
     }
 }

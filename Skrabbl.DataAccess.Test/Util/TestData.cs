@@ -43,12 +43,12 @@ namespace Skrabbl.DataAccess.Test.Util
         {
             public static GameLobby PatrickLobby { get; set; } = new GameLobby
             {
-                GameCode = "abcd"
+                Code = "abcd"
             };
 
             public static GameLobby NikolajLobby { get; set; } = new GameLobby
             {
-                GameCode = "dcba"
+                Code = "dcba"
             };
 
             public static GameLobby? FlorisLobby { get; set; }

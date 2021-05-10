@@ -17,6 +17,10 @@ namespace Skrabbl.DataAccess.Migrations
 
         public override void Down()
         {
+            Delete.ForeignKey()
+                .FromTable("User").ForeignColumn("LobbyCode")
+                .ToTable("GameLobby").PrimaryColumn("Code");
+
             Delete.Column("LobbyCode").FromTable("User");
         }
     }
