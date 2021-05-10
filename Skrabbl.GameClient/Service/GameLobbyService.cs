@@ -30,7 +30,7 @@ namespace Skrabbl.GameClient.Service
                 DataContainer.GameLobby = response.Result;
                 await SignalR.Connect();
                 //send request that creater is the lobby owner
-                _ = SignalR.Connection.InvokeAsync("AssumeControlOfLobby", DataContainer.GameLobby.GameCode);
+                _ = SignalR.Connection.InvokeAsync("AssumeControlOfLobby", DataContainer.GameLobby.Code);
 
                 return true;
             }
