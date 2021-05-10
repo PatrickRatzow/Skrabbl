@@ -67,7 +67,7 @@ namespace Skrabbl.DataAccess.MsSql
         {
             return await WithConnection<IEnumerable<User>>(async conn =>
             {
-                return await conn.QueryAsync<User>(_commandText.GetUsersByGameCode, new { GameLobbyId = gameCode});
+                return await conn.QueryAsync<User>(_commandText.GetUsersByGameCode, new { LobbyCode = gameCode});
             });
 
         }
