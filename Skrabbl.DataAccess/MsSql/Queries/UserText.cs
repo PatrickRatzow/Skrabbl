@@ -6,7 +6,7 @@ namespace Skrabbl.DataAccess.MsSql.Queries
         public string GetUserByUsername => "SELECT * FROM [User] WHERE Username = @Username";
 
         public string GetUserByRefreshToken => @"
-            SELECT u.* FROM Users u
+            SELECT u.* FROM [User] u
             INNER JOIN UserRefreshToken urt ON u.Id = urt.UserId
             WHERE urt.Token = @Token";
 
