@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SboxTerror.DataAccess.Test
+namespace Skrabbl.DataAccess.Test
 {
     public class SeedingException : Exception
     {

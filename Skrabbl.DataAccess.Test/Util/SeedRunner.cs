@@ -5,9 +5,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Skrabbl.DataAccess.Test;
 
-namespace SboxTerror.DataAccess.Test
+namespace Skrabbl.DataAccess.Test
 {
     internal class SeedRunner : IAsyncDisposable
     {
@@ -72,7 +71,7 @@ namespace SboxTerror.DataAccess.Test
 
         private void FindSeeds()
         {
-            _seeds ??= AppDomain.CurrentDomain.GetAssemblies()
+            _seeds = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
                 .Where(x => x.IsSubclassOf(typeof(Seed)) && !x.IsAbstract)
                 .Select(Activator.CreateInstance)

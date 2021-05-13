@@ -8,7 +8,6 @@ using FluentMigrator.Runner.Processors;
 using FluentMigrator.Runner.Processors.SqlServer;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
-using SboxTerror.DataAccess.Test;
 
 namespace Skrabbl.DataAccess.Test
 {
