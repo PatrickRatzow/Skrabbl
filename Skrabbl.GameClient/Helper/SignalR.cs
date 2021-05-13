@@ -11,13 +11,13 @@ namespace Skrabbl.GameClient.Helper
             .WithAutomaticReconnect()
             .Build();
 
-        private static async Task<string?> AccessToken()
+        private static async Task<string> AccessToken()
         {
-            if (DataContainer.Tokens == null) return null;
+            if (DataContainer.Tokens == null) return string.Empty;
             if (!DataContainer.IsTokenExpired()) return DataContainer.Tokens.Jwt.Token;
 
             var refreshed = await UserService.RefreshToken();
-            if (!refreshed) return null;
+            if (!refreshed) return string.Empty;
 
             return DataContainer.Tokens.Jwt.Token;
         }
