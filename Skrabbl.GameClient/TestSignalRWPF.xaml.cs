@@ -103,7 +103,7 @@ namespace Skrabbl.GameClient
 
                     resultLbl.Text = uri + " Lobby was created!";
 
-                    gameId.Text = $"newly created Id: {gameLobby.GameCode}";
+                    gameId.Text = $"newly created Id: {gameLobby.Code}";
                 } catch
                 {
                     resultLbl.Text = "Lobby was not created! - BOHO";

@@ -10,13 +10,13 @@ namespace Skrabbl.DataAccess.Migrations
     {
         public override void Up()
         {
-            Alter.Table("Users")
+            Alter.Table("User")
                 .AddColumn("HasBoughtGame").AsBoolean().NotNullable().WithDefaultValue(false);
         }
 
         public override void Down()
         {
-            Delete.Column("HasBoughtGame").FromTable("Users");
+            Delete.Column("HasBoughtGame").FromTable("User");
         }
     }
 }

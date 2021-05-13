@@ -43,13 +43,13 @@ namespace Skrabbl.API.Controllers
             if (gameLobby.Result == null)
                 return NotFound();
 
-            if (user.Result == null || !string.IsNullOrEmpty(user.Result.GameLobbyId))
+            if (user.Result == null || !string.IsNullOrEmpty(user.Result.LobbyCode))
                 return Forbid();
 
             //Go to database and change the players connected to lobby + player connected lobby
             try
             {
-                await _userService.AddToLobby(user.Result.Id, gameLobby.Result.GameCode);
+                await _userService.AddToLobby(user.Result.Id, gameLobby.Result.Code);
             }
             catch (LobbyIsFullException e) 
             {
@@ -65,17 +65,11 @@ namespace Skrabbl.API.Controllers
             var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
             var user = await _userService.GetUser(userId);
 
-            if (user == null || !string.IsNullOrEmpty(user.GameLobbyId))
+            if (user == null || !string.IsNullOrEmpty(user.LobbyCode))
                 return Forbid();
 
             try
             {
-                /*
-                 * Because of await, we cannot get result as we do in the Join method
-                 * on user and gameLobby
-                 * await _userService.AddToLobby(user.Id, gameLobby.GameCode);
-                 * Not sure if we should actually call it here, then the owner cannot join later?
-                 */
                 var gameLobby = await _gameLobbyService.AddGameLobby(userId, gameSettings);
 
                 return Ok(gameLobby);

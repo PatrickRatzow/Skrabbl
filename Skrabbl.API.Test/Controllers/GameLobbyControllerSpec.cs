@@ -43,7 +43,7 @@ namespace Skrabbl.API.Test.Controllers
 
         private static readonly GameLobby GameLobby = new GameLobby
         {
-            GameCode = "hGhG",
+            Code = "hGhG",
         };
 
         private (GameLobbyController, Mock<IUserService>, Mock<IGameLobbyService>) TestObjects()
@@ -113,7 +113,7 @@ namespace Skrabbl.API.Test.Controllers
 
             //Assert
             Assert.IsInstanceOf<OkObjectResult>(result);
-            Assert.AreEqual(GameLobby.GameCode, ((result as OkObjectResult).Value as GameLobby).GameCode);
+            Assert.AreEqual(GameLobby.Code, ((result as OkObjectResult).Value as GameLobby).Code);
             userService.VerifyAll();
             gameLobbyService.VerifyAll();
         }
@@ -129,7 +129,7 @@ namespace Skrabbl.API.Test.Controllers
                 Password = "Patrick",
                 Salt = "2retnut",
                 Username = "UserMAN",
-                GameLobbyId = "GhhG"
+                LobbyCode = "GhhG"
             };
 
             var (gameLobbyController, userService, _) = TestObjects();
@@ -178,7 +178,7 @@ namespace Skrabbl.API.Test.Controllers
             gameLobbyService.Setup(m => m.GetGameLobbyById(gameLobbyCode))
                 .ReturnsAsync(() => new GameLobby()
                 {
-                    GameCode = gameLobbyCode
+                    Code = gameLobbyCode
                 });
             userService.Setup(m => m.AddToLobby(user.Id, gameLobbyCode));
 
@@ -271,7 +271,7 @@ namespace Skrabbl.API.Test.Controllers
             gameLobbyService.Setup(m => m.GetGameLobbyById(gameLobbyCode))
                 .ReturnsAsync(() => new GameLobby()
                 {
-                    GameCode = gameLobbyCode
+                    Code = gameLobbyCode
                 });
 
             gameLobbyController.ControllerContext = new ControllerContext()
@@ -299,7 +299,7 @@ namespace Skrabbl.API.Test.Controllers
                 Password = "Patrick",
                 Salt = "2retnut",
                 Username = "UserMAN",
-                GameLobbyId = gameLobbyCode
+                LobbyCode = gameLobbyCode
             };
 
             var claimsUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -313,7 +313,7 @@ namespace Skrabbl.API.Test.Controllers
             gameLobbyService.Setup(m => m.GetGameLobbyById(gameLobbyCode))
                 .ReturnsAsync(() => new GameLobby()
                 {
-                    GameCode = gameLobbyCode
+                    Code = gameLobbyCode
                 });
 
             gameLobbyController.ControllerContext = new ControllerContext()

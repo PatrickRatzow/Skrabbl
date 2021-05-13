@@ -20,6 +20,7 @@ namespace Skrabbl.GameClient.Service
             });
         }
 
+
         public static async Task<bool> CreateGameLobby()
         {
             var gameSettings = ModelMapper.Mapper.Map<List<GameSettingDto>>(GameSettings.Values);
@@ -30,20 +31,23 @@ namespace Skrabbl.GameClient.Service
                 DataContainer.GameLobby = response.Result;
                 await SignalR.Connect();
                 //send request that creater is the lobby owner
-                _ = SignalR.Connection.InvokeAsync("AssumeControlOfLobby", DataContainer.GameLobby.GameCode);
-                
+                _ = SignalR.Connection.InvokeAsync("AssumeControlOfLobby", DataContainer.GameLobby.Code);
+
                 return true;
             }
 
+
             return false;
         }
+
+
 
         public static void SettingChanged(string setting, string value)
         {
             var contained = GameSettings.ContainsKey(setting);
             var gameSetting = new GameSetting()
             {
-                Setting = setting,
+                SettingType = setting,
                 Value = value
             };
             GameSettings[setting] = gameSetting;
@@ -55,7 +59,7 @@ namespace Skrabbl.GameClient.Service
 
         private static Task UpdateSetting(GameSetting gameSetting)
         {
-            return SignalR.Connection.SendAsync("GameLobbySettingChanged", gameSetting.Setting, gameSetting.Value);
+            return SignalR.Connection.SendAsync("GameLobbySettingChanged", gameSetting.SettingType, gameSetting.Value);
         }
     }
 }

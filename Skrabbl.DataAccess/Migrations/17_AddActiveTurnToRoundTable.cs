@@ -13,6 +13,7 @@ namespace Skrabbl.DataAccess.Migrations
 
         public override void Down()
         {
+            Delete.ForeignKey("FK_Round_ActiveTurnId_Turn_Id").OnTable("Round");
             Delete.Column("ActiveTurnId").FromTable("Round");
         }
     }

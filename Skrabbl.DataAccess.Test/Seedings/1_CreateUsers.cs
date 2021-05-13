@@ -10,7 +10,7 @@ namespace Skrabbl.DataAccess.Test
         private async Task CreateUser(User user)
         {
             var id = await QuerySingle<int>(@"
-                INSERT INTO Users(Username, Email, Password, Salt, GameLobbyId)
+                INSERT INTO [User](Username, Email, Password, Salt, LobbyCode)
                 VALUES (@Username, @Email, @Password, @Salt, NULL);
                 SELECT CAST(SCOPE_IDENTITY() AS int)
             ", new
@@ -34,7 +34,7 @@ namespace Skrabbl.DataAccess.Test
 
         public override Task Down()
         {
-            return Execute("DELETE FROM Users");
+            return Execute("DELETE FROM [User]");
         }
     }
 }

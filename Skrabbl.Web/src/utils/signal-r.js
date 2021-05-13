@@ -24,7 +24,7 @@ class SignalRConnection {
         if (auth === null) {
             return;
         }
-       
+
         const expiresAt = auth.jwt.expiresAt
         const currentTime = new Date()
         const hasExpired = currentTime > expiresAt
@@ -35,7 +35,6 @@ class SignalRConnection {
 
         return auth.jwt?.token;
     }
-
 
     invoke(id, ...args) {
         if (!this.connected) {

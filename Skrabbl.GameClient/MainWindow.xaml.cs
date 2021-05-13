@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics;
-using System.Threading;
 using System.Windows;
 using Skrabbl.GameClient.GUI;
 using Skrabbl.GameClient.Service;
@@ -43,31 +41,17 @@ namespace Skrabbl.GameClient
         //
         public async void StartGame(object sender, RoutedEventArgs e)
         {
-            if (DataContainer.GameLobby != null) return;
-            
-            GameLobbyService.ConfirmControlTakeOver += (o, e) =>
-            {
-                Dispatcher.Invoke(() => {
-                    PrintLine("Finished control connection");
-                });
-            };
-
             bool createdGameLobby = await GameLobbyService.CreateGameLobby();
-            
+            //ConfirmControlTakeOver - Få teksten til at opdatere på GUI tråden, istedet for en anden tråd.
+            GameLobbyService.ConfirmControlTakeOver += (o, e) => tbCustomWords.Text += "\nFinished control connection";
             if (createdGameLobby)
             {
-                PrintLine("Created GameLobby! - initializing control connection");
+                tbCustomWords.Text += "\nCreated GameLobby! - initializing control connection";
             }
             else {
-                PrintLine("Failed to create Lobby");
+                tbCustomWords.Text += "Failed to create Lobby";
             }
         }
-
-        public void PrintLine(string line)
-        {
-            tbCustomWords.Text += $"{line}\n";
-        }
-
 
         private async void BtnLogOut_Click(object sender, RoutedEventArgs e)
         {

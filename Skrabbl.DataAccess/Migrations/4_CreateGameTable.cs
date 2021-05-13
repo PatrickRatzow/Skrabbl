@@ -10,11 +10,12 @@ namespace Skrabbl.DataAccess.Migrations
             Create.Table("Game")
                 .WithColumn("Id").AsInt32().Identity().PrimaryKey()
                 .WithColumn("ActiveRound").AsInt32().NotNullable()
-                .WithColumn("GameLobbyId").AsFixedLengthString(4);
+                .WithColumn("GameLobbyCode").AsFixedLengthString(4).Nullable();
 
             Create.ForeignKey()
-                .FromTable("Game").ForeignColumn("GameLobbyId")
-                .ToTable("GameLobby").PrimaryColumn("GameCode");
+                .FromTable("Game").ForeignColumn("GameLobbyCode")
+                .ToTable("GameLobby").PrimaryColumn("Code")
+                .OnDelete(System.Data.Rule.SetNull);
         }
 
         public override void Down()

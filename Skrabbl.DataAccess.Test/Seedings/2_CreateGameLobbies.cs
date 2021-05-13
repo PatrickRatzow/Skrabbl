@@ -10,11 +10,11 @@ namespace Skrabbl.DataAccess.Test
         private Task CreateGameLobby(GameLobby gameLobby, User user)
         {
             return Execute(@"
-                    INSERT INTO GameLobby(GameCode, LobbyOwnerId, GameId)
-                    VALUES (@GameCode, @LobbyOwnerId, NULL)
+                    INSERT INTO GameLobby(Code, LobbyOwnerId, GameId)
+                    VALUES (@Code, @LobbyOwnerId, NULL)
                 ", new
             {
-                gameLobby.GameCode,
+                gameLobby.Code,
                 LobbyOwnerId = user.Id
             });
         }

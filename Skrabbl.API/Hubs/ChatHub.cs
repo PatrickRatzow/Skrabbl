@@ -17,13 +17,15 @@ namespace Skrabbl.API.Hubs
             var userId = int.Parse(idClaim.Value);
 
             var clients = Clients.All;
+            //_turnTimerService.CreateTurnTimer(5, 2500, async t => { await clients.ReceiveMessage("Timer", "Callback!"); });
+            //_turnTimerService.StartTimer(5);
 
             var user = _userService.GetUser(userId);
             var hasGuessedWord = _gameService.HasUserGuessedWord(userId);
 
             await Task.WhenAll(user, hasGuessedWord);
 
-            if (user.Result.GameLobbyId == null || hasGuessedWord.Result) return;
+            if (user.Result.LobbyCode == null || hasGuessedWord.Result) return;
 
             var guessedWord = _gameService.DidUserGuessWord(userId, message);
 

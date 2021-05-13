@@ -7,13 +7,13 @@ namespace Skrabbl.DataAccess.Migrations
     {
         public override void Up()
         {
-            Alter.Table("Users")
+            Alter.Table("User")
                 .AlterColumn("Salt").AsFixedLengthString(24).NotNullable();
         }
 
         public override void Down()
         {
-            Alter.Table("Users")
+            Alter.Table("User")
                 .AlterColumn("Salt").AsFixedLengthString(16).NotNullable();
         }
     }

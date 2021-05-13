@@ -8,7 +8,7 @@ namespace Skrabbl.DataAccess.Migrations
         public override void Up()
         {
             Create.Table("ChatMessage")
-                .WithColumn("MessageId").AsInt32().PrimaryKey().NotNullable().Identity()
+                .WithColumn("Id").AsInt32().PrimaryKey().NotNullable().Identity()
                 .WithColumn("Message").AsString(255).NotNullable()
                 .WithColumn("CreatedAt").AsDateTime().NotNullable()
                 .WithColumn("GameId").AsInt32().NotNullable()
@@ -16,11 +16,13 @@ namespace Skrabbl.DataAccess.Migrations
 
             Create.ForeignKey()
                 .FromTable("ChatMessage").ForeignColumn("GameId")
-                .ToTable("Game").PrimaryColumn("Id");
+                .ToTable("Game").PrimaryColumn("Id")
+                .OnDelete(System.Data.Rule.Cascade);
 
             Create.ForeignKey()
                 .FromTable("ChatMessage").ForeignColumn("UserId")
-                .ToTable("Users").PrimaryColumn("Id");
+                .ToTable("User").PrimaryColumn("Id")
+                .OnDelete(System.Data.Rule.Cascade);
         }
 
         public override void Down()
