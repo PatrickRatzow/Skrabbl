@@ -61,17 +61,18 @@ namespace Skrabbl.DataAccess.Test
         [Order(1)]
         public async Task GetCurrentTurn()
         {
+            // Arange
+            var userId = TestData.Users.Patrick.Id;
+            var expectedTurnId = TestData.Games.PatrickGame.Rounds
+                .First()
+                .Turns.First().Id;
+
             // Act
-            var turn = await _gameRepository.GetCurrentTurn(TestData.Users.Patrick.Id);
+            var turn = await _gameRepository.GetCurrentTurn(userId);
 
             // Assert
             Assert.IsNotNull(turn);
-            Assert.AreEqual(TestData.Games.PatrickGame.Rounds
-                    .First()
-                    .Turns.First()
-                    .Id,
-                turn.Id
-            );
+            Assert.AreEqual(expectedTurnId, turn.Id);
         }
 
         private static IEnumerable<(User, bool)> GuessedWordTestCases
