@@ -49,31 +49,76 @@ namespace Skrabbl.DataAccess.Test
         }
 
         [Test, Order(1)]
-        public async Task AddGameLobbyToDb()
+        public async Task AddGameLobbyToDb_Success()
         {
             //Arrange
-
             var gameLobby = TestData.GameLobbies.FlorisLobby!;
 
             //Act
             await _gameLobbyRepository.AddGameLobby(gameLobby);
+            GameLobby lobby = await _gameLobbyRepository.GetGameLobbyByLobbyCode(gameLobby.Code);
 
             //Assert
+            Assert.IsNotNull(lobby);
+        }
+
+        [Test, Order(2)]
+        public async Task ValideLobbyCode()
+        {
+            //Arrange
+            var gameLobby = TestData.GameLobbies.FlorisLobby!;
+
+            //Act
             GameLobby lobby = await _gameLobbyRepository.GetGameLobbyByLobbyCode(gameLobby.Code);
-            Debug.WriteLine(lobby.Code);
-            
+
+            //Assert
+            Assert.AreEqual(gameLobby.Code, lobby.Code);
+        }
+
+        [Test, Order(3)]
+        public async Task GameLobbyLobbyOwnerIdIsEqualToLobbyOwnerId()
+        {
+            //Arrange
+            var gameLobby = TestData.GameLobbies.FlorisLobby!;
+
+            //Act
+            GameLobby lobby = await _gameLobbyRepository.GetGameLobbyByLobbyCode(gameLobby.Code);
+
+            //Assert
+            Assert.AreEqual(gameLobby.LobbyOwnerId, lobby.LobbyOwnerId);
+        }
+
+        [Test, Order(4)]
+        public async Task AllGameSettingsAdded()
+        {
+            //Arrange
+            var gameLobby = TestData.GameLobbies.FlorisLobby!;
+
+            //Act
+            GameLobby lobby = await _gameLobbyRepository.GetGameLobbyByLobbyCode(gameLobby.Code);
             IEnumerable<GameSetting> gameSetting = await _gameLobbyRepository.GetGameSettingsByGameCode(gameLobby.Code);
             List<GameSetting> gameSettingList = gameSetting.ToList();
 
-            Assert.IsNotNull(lobby);
+            //Assert
             Assert.AreEqual(2, gameSettingList.Count());
-            Assert.AreEqual(gameLobby.Code, lobby.Code);
-            Assert.AreEqual(gameLobby.LobbyOwnerId, lobby.LobbyOwnerId);
+        }
+        
+        [Test, Order(5)]
+        public async Task CorrectGameSettingsAdded()
+        {
+            //Arrange
+            var gameLobby = TestData.GameLobbies.FlorisLobby!;
+
+            //Act
+            IEnumerable<GameSetting> gameSetting = await _gameLobbyRepository.GetGameSettingsByGameCode(gameLobby.Code);
+            List<GameSetting> gameSettingList = gameSetting.ToList();
+
+            //Assert
             Assert.AreEqual("4", gameSettingList.Find(s => s.SettingType.Equals("MaxPlayers")).Value);
             Assert.AreEqual("10", gameSettingList.Find(s => s.SettingType.Equals("NoOfRounds")).Value);
         }
 
-        [Test, Order(2)]
+        [Test, Order(6)]
         public async Task FindGameLobbyByOwnerId()
         {
             //Arrange
@@ -86,7 +131,7 @@ namespace Skrabbl.DataAccess.Test
             Assert.IsNotNull(gameLobby);
         }
 
-        [Test, Order(3)]
+        [Test, Order(7)]
         public async Task FindGameLobbyById()
         {
             //Arrange
@@ -99,7 +144,7 @@ namespace Skrabbl.DataAccess.Test
             Assert.IsNotNull(gameLobby);
         }
 
-        [Test, Order(4)]
+        [Test, Order(8)]
         public async Task RemoveGameLobby()
         {
             //Arrange
@@ -114,7 +159,7 @@ namespace Skrabbl.DataAccess.Test
             Assert.AreEqual(rowsAffected, 3);
         }
 
-        [Test, Order(5)]
+        [Test, Order(9)]
         public async Task GetAllLobbies()
         {
             //Arrange
