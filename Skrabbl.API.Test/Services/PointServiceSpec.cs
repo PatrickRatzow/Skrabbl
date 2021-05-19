@@ -191,7 +191,7 @@ namespace Skrabbl.API.Test.Services
         }
 
         [Test]
-        public void TestTotalPointsWith1Userwith1CorrectAnswer()
+        public void TestTotalPointsFor0WrongAnswers()
         {
             //Arrange
             Dictionary<User, int> points = new Dictionary<User, int>();
