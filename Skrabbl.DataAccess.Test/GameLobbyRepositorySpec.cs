@@ -6,8 +6,6 @@ using Skrabbl.DataAccess.MsSql;
 using Skrabbl.DataAccess.MsSql.Queries;
 using Skrabbl.DataAccess.Test.Util;
 using Skrabbl.Model;
-using System.Linq;
-using System.Diagnostics;
 
 namespace Skrabbl.DataAccess.Test
 {
@@ -102,7 +100,7 @@ namespace Skrabbl.DataAccess.Test
             //Assert
             Assert.AreEqual(2, gameSettingList.Count());
         }
-        
+
         [Test, Order(5)]
         public async Task CorrectGameSettingsAdded()
         {
@@ -152,7 +150,7 @@ namespace Skrabbl.DataAccess.Test
 
             //Act
             int rowsAffected = await _gameLobbyRepository.RemoveGameLobby(lobbyId);
-            
+
             TestData.GameLobbies.FlorisLobby = null;
 
             //Assert
@@ -162,14 +160,15 @@ namespace Skrabbl.DataAccess.Test
         [Test, Order(9)]
         public async Task GetAllLobbies()
         {
-            //Arrange
+            // Arrange
+            // Seeding has 2 lobbies
+            int expectedResult = 2;
 
-            //Act
+            // Act
             var lobbies = await _gameLobbyRepository.GetAllGameLobbies();
 
-            //Assert
-            // According to seeding data we have 2 lobbies
-            Assert.AreEqual(lobbies.Count(), 2);
+            // Assert
+            Assert.AreEqual(expectedResult, lobbies.Count());
         }
     }
 }
